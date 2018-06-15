@@ -13,44 +13,29 @@ struct Position {
         float y;
 };
 
-void printID(struct ID id);
-void printIDArray(struct ID* id_array, size_t len);
+struct PackedArray {
+        size_t used;
+        size_t length;
+        void* packedArray;
+};
+
+struct PackedArray createPackedArray(size_t size, size_t len);
+struct PackedArray createPackedArray(size_t size, size_t len) {
+        return (struct PackedArray){.used = 0,
+                                    .length = len,
+                                    .packedArray = malloc(len * sizeof(size))};
+}
+
 void printPosition(struct Position position);
-void printPositions(struct Position* positions, size_t len);
+void printPositionPackedArray(struct PackedArray arr);
 
 // main entity funtions
 int main() {
-        struct FreeList wuv = createFreeList(MAX_ENTITIES);
-        printIDArray(wuv.sparseArray, MAX_ENTITIES);
-        printf("\n");
-
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        addToFreeList(&wuv, (struct ID){3, 2});
-        removeFromFreeList(&wuv, 4);
-        addToFreeList(&wuv, (struct ID){9, 0});
-        printIDArray(wuv.sparseArray, MAX_ENTITIES);
+        // woor
+        struct PackedArray test =
+            createPackedArray(sizeof(struct Position), 10);
+        printPositionPackedArray(test);
         return 0;
-}
-
-void printID(struct ID id) {
-        printf("ID: ");
-        printf("index %u; ", id.index);
-        printf("generation %u", id.generation);
-}
-
-void printIDArray(struct ID* id_array, size_t len) {
-        for (size_t i = 0; i < len; ++i) {
-                printID(id_array[i]);
-                printf("\n");
-        }
 }
 
 void printPosition(struct Position position) {
@@ -59,10 +44,11 @@ void printPosition(struct Position position) {
         printf("y %f; ", position.y);
 }
 
-void printPositions(struct Position* positions, size_t len) {
-        printf("Position: ");
-        for (size_t i = 0; i < len; ++i) {
-                printPosition(positions[i]);
+void printPositionPackedArray(struct PackedArray arr) {
+        for (size_t i = 0; i < arr.used; ++i) {
+                printPosition(*((struct Position*)arr.packedArray +
+                                i * sizeof(struct Position)));
                 printf("\n");
         }
+        printf("%zu many spaces left\n", (arr.length - arr.used));
 }

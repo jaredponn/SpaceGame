@@ -22,3 +22,10 @@ void addToFreeList(struct FreeList* freelist, struct ID id);
 // removes an elemtn from the free list
 // TODO ADD ERROR HANDLING IF THERE IT IS OUT OF BOUNDS
 void removeFromFreeList(struct FreeList* freelist, unsigned int index);
+
+// printing
+void printID(struct ID id);
+void printIDArray(struct ID* id_array, size_t len);
+
+// TEST SUITE
+void FreeListTestSuit();
