@@ -1,0 +1,14 @@
+Build started at 2018-06-14T16:11:24.527434
+Main binary: /usr/bin/python3
+Python system: Linux
+The Meson build system
+Version: 0.46.1
+Source dir: /home/jared/Programs/SpaceGame
+Build dir: /home/jared/Programs/SpaceGame/build
+Build type: native build
+Project name: SpaceGame
+Native C compiler: cc (gcc 7.3.0 "cc (GCC) 7.3.0")
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Build targets in project: 1
+Found ninja-1.8.2 at /usr/bin/ninja
