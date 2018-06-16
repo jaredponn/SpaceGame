@@ -30,3 +30,7 @@ https://stackoverflow.com/questions/3039513/type-safe-generic-data-structures-in
 https://tiehuis.github.io/generic-data-structures-in-c
 
 https://www.cs.grinnell.edu/~rebelsky/musings/cnix-macros-generics
+
+Unit testing:
+
+https://www.brendanlong.com/unit-testing-c-with-check-and-autotools.html

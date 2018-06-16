@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 #include "Engine/EngineState.h"
-#include "lib/Lists/IDFreeList.h"
-#include "lib/Stack/IntStack.h"
+#include "Lib/Lists/IDFreeList.h"
+#include "Lib/Stack/IntStack.h"
 
 const static size_t MAX_ENTITIES = 10;
 
