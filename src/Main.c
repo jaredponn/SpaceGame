@@ -4,7 +4,7 @@
 
 #include "Engine/EngineState.h"
 #include "lib/Lists/IDFreeList.h"
-#include "lib/Lists/UIntNodes.h"
+#include "lib/Stack/IntStack.h"
 
 const static size_t MAX_ENTITIES = 10;
 
@@ -31,10 +31,13 @@ void printPositionPackedArray(struct PackedArray arr);
 
 // main entity funtions
 int main() {
-        // woor
-        struct PackedArray test =
-            createPackedArray(sizeof(struct Position), 10);
-        printPositionPackedArray(test);
+        struct i_Stack* test = i_stack_new();
+        i_stack_push(test, 1);
+        i_stack_push(test, 2);
+        i_stack_push(test, 3);
+        i_stack_pop(test);
+        i_stack_pop(test);
+
         return 0;
 }
 

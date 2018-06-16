@@ -19,3 +19,14 @@ https://blog.molecular-matters.com/2013/07/24/adventures-in-data-oriented-design
 http://bitsquid.blogspot.com/2011/09/managing-decoupling-part-4-id-lookup.html
 
 
+Stuff about C:
+
+Macros and generic data structures( or in other words, using C++ would've been a better idea ):
+
+https://gcc.gnu.org/onlinedocs/cpp/Macros.html
+
+https://stackoverflow.com/questions/3039513/type-safe-generic-data-structures-in-plain-old-c
+
+https://tiehuis.github.io/generic-data-structures-in-c
+
+https://www.cs.grinnell.edu/~rebelsky/musings/cnix-macros-generics

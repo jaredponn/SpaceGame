@@ -6,6 +6,9 @@ project('SpaceGame', 'c')
 inc = include_directories('Resources')
 inc = include_directories('lib')
 
-src = ['src/Main.c', 'lib/Lists/UIntNodes.c', 'lib/Lists/IDFreeList.c']
+srcs = ['src/Main.c'
+     # ,'lib/Lists/IDFreeList.c'
+       , 'lib/Stack/IntStack.c'
+       , 'lib/Util.c' ]
 
-executable('spacegame',src, link_args : '-lSDL2')
+executable('spacegame',srcs, link_args : '-lSDL2')
