@@ -85,7 +85,8 @@ START_TEST(vector_test) {
         vector_reserve(&testvec, 4);
         ck_assert_int_eq(vector_size(&testvec), 4);
         ck_assert_int_eq(vector_capacity(&testvec), 4);
-        ck_assert_int_eq(vector_get(&testvec, 10), 7);
+
+        vector_free(&testvec);
 }
 END_TEST
 
