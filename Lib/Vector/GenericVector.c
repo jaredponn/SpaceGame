@@ -5,11 +5,6 @@
  * Declarations for a vector (a wrapper for a continious memory object). Not C++
  * standard compliant.
  */
-// -----------------------------------------
-//    Macros
-// -----------------------------------------
-
-// TODO
 
 // -----------------------------------------
 //    Procedures
@@ -26,7 +21,8 @@ void vector_init(struct Vector* vector) {
 }
 
 void vector_reserve(struct Vector* vector, size_t new_capacity) {
-        int* new_data = (int*)realloc(vector->data, sizeof(int) * new_capacity);
+        GENERICTYPE* new_data = (GENERICTYPE*)realloc(
+            vector->data, sizeof(GENERICTYPE) * new_capacity);
 
         if (new_data == NULL) {
                 printf("Error: insufficient memory upon vector reallocation");
@@ -40,7 +36,7 @@ void vector_reserve(struct Vector* vector, size_t new_capacity) {
 }
 
 // resizes vector to the new size (and reallocates) and gives it a default value
-void vector_resize(struct Vector* vector, size_t new_size, int val) {
+void vector_resize(struct Vector* vector, size_t new_size, GENERICTYPE val) {
         vector_reserve(vector, new_size);
         for (size_t i = vector->size; i < vector->capacity; ++i) {
                 vector_set(vector, i, val);
@@ -59,7 +55,7 @@ size_t vector_capacity(struct Vector* vector) { return vector->capacity; }
 // appends something to the end of the size of the vector and increases size by
 // 1. If the vector is too small, it reallocates it so it is 1.5x the original
 // size
-void vector_pushback(struct Vector* vector, int val) {
+void vector_pushback(struct Vector* vector, GENERICTYPE val) {
         if (vector_size(vector) == vector_capacity(vector)) {
                 vector_reserve(vector, vector_capacity(vector) * 1.5);
         }
@@ -70,7 +66,7 @@ void vector_pushback(struct Vector* vector, int val) {
 
 // sets a specified index to a new elment
 // unsafe
-void vector_set(struct Vector* vector, unsigned int index, int val) {
+void vector_set(struct Vector* vector, unsigned int index, GENERICTYPE val) {
         vector->data[index] = val;
 }
 
@@ -92,3 +88,22 @@ void vector_remove(struct Vector* vector, unsigned int index) {
 
 // frees the entire vector
 void vector_free(struct Vector* vector) { free(vector->data); }
+
+// -----------------------------------------
+//    Macros
+// -----------------------------------------
+
+#undef Vector
+#undef vector_new
+#undef vector_init
+#undef vector_reserve
+#undef vector_resize
+#undef vector_size
+#undef vector_capacity
+#undef vector_pushback
+#undef vector_set
+#undef vector_remove
+#undef vector_free
+
+#undef TYPE
+#undef TYPED

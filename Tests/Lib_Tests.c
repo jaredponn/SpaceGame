@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "Lib/Stack/IntStack.h"
-#include "Lib/Vector/GenericVector.h"
+#include "Lib/Vector/IntVector.h"
 
 START_TEST(stack_test) {
         // creating the empty stack
