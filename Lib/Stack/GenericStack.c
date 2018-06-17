@@ -8,11 +8,6 @@
 // -----------------------------------------
 //    Types
 // -----------------------------------------
-// stack
-struct Stack {
-        size_t size;
-        struct StackNode* top;  // top of the stack
-};
 
 // stack nodes
 struct StackNode {
@@ -31,6 +26,12 @@ struct Stack* stack_new(void) {
         new_stack->size = 0;
         new_stack->top = NULL;
         return new_stack;
+}
+
+// initializes a newstack
+void stack_init(struct Stack* stack) {
+        stack->size = 0;
+        stack->top = NULL;
 }
 
 // free the space allocated for a stack
@@ -59,12 +60,8 @@ GENERICTYPE stack_pop(struct Stack* stack) {
         struct StackNode* tmp = stack->top;
         GENERICTYPE val = tmp->data;
 
-        if (stack->size == 1) {
-                stack->top = NULL;
-        } else {
-                stack->top = stack->top->next;
-                free(tmp);
-        }
+        stack->top = stack->top->next;
+        free(tmp);
 
         --stack->size;
         return val;

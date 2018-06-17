@@ -34,3 +34,7 @@ https://www.cs.grinnell.edu/~rebelsky/musings/cnix-macros-generics
 Unit testing:
 
 https://www.brendanlong.com/unit-testing-c-with-check-and-autotools.html
+
+Writing your own vector:
+
+https://upcoder.com/3/roll-your-own-vector

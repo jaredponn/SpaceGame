@@ -21,6 +21,7 @@
 
 #define Stack MACRO_CONCAT(TYPED, _Stack)
 #define stack_new MACRO_CONCAT(TYPED, _stack_new)
+#define stack_init MACRO_CONCAT(TYPED, _stack_init)
 #define stack_free MACRO_CONCAT(TYPED, _stack_free)
 #define stack_size MACRO_CONCAT(TYPED, _stack_size)
 #define stack_peek MACRO_CONCAT(TYPED, _stack_peek)
@@ -31,7 +32,12 @@
 //    Types
 // -----------------------------------------
 
+// stack
 struct Stack;
+struct Stack {
+        size_t size;
+        struct StackNode* top;  // top of the stack
+};
 
 // -----------------------------------------
 //    Procedures
@@ -39,6 +45,9 @@ struct Stack;
 
 // create new stack
 struct Stack* stack_new(void);
+
+// initializes a newstack
+void stack_init(struct Stack* stack);
 
 // free the space allocated for a stack
 void stack_free(struct Stack* stack);
