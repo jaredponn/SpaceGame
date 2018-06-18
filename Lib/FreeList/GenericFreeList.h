@@ -1,9 +1,18 @@
 #pragma once
 
 #include <stdlib.h>
+
 #include "../Stack/SizeStack.h"
+#undef TYPE
+#undef TYPED
+
 #include "../Util.h"
+#undef TYPE
+#undef TYPED
+
 #include "../Vector/IntVector.h"
+#undef TYPE
+#undef TYPED
 
 /**
  * Declarations for a generic free list structure
