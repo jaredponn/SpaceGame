@@ -29,6 +29,7 @@
 #define vector_capacity MACRO_CONCAT(TYPED, _vector_capacity)
 #define vector_pushback MACRO_CONCAT(TYPED, _vector_pushback)
 #define vector_set MACRO_CONCAT(TYPED, _vector_set)
+#define vector_get MACRO_CONCAT(TYPED, _vector_get)
 #define vector_remove MACRO_CONCAT(TYPED, _vector_remove)
 #define vector_free MACRO_CONCAT(TYPED, _vector_free)
 
@@ -73,16 +74,16 @@ void vector_pushback(struct Vector* vector, GENERICTYPE val);
 
 // sets a specified inddex to a new elment
 // unsafe without bounds checking
-void vector_set(struct Vector*, unsigned int index, GENERICTYPE val);
+void vector_set(struct Vector*, size_t index, GENERICTYPE val);
 
 // gets a specified inddex to a new elment
 // unsafe without bounds checking
-GENERICTYPE vector_get(struct Vector*, unsigned int index);
+GENERICTYPE vector_get(struct Vector*, size_t index);
 
 // deletes an elment from a vector and shifts all elments to the right of it
 // back 1
 // unsafe without bounds checking
-void vector_remove(struct Vector*, unsigned int index);
+void vector_remove(struct Vector*, size_t index);
 
 // frees the entire vector
 void vector_free(struct Vector*);

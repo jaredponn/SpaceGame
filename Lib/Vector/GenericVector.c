@@ -66,21 +66,21 @@ void vector_pushback(struct Vector* vector, GENERICTYPE val) {
 
 // sets a specified index to a new elment
 // unsafe
-void vector_set(struct Vector* vector, unsigned int index, GENERICTYPE val) {
+void vector_set(struct Vector* vector, size_t index, GENERICTYPE val) {
         vector->data[index] = val;
 }
 
 // gets a specified inddex to a new elment
 // unsafe
-int vector_get(struct Vector* vector, unsigned int index) {
+GENERICTYPE vector_get(struct Vector* vector, size_t index) {
         return vector->data[index];
 }
 
 // deletes an elment from a vector and shifts all elments to the right of it
 // back 1. reduces the size by 1 as well
 // unsafe.
-void vector_remove(struct Vector* vector, unsigned int index) {
-        for (unsigned int i = index; i < vector_size(vector) - 1; ++i) {
+void vector_remove(struct Vector* vector, size_t index) {
+        for (size_t i = index; i < vector_size(vector) - 1; ++i) {
                 vector_set(vector, i, vector_get(vector, i + 1));
         }
         --vector->size;

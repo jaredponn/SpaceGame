@@ -78,19 +78,3 @@ void stack_push(struct Stack* stack, GENERICTYPE val) {
                 ++stack->size;
         }
 }
-
-// -----------------------------------------
-//    Macros
-// -----------------------------------------
-
-#undef Stack
-#undef stack_new
-#undef stack_init
-#undef stack_free
-#undef stack_size
-#undef stack_peek
-#undef stack_pop
-#undef stack_push
-
-#undef TYPE
-#undef TYPED

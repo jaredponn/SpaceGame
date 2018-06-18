@@ -1,8 +1,8 @@
 #include <check.h>
 #include <stdlib.h>
 
-#include "Lib/Stack/IntStack.h"
-#include "Lib/Vector/IntVector.h"
+#include "../Lib/Stack/IntStack.h"
+#include "../Lib/Vector/IntVector.h"
 
 START_TEST(stack_test) {
         // creating the empty stack
@@ -31,62 +31,61 @@ START_TEST(stack_test) {
 END_TEST
 
 START_TEST(vector_test) {
-        // creating the empty stack
-        struct Vector testvec;
-        vector_init(&testvec);
+        struct i_Vector testvec;
+        i_vector_init(&testvec);
 
-        vector_reserve(&testvec, 3);
+        i_vector_reserve(&testvec, 3);
 
         // testing to see if it allocated properly
-        ck_assert_int_eq(vector_capacity(&testvec), 3);  // should be 10
-        ck_assert_int_eq(vector_size(&testvec), 0);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 3);  // should be 10
+        ck_assert_int_eq(i_vector_size(&testvec), 0);
 
         // testing pushback
-        vector_pushback(&testvec, 3);
-        ck_assert_int_eq(vector_get(&testvec, 0), 3);
-        ck_assert_int_eq(vector_size(&testvec), 1);
+        i_vector_pushback(&testvec, 3);
+        ck_assert_int_eq(i_vector_get(&testvec, 0), 3);
+        ck_assert_int_eq(i_vector_size(&testvec), 1);
 
         // testing pushback
-        vector_pushback(&testvec, 4);
-        ck_assert_int_eq(vector_get(&testvec, 0), 3);
-        ck_assert_int_eq(vector_get(&testvec, 1), 4);
-        ck_assert_int_eq(vector_size(&testvec), 2);
+        i_vector_pushback(&testvec, 4);
+        ck_assert_int_eq(i_vector_get(&testvec, 0), 3);
+        ck_assert_int_eq(i_vector_get(&testvec, 1), 4);
+        ck_assert_int_eq(i_vector_size(&testvec), 2);
 
         // testing pushback
-        vector_pushback(&testvec, 5);
-        ck_assert_int_eq(vector_get(&testvec, 0), 3);
-        ck_assert_int_eq(vector_get(&testvec, 1), 4);
-        ck_assert_int_eq(vector_get(&testvec, 2), 5);
-        ck_assert_int_eq(vector_size(&testvec), 3);
+        i_vector_pushback(&testvec, 5);
+        ck_assert_int_eq(i_vector_get(&testvec, 0), 3);
+        ck_assert_int_eq(i_vector_get(&testvec, 1), 4);
+        ck_assert_int_eq(i_vector_get(&testvec, 2), 5);
+        ck_assert_int_eq(i_vector_size(&testvec), 3);
 
         // testing delete
-        vector_remove(&testvec, 0);
-        ck_assert_int_eq(vector_get(&testvec, 0), 4);
-        ck_assert_int_eq(vector_get(&testvec, 1), 5);
-        ck_assert_int_eq(vector_size(&testvec), 2);
+        i_vector_remove(&testvec, 0);
+        ck_assert_int_eq(i_vector_get(&testvec, 0), 4);
+        ck_assert_int_eq(i_vector_get(&testvec, 1), 5);
+        ck_assert_int_eq(i_vector_size(&testvec), 2);
 
         // pushing back again
-        vector_pushback(&testvec, 6);
-        ck_assert_int_eq(vector_get(&testvec, 2), 6);
+        i_vector_pushback(&testvec, 6);
+        ck_assert_int_eq(i_vector_get(&testvec, 2), 6);
 
         // testing the push back if the array is already full
-        vector_pushback(&testvec, 7);
-        ck_assert_int_eq(vector_get(&testvec, 3), 7);
-        ck_assert_int_eq(vector_size(&testvec), 4);
-        ck_assert_int_eq(vector_capacity(&testvec), 4);
+        i_vector_pushback(&testvec, 7);
+        ck_assert_int_eq(i_vector_get(&testvec, 3), 7);
+        ck_assert_int_eq(i_vector_size(&testvec), 4);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 4);
 
         // reserving extra memory
-        vector_reserve(&testvec, 100);
+        i_vector_reserve(&testvec, 100);
 
-        ck_assert_int_eq(vector_size(&testvec), 4);
-        ck_assert_int_eq(vector_capacity(&testvec), 100);
+        ck_assert_int_eq(i_vector_size(&testvec), 4);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 100);
 
         // shrink it back to 4
-        vector_reserve(&testvec, 4);
-        ck_assert_int_eq(vector_size(&testvec), 4);
-        ck_assert_int_eq(vector_capacity(&testvec), 4);
+        i_vector_reserve(&testvec, 4);
+        ck_assert_int_eq(i_vector_size(&testvec), 4);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 4);
 
-        vector_free(&testvec);
+        i_vector_free(&testvec);
 }
 END_TEST
 

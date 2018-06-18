@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "Engine/EngineState.h"
-#include "Lib/Lists/IDFreeList.h"
 #include "Lib/Stack/IntStack.h"
 
 const static size_t MAX_ENTITIES = 10;
@@ -30,16 +29,7 @@ void printPosition(struct Position position);
 void printPositionPackedArray(struct PackedArray arr);
 
 // main entity funtions
-int main() {
-        struct i_Stack* test = i_stack_new();
-        i_stack_push(test, 1);
-        i_stack_push(test, 2);
-        i_stack_push(test, 3);
-        i_stack_pop(test);
-        i_stack_pop(test);
-
-        return 0;
-}
+int main() { return 0; }
 
 void printPosition(struct Position position) {
         printf("Position: ");
