@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "Engine/EngineState.h"
-#include "Lib/Stack/IntStack.h"
 
 const static size_t MAX_ENTITIES = 10;
 
