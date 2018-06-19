@@ -1,5 +1,8 @@
 #include <check.h>
-#include "../Lib/Stack/IntStack.h"
+#include "Lib/GenericStack.h"
+
+STACK_DECLARE(int, i)
+STACK_DEFINE(int, i)
 
 START_TEST(stack_test) {
         // creating the empty stack

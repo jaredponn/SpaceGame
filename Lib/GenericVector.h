@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Util.h"
+#include "Util.h"
 
 /**
  * Macros for a vector (a wrapper for a continious memory object). Not C++
