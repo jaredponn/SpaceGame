@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Util.h"
+#include "Util.h"
 
 /**
  * Macros to create a generic stack (FIFO) data structure
