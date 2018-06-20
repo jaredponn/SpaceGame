@@ -1,8 +1,4 @@
 #include <check.h>
-#include "Lib/GenericVector.h"
-
-VECTOR_DECLARE(int, i)
-VECTOR_DEFINE(int, i)
 
 START_TEST(vector_test) {
         struct i_Vector testvec;
