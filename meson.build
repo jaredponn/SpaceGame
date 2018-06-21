@@ -7,8 +7,16 @@ inc = include_directories('Resources')
 inc = include_directories('Lib')
 
 srcs = ['Src/Main.c'
+       , 'Src/Engine/EngineState.c'
+       , 'Src/Engine/GameVars.c'
+       #, 'Src/Engine/Components/Position.c'
+       #, 'Src/Engine/Components/Appearance.c'
        , 'Lib/Util.c' ]
-executable('spacegame',srcs, link_args : '-lSDL2')
+
+executable('spacegame'
+        , srcs
+        , default_options : ['c_std=c11']
+        ,link_args : '-lSDL2')
 
 testsrcs = ['Lib/Util.c'  
         ,'Tests/Lib_Tests.c']
