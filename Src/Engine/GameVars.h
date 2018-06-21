@@ -41,12 +41,6 @@ typedef struct Position {
 
 VECTOR_DECLARE(Position, pos)
 
-struct whatthefuck {
-        int a;
-        int b;
-        void* fuck;
-};
-
 struct World {
         struct ent_FreeList entities;
         struct id_Vector appearances;
