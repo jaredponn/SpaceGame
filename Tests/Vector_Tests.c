@@ -1,6 +1,6 @@
 #include <check.h>
 
-START_TEST(vector_test) {
+START_TEST(vector_test_1) {
         struct i_Vector testvec;
         i_vector_init(&testvec);
 
@@ -59,6 +59,44 @@ START_TEST(vector_test) {
 }
 END_TEST
 
+START_TEST(vector_test_2) {
+        struct i_Vector testvec;
+        i_vector_init(&testvec);
+
+        // reservig 4 elements
+        i_vector_reserve(&testvec, 4);
+        ck_assert_int_eq(i_vector_size(&testvec), 0);
+
+        // pushing 0,1,2,3 and ensuring they pushed properly
+        i_vector_pushback(&testvec, 0);
+        ck_assert_int_eq(i_vector_size(&testvec), 1);
+        i_vector_pushback(&testvec, 1);
+        ck_assert_int_eq(i_vector_size(&testvec), 2);
+        i_vector_pushback(&testvec, 2);
+        ck_assert_int_eq(i_vector_size(&testvec), 3);
+        i_vector_pushback(&testvec, 3);
+        ck_assert_int_eq(i_vector_size(&testvec), 4);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 4);
+
+        // testing pop back
+        ck_assert_int_eq(i_vector_popback(&testvec), 3);
+        ck_assert_int_eq(i_vector_size(&testvec), 3);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 4);
+
+        ck_assert_int_eq(i_vector_popback(&testvec), 2);
+        ck_assert_int_eq(i_vector_size(&testvec), 2);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 4);
+
+        ck_assert_int_eq(i_vector_popback(&testvec), 1);
+        ck_assert_int_eq(i_vector_size(&testvec), 1);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 4);
+
+        ck_assert_int_eq(i_vector_popback(&testvec), 0);
+        ck_assert_int_eq(i_vector_size(&testvec), 0);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 4);
+}
+END_TEST
+
 static Suite *vector_test_suite(void) {
         Suite *s;
         TCase *tc_core;
@@ -69,7 +107,8 @@ static Suite *vector_test_suite(void) {
         tc_core = tcase_create("Core");
 
         // ADD MORE CASES TO TC_CORE HERE
-        tcase_add_test(tc_core, vector_test);
+        tcase_add_test(tc_core, vector_test_1);
+        tcase_add_test(tc_core, vector_test_2);
         // tcase_add_test(tc_core, stack_test);
 
         suite_add_tcase(s, tc_core);
