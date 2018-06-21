@@ -7,6 +7,9 @@
 STACK_DECLARE(int, i)
 STACK_DEFINE(int, i)
 
+STACK_DECLARE(size_t, size)
+STACK_DEFINE(size_t, size)
+
 VECTOR_DECLARE(int, i)
 VECTOR_DEFINE(int, i)
 
