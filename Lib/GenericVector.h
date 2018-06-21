@@ -54,6 +54,11 @@
         void _PREFIX##_vector_pushback(struct _PREFIX##_Vector* vector,        \
                                        _TYPE val);                             \
                                                                                \
+        /* vector_popback */                                                   \
+        /* deletes the last element of the bector and returns the deleted      \
+         * elment. Also reduces the size by 1. WARNING: does not do bounds     \
+         * checking and will do strange things with empty vectors  */          \
+        _TYPE _PREFIX##_vector_popback(struct _PREFIX##_Vector*);              \
         /* vector_set */                                                       \
         /*sets a specified index to a new value (val). WARNING: does not do    \
          * bounds checking */                                                  \
@@ -132,6 +137,15 @@
                 _PREFIX##_vector_set(vector, _PREFIX##_vector_size(vector),   \
                                      val);                                    \
                 ++vector->size;                                               \
+        }                                                                     \
+                                                                              \
+        /* vector_popback */                                                  \
+        _TYPE _PREFIX##_vector_popback(struct _PREFIX##_Vector* vector) {     \
+                _TYPE element = _PREFIX##_vector_get(                         \
+                    vector, _PREFIX##_vector_size(vector) - 1);               \
+                _PREFIX##_vector_remove(vector,                               \
+                                        _PREFIX##_vector_size(vector));       \
+                return element;                                               \
         }                                                                     \
                                                                               \
         /*vector_set*/                                                        \
