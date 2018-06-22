@@ -1,3 +1,3 @@
 #pragma once
 
-#include "GameVars.h"
+#include "GameVars/GameVars.h"

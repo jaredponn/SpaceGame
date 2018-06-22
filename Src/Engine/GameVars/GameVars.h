@@ -11,8 +11,8 @@
 typedef int Entity;
 
 STACK_DECLARE(size_t, size)
-VECTOR_DECLARE(Entity, ent)
-FREELIST_DECLARE(Entity, ent)
+VECTOR_DECLARE(Entity, Entity)
+FREELIST_DECLARE(Entity, Entity)
 
 enum Components {
         COMPONENT_POSITION = 1 << 0,
@@ -41,8 +41,18 @@ typedef struct Position {
 
 VECTOR_DECLARE(Position, pos)
 
+// -----------------------------------------
+//    World / component manager
+// -----------------------------------------
+
 struct World {
-        struct ent_FreeList entities;
+        struct Entity_FreeList entities;
         struct id_Vector appearances;
         struct id_Vector positions;
 };
+
+// -----------------------------------------
+//    Generics
+// -----------------------------------------
+
+#include "GenericDataFunctions.h"

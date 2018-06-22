@@ -7,48 +7,47 @@
 /**
  * Declarations for a generic free list structure
  */
-
-STACK_DECLARE(size_t, size)
-STACK_DEFINE(size_t, size)
-
 // NOTE: ensure that you declare a vector with the same _TYPE and _PREFIX as the
-// freelist to ensure it works properly
-#define FREELIST_DECLARE(_TYPE, _PREFIX)                                     \
-        /* Types... */                                                       \
-        /* --------------------- */                                          \
-                                                                             \
-        struct _PREFIX##_FreeList;                                           \
-        struct _PREFIX##_FreeList {                                          \
-                struct _PREFIX##_Vector data;                                \
-                struct size_Stack free_elements;                             \
-        };                                                                   \
-                                                                             \
-        /* Procedures... */                                                  \
-        /* --------------------- */                                          \
-                                                                             \
-        /* freelist_init */                                                  \
-        /* initializes a new freelist*/                                      \
-        void _PREFIX##_freelist_init(struct _PREFIX##_FreeList*);            \
-                                                                             \
-        /* freelist_reserve */                                               \
-        /* wrapper for vector_reserve. Should only be called after           \
-         * initilization*/                                                   \
-        void _PREFIX##_freelist_reserve(struct _PREFIX##_FreeList*, size_t); \
-                                                                             \
-        /* freelist_add */                                                   \
-        /* adds an element to the first free spot on the free list. If the   \
-         * vector is too small, the vector will reallocate*/                 \
-        void _PREFIX##_freelist_add(struct _PREFIX##_FreeList*, _TYPE);      \
-                                                                             \
-        /* freelist_get */                                                   \
-        /* gets an element at a given index. WARNING: does not do bounds     \
-         * checking*/                                                        \
-        _TYPE _PREFIX##_freelist_get(struct _PREFIX##_FreeList*, size_t);    \
-                                                                             \
-        /* freelist_removeat */                                              \
-        /* removes an element at a given index by appending it to the        \
-         * free_elements stack. Note: the index of the data will not change, \
-         * however, it will be overwritten next freelist_add.*/              \
+// freelist to ensure it works properly.
+// NOTE: Declare and define a stack of type size_t with prefix size as well for
+// this to work
+#define FREELIST_DECLARE(_TYPE, _PREFIX)                                      \
+        /* Types... */                                                        \
+        /* --------------------- */                                           \
+                                                                              \
+        struct _PREFIX##_FreeList;                                            \
+        struct _PREFIX##_FreeList {                                           \
+                struct _PREFIX##_Vector data;                                 \
+                struct size_Stack free_elements;                              \
+        };                                                                    \
+                                                                              \
+        /* Procedures... */                                                   \
+        /* --------------------- */                                           \
+                                                                              \
+        /* freelist_init */                                                   \
+        /* initializes a new freelist*/                                       \
+        void _PREFIX##_freelist_init(struct _PREFIX##_FreeList*);             \
+                                                                              \
+        /* freelist_reserve */                                                \
+        /* wrapper for vector_reserve. Should only be called after            \
+         * initilization*/                                                    \
+        void _PREFIX##_freelist_reserve(struct _PREFIX##_FreeList*, size_t);  \
+                                                                              \
+        /* freelist_add */                                                    \
+        /* adds an element to the first free spot on the free list. If the    \
+         * vector is too small, the vector will reallocate. Also, returns the \
+         * position it added the element at.*/                                \
+        size_t _PREFIX##_freelist_add(struct _PREFIX##_FreeList*, _TYPE);     \
+                                                                              \
+        /* freelist_get */                                                    \
+        /* gets an element at a given index. WARNING: does not do bounds      \
+         * checking*/                                                         \
+        _TYPE _PREFIX##_freelist_get(struct _PREFIX##_FreeList*, size_t);     \
+                                                                              \
+        /* freelist_removeat */                                               \
+        /* removes an element at a given index by appending it to the         \
+         * free_elements stack. Note: the index of the data will not change,  \
+         * however, it will be overwritten next freelist_add.*/               \
         void _PREFIX##_freelist_removeat(struct _PREFIX##_FreeList*, size_t);
 
 #define FREELIST_DEFINE(_TYPE, _PREFIX)                                       \
@@ -70,18 +69,20 @@ STACK_DEFINE(size_t, size)
         }                                                                     \
                                                                               \
         /* freelist_add */                                                    \
-        void _PREFIX##_freelist_add(struct _PREFIX##_FreeList* freelist,      \
-                                    _TYPE val) {                              \
+        size_t _PREFIX##_freelist_add(struct _PREFIX##_FreeList* freelist,    \
+                                      _TYPE val) {                            \
                 /* if there are no empty nodes, just pushback val to the      \
                  * vector */                                                  \
                 if (size_stack_size(&freelist->free_elements) == 0) {         \
                         _PREFIX##_vector_pushback(&freelist->data, val);      \
+                        return _PREFIX##_vector_size(&freelist->data) - 1;    \
                 } else {                                                      \
                         /* otherwise, fill the node up on the stack */        \
                         size_t empty_index =                                  \
                             size_stack_pop(&freelist->free_elements);         \
                         _PREFIX##_vector_set(&freelist->data, empty_index,    \
                                              val);                            \
+                        return empty_index;                                   \
                 }                                                             \
         }                                                                     \
                                                                               \

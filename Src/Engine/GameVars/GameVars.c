@@ -1,8 +1,8 @@
 #include "GameVars.h"
 
 STACK_DEFINE(size_t, size)
-VECTOR_DEFINE(Entity, ent)
-FREELIST_DEFINE(Entity, ent)
+VECTOR_DEFINE(Entity, Entity)
+FREELIST_DEFINE(Entity, Entity)
 
 VECTOR_DEFINE(ID, id)
 
