@@ -101,7 +101,7 @@ static Suite *vector_test_suite(void) {
         Suite *s;
         TCase *tc_core;
 
-        s = suite_create("Stack");
+        s = suite_create("Vector");
 
         // core test case
         tc_core = tcase_create("Core");
