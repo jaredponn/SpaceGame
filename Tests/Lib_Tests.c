@@ -27,9 +27,9 @@ VECTOR_DEFINE(struct FL_int, FL_int)
 FREELIST_DECLARE(struct FL_int, FL_int)
 FREELIST_DEFINE(struct FL_int, FL_int)
 
-#include "Freelist_Test.c"
-#include "Stack_Tests.c"
-#include "Vector_Tests.c"
+#include "Freelist_Test.h"
+#include "Stack_Tests.h"
+#include "Vector_Tests.h"
 
 int main(void) {
         int number_failed;

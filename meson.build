@@ -9,8 +9,9 @@ inc = include_directories('Lib')
 srcs = ['Src/Main.c'
        , 'Src/Engine/EngineState.c'
        , 'Src/Engine/GameVars/GameVars.c'
-       #, 'Src/Engine/Components/Position.c'
-       #, 'Src/Engine/Components/Appearance.c'
+       , 'Src/Engine/Components/Position.c'
+       , 'Src/Engine/Components/Appearance.c'
+       , 'Src/Engine/Components/Entity.c'
        , 'Lib/Util.c' ]
 
 executable('spacegame'
