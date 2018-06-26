@@ -1,4 +1,5 @@
 #include <check.h>
+#include "Data_Structures.h"
 
 START_TEST(stack_test) {
         // creating the empty stack

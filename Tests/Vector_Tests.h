@@ -1,4 +1,5 @@
 #include <check.h>
+#include "Data_Structures.h"
 
 START_TEST(vector_test_1) {
         struct i_Vector testvec;

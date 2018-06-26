@@ -1,5 +1,6 @@
 #include <check.h>
 #include <stdint.h>
+#include "Data_Structures.h"
 
 START_TEST(freelist_test) {
         struct FL_int_FreeList testfreelist;

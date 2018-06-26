@@ -1,32 +1,6 @@
 #include <check.h>
 #include <stdlib.h>
 
-#include "Lib/GenericFreeList.h"
-#include "Lib/GenericStack.h"
-#include "Lib/GenericVector.h"
-// stack
-STACK_DECLARE(int, i)
-STACK_DEFINE(int, i)
-
-STACK_DECLARE(size_t, size)
-STACK_DEFINE(size_t, size)
-
-// vector
-VECTOR_DECLARE(int, i)
-VECTOR_DEFINE(int, i)
-
-// freelist
-struct FL_int {
-        int myData;
-        size_t next_free_index;
-};
-
-VECTOR_DECLARE(struct FL_int, FL_int)
-VECTOR_DEFINE(struct FL_int, FL_int)
-
-FREELIST_DECLARE(struct FL_int, FL_int)
-FREELIST_DEFINE(struct FL_int, FL_int)
-
 #include "Freelist_Test.h"
 #include "Stack_Tests.h"
 #include "Vector_Tests.h"
