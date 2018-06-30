@@ -3,6 +3,7 @@
 
 #include "Freelist_Test.h"
 #include "Stack_Tests.h"
+#include "UTI_strcatTest.h"
 #include "Vector_Tests.h"
 
 int main(void) {
@@ -14,6 +15,7 @@ int main(void) {
         sr = srunner_create(s);
         srunner_add_suite(sr, stack_test_suite());
         srunner_add_suite(sr, freelist_test_suite());
+        srunner_add_suite(sr, UTI_strcatTestSuite());
 
         srunner_run_all(sr, CK_NORMAL);
         number_failed = srunner_ntests_failed(sr);
