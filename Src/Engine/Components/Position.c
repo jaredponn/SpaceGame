@@ -1,3 +1,3 @@
 #include "Position.h"
 
-VECTOR_DEFINE(Position, pos)
+VECTOR_DEFINE(Position, Position)

@@ -6,4 +6,9 @@ typedef struct Position {
         float y;
 } Position;
 
-VECTOR_DECLARE(Position, pos)
+VECTOR_DECLARE(Position, Position)
+
+struct PositionManager;
+struct PositionManager {
+        struct Position_Vector positions;
+};

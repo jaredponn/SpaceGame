@@ -1,3 +1,7 @@
-#include "Engine/EngineState.h"
+#include "Engine/RunEngine.h"
 
-int main() { return 0; }
+int main() {
+        ECS_runEngine();
+
+        return 0;
+}

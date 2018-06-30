@@ -1,4 +1,6 @@
 #include "Entity.h"
 
-VECTOR_DEFINE(struct FL_Entity, FL_Entity)
-FREELIST_DEFINE(struct FL_Entity, FL_Entity)
+VECTOR_DEFINE(struct FL_indices, FL_indices)
+FREELIST_DEFINE(struct FL_indices, FL_indices)
+
+VECTOR_DEFINE(Entity, Entity)
