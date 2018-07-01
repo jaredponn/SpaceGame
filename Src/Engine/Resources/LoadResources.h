@@ -34,9 +34,6 @@ SDL_Renderer* RSC_createNewRenderer(SDL_Window* window, Uint32 flags);
 // window, as it will call exit(1) if it fails
 SDL_Renderer* RSC_createInitRenderer(SDL_Window* window, Uint32 flags);
 
-// error handler for SDL errors
-static void RSC_SDLErrorHandler(const char* msg);
-
 // -----------------------------------------
 //    Procedures for SDL_image
 // -----------------------------------------
@@ -56,7 +53,3 @@ void RSC_quitSDLImage();
 // loads the image and returns the pointer to the SDL_Texture.
 // If it loads unsuccesffully, it will print an error message and return NULL
 SDL_Texture* RSC_loadImage(SDL_Renderer* renderer, const char* path);
-
-// handles errors for SDL_image. Prints the desired error msg, with the
-// SDL_image error message that follows.
-static void RSC_SDLIImageErrorHandler(const char* msg);

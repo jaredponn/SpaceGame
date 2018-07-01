@@ -5,6 +5,9 @@
 //    Procedures for SDL
 // -----------------------------------------
 
+// error handler for SDL errors
+static void RSC_SDLErrorHandler(const char* msg);
+
 void RSC_initSDL(const Uint32 flags) {
         if (SDL_Init(flags) != 0) {
                 RSC_SDLErrorHandler("Failed to initialize SDL");
@@ -64,9 +67,14 @@ SDL_Renderer* RSC_createInitRenderer(SDL_Window* window, Uint32 flags) {
 static void RSC_SDLErrorHandler(const char* msg) {
         fprintf(stderr, "%s\n SDL_Image error: %s\n", msg, SDL_GetError());
 }
+
 // -----------------------------------------
 //    Procedures for SDL_image
 // -----------------------------------------
+
+// handles errors for SDL_image. Prints the desired error msg, with the
+// SDL_image error message that follows.
+static void RSC_SDLIImageErrorHandler(const char* msg);
 
 void RSC_initSDLImage(const int flags) {
         if (IMG_Init(flags) != flags) {
@@ -119,7 +127,6 @@ SDL_Texture* RSC_loadImage(SDL_Renderer* renderer, const char* path) {
         return texture;
 }
 
-// Generic error handler
 static void RSC_SDLIImageErrorHandler(const char* msg) {
         fprintf(stderr, "%s\n SDL_Image error: %s\n", msg, IMG_GetError());
 }

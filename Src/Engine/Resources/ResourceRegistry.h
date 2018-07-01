@@ -22,9 +22,17 @@ struct ECS_Resources {
         struct ECS_Textures cTextures;
 };
 
-// all rendererer related things
+// accumalation of where to find all the various game resources. Sort of like
+// Haskell lenses to focus on specific parts
 struct ECS_ResourceRegistry {
         SDL_Window* cWindow;
         SDL_Renderer* cRenderer;
         struct ECS_Resources cResources;
 };
+
+// -----------------------------------------
+//    Procedures
+// -----------------------------------------
+
+// clears and deallocates all resources in the registry
+void ECS_destroyRegistry(struct ECS_ResourceRegistry*);

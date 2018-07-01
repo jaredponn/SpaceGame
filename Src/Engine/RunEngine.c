@@ -3,52 +3,40 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int ECS_runEngine() {
-        SDL_Window *window = NULL;
-        SDL_Renderer *renderer = NULL;
-        SDL_Surface *bitmapSurface = NULL;
-        SDL_Texture *bitmapTex = NULL;
-        int posX = 100, posY = 100, width = 320, height = 240;
+// clang-format off
+#define _EXTRAS_PATH "/home/jared/Programs/SpaceGame/Extras"
+// clang-format on
 
-        if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                             "Couldn't initialize SDL: %s", SDL_GetError());
-                return 1;
-        }
+// state
+struct ECS_ResourceRegistry RESOURCE_REGISTRY;
 
-        // clang-format off
-        window = SDL_CreateWindow("sdl2 window"
-                                 , SDL_WINDOWPOS_UNDEFINED   // x position
-                                 , SDL_WINDOWPOS_UNDEFINED   // y position
-                                 , 640                       // width
-                                 , 480                       // height
-                                 , SDL_WINDOW_OPENGL         // flags
-                                 );
-        // clang-format on
+// constants
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
 
-        if (window == NULL) {
-                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                             "Window creation failed: %s", SDL_GetError());
-                return 1;
-        }
+void ECS_initLibraries() {
+        RSC_initSDL(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
+        RSC_initSDLImage(IMG_INIT_PNG);
+}
 
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-        if (renderer == NULL) {
-                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                             "Failed to create renderer: %s", SDL_GetError());
-                return 1;
-        }
+void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
+        SDL_Window *window = RSC_createInitWindow(
+            "Space Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 
-        bitmapSurface =
-            SDL_LoadBMP("/home/jared/Programs/SpaceGame/Src/Engine/tmp.bmp");
-        if (bitmapSurface == NULL) {
-                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                             "Failed to load bitmap: %s", SDL_GetError());
-                return 1;
-        }
-        bitmapTex = SDL_CreateTextureFromSurface(renderer, bitmapSurface);
-        SDL_FreeSurface(bitmapSurface);
+        SDL_Renderer *renderer =
+            RSC_createInitRenderer(window, SDL_RENDERER_ACCELERATED);
 
+        // TODO add proper error handling
+        SDL_Texture *testTexture =
+            RSC_loadImage(renderer, _EXTRAS_PATH "/Images/bg.png");
+
+        resourceRegistry->cWindow = window;
+        resourceRegistry->cRenderer = renderer;
+        resourceRegistry->cResources.cTextures.testTexture = testTexture;
+}
+
+void ECS_runEngine(struct ECS_ResourceRegistry resourceRegistry) {
         while (1) {
                 SDL_Event e;
                 if (SDL_PollEvent(&e)) {
@@ -57,16 +45,16 @@ int ECS_runEngine() {
                         }
                 }
 
-                SDL_RenderClear(renderer);
-                SDL_RenderCopy(renderer, bitmapTex, NULL, NULL);
-                SDL_RenderPresent(renderer);
+                SDL_RenderClear(RESOURCE_REGISTRY.cRenderer);
+                SDL_RenderCopy(
+                    RESOURCE_REGISTRY.cRenderer,
+                    RESOURCE_REGISTRY.cResources.cTextures.testTexture, NULL,
+                    NULL);
+                SDL_RenderPresent(RESOURCE_REGISTRY.cRenderer);
         }
+}
 
-        SDL_DestroyTexture(bitmapTex);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-
+void ECS_quitLibraries() {
         SDL_Quit();
-
-        return 0;
+        IMG_Quit();
 }

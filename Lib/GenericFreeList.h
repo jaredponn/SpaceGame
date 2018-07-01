@@ -56,24 +56,28 @@
         /* freelist_reserve */                                                 \
         /* wrapper for vector_reserve.  Sets the new capacity elements to have \
          * the next proper free index */                                       \
-        void _PREFIX##_freelist_reserve(struct _PREFIX##_FreeList*, size_t);   \
+        void _PREFIX##_freelist_reserve(struct _PREFIX##_FreeList*,            \
+                                        const size_t);                         \
                                                                                \
         /* freelist_add */                                                     \
         /* adds an element to the first free spot on the free list. If the     \
          * vector is too small, the vector will reallocate. Also, returns the  \
          * position it added the element at.*/                                 \
-        size_t _PREFIX##_freelist_add(struct _PREFIX##_FreeList*, _TYPE);      \
+        size_t _PREFIX##_freelist_add(struct _PREFIX##_FreeList*,              \
+                                      const _TYPE);                            \
                                                                                \
         /* freelist_get */                                                     \
         /* gets an element at a given index. WARNING: does not do bounds       \
          * checking*/                                                          \
-        _TYPE _PREFIX##_freelist_get(struct _PREFIX##_FreeList*, size_t);      \
+        _TYPE _PREFIX##_freelist_get(const struct _PREFIX##_FreeList*,         \
+                                     const size_t);                            \
                                                                                \
         /* freelist_removeat */                                                \
         /* removes an element at a given index by appending it to the          \
          * free_elements stack. Note: the index of the data will not change,   \
          * however, it will be overwritten next freelist_add.*/                \
-        void _PREFIX##_freelist_removeat(struct _PREFIX##_FreeList*, size_t);
+        void _PREFIX##_freelist_removeat(struct _PREFIX##_FreeList*,           \
+                                         const size_t);
 
 #define FREELIST_DEFINE(_TYPE, _PREFIX)                                       \
         /* freelist_init */                                                   \
@@ -86,7 +90,7 @@
                                                                               \
         /* freelist_reserve */                                                \
         void _PREFIX##_freelist_reserve(struct _PREFIX##_FreeList* freelist,  \
-                                        size_t new_capacity) {                \
+                                        const size_t new_capacity) {          \
                 _PREFIX##_vector_reserve(&freelist->data, new_capacity);      \
                 _TYPE tmp;                                                    \
                                                                               \
@@ -99,7 +103,7 @@
                                                                               \
         /* freelist_add */                                                    \
         size_t _PREFIX##_freelist_add(struct _PREFIX##_FreeList* freelist,    \
-                                      _TYPE val) {                            \
+                                      const _TYPE val) {                      \
                 size_t cur_free_index_ = freelist->cur_free_index;            \
                 /* if there are no empty nodes (when the cur_free_index is    \
                  * equal to the vector's size) reallocate appropriately */    \
@@ -121,14 +125,14 @@
         }                                                                     \
                                                                               \
         /* freelist_get */                                                    \
-        _TYPE _PREFIX##_freelist_get(struct _PREFIX##_FreeList* freelist,     \
-                                     size_t index) {                          \
+        _TYPE _PREFIX##_freelist_get(                                         \
+            const struct _PREFIX##_FreeList* freelist, const size_t index) {  \
                 return _PREFIX##_vector_get(&freelist->data, index);          \
         }                                                                     \
                                                                               \
         /* freelist_removeat */                                               \
         void _PREFIX##_freelist_removeat(struct _PREFIX##_FreeList* freelist, \
-                                         size_t index) {                      \
+                                         const size_t index) {                \
                 _TYPE tmp = _PREFIX##_vector_get(&freelist->data, index);     \
                 tmp.next_free_index = freelist->cur_free_index;               \
                 _PREFIX##_vector_set(&freelist->data, index, tmp);            \
