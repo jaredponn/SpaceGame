@@ -81,8 +81,18 @@
         /* manager_add */                                                      \
         void _PREFIX##_manager_add(struct _PREFIX##_Manager* manager,          \
                                    const size_t index, _TYPE val) {            \
-                sizet_vector_set(&manager->sparse_vector, index,               \
-                                 manager->next_packed_index);                  \
+                /* if the desired index is outside of the sparse_vector, it    \
+                 * will eallocate to be 1.5X the current capacity and set the  \
+                 * size to be the same.*/                                      \
+                if (index >= sizet_vector_capacity(&manager->sparse_vector)) { \
+                        sizet_vector_push_back(&manager->sparse_vector,        \
+                                               manager->next_packed_index);    \
+                        manager->sparse_vector.size =                          \
+                            manager->sparse_vector.capacity;                   \
+                } else {                                                       \
+                        sizet_vector_set(&manager->sparse_vector, index,       \
+                                         manager->next_packed_index);          \
+                }                                                              \
                 /* if the next_packed_index is the same as the data vector's   \
                  * size (or global indices which should be the same), then     \
                  * just push back the value to the array. Otherwise, use       \
@@ -105,7 +115,7 @@
                 }                                                              \
         }                                                                      \
                                                                                \
-        /* manager_delete */                                                   \
+        /* manager_delete TODO DOES CRAZY SHIT WHEN THERE"S NO INDEXES*/       \
         void _PREFIX##_manager_delete(struct _PREFIX##_Manager* manager,       \
                                       size_t index) {                          \
                 size_t lastSparseVectorIndex =                                 \
