@@ -16,7 +16,7 @@
         size_t next_free_index; // this is a must have for the free list to work
    };
 
-   // Note: there is a wrapper to replicat ethe above behaviour with the
+   // Note: there is a wrapper to replicate the above behaviour with the
    following macro:
 
    FREELIST_DATA_DECLARE(FL_int, int, myData)
@@ -69,13 +69,14 @@
         /* freelist_get */                                                     \
         /* gets an element at a given index. WARNING: does not do bounds       \
          * checking*/                                                          \
-        _TYPE _PREFIX##_freelist_get(const struct _PREFIX##_FreeList*,         \
+        _TYPE _PREFIX##_freelist_get(struct _PREFIX##_FreeList*,               \
                                      const size_t);                            \
                                                                                \
         /* freelist_removeat */                                                \
         /* removes an element at a given index by appending it to the          \
          * free_elements stack. Note: the index of the data will not change,   \
-         * however, it will be overwritten next freelist_add.*/                \
+         * however, it will be overwritten next freelist_add. It will also NOT \
+         * check if the data is already deleted*/                              \
         void _PREFIX##_freelist_removeat(struct _PREFIX##_FreeList*,           \
                                          const size_t);
 
@@ -97,7 +98,7 @@
                 for (size_t i = _PREFIX##_vector_size(&freelist->data) + 1;   \
                      i <= new_capacity; ++i) {                                \
                         tmp.next_free_index = i;                              \
-                        _PREFIX##_vector_pushback(&freelist->data, tmp);      \
+                        _PREFIX##_vector_push_back(&freelist->data, tmp);     \
                 }                                                             \
         }                                                                     \
                                                                               \
@@ -125,8 +126,8 @@
         }                                                                     \
                                                                               \
         /* freelist_get */                                                    \
-        _TYPE _PREFIX##_freelist_get(                                         \
-            const struct _PREFIX##_FreeList* freelist, const size_t index) {  \
+        _TYPE _PREFIX##_freelist_get(struct _PREFIX##_FreeList* freelist,     \
+                                     const size_t index) {                    \
                 return _PREFIX##_vector_get(&freelist->data, index);          \
         }                                                                     \
                                                                               \

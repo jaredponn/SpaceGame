@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Util.h"
@@ -52,14 +53,15 @@
         /*appends something (val) to the end of the size of the vector and     \
          * increases the vector's size by one. If vectoris too small, it       \
          * reallocates the vector so that it is 1.5x the original size  */     \
-        void _PREFIX##_vector_pushback(struct _PREFIX##_Vector* vector,        \
-                                       const _TYPE val);                       \
+        void _PREFIX##_vector_push_back(struct _PREFIX##_Vector* vector,       \
+                                        const _TYPE val);                      \
                                                                                \
-        /* vector_popback */                                                   \
+        /* vector_pop_back */                                                  \
         /* deletes the last element of the bector and returns the deleted      \
          * elment. Also reduces the size by 1. WARNING: does not do bounds     \
          * checking and will do strange things with empty vectors  */          \
-        _TYPE _PREFIX##_vector_popback(struct _PREFIX##_Vector*);              \
+        _TYPE _PREFIX##_vector_pop_back(struct _PREFIX##_Vector*);             \
+                                                                               \
         /* vector_set */                                                       \
         /*sets a specified index to a new value (val). WARNING: does not do    \
          * bounds checking */                                                  \
@@ -71,6 +73,18 @@
          * checking   */                                                       \
         _TYPE _PREFIX##_vector_get(struct _PREFIX##_Vector*,                   \
                                    const size_t index);                        \
+                                                                               \
+        /* vector_swap */                                                      \
+        /* Swaps 2 specified indexes with each other.WARNING: Does not do      \
+         * bounds checking */                                                  \
+        void _PREFIX##_vector_swap(struct _PREFIX##_Vector*,                   \
+                                   const size_t index0, const size_t index1);  \
+                                                                               \
+        /* vector_swap_back */                                                 \
+        /* Swaps the specified index with the last size index. WARNING: Does   \
+         * not do bounds checking */                                           \
+        void _PREFIX##_vector_swap_back(struct _PREFIX##_Vector*,              \
+                                        const size_t index);                   \
                                                                                \
         /* vector_remove */                                                    \
         /*removes an element from the vector at and index and shifts all       \
@@ -131,8 +145,8 @@
         }                                                                      \
                                                                                \
         /*vector_pushback*/                                                    \
-        void _PREFIX##_vector_pushback(struct _PREFIX##_Vector* vector,        \
-                                       const _TYPE val) {                      \
+        void _PREFIX##_vector_push_back(struct _PREFIX##_Vector* vector,       \
+                                        const _TYPE val) {                     \
                 if (_PREFIX##_vector_size(vector) ==                           \
                     _PREFIX##_vector_capacity(vector)) {                       \
                         _PREFIX##_vector_reserve(                              \
@@ -143,8 +157,8 @@
                 ++vector->size;                                                \
         }                                                                      \
                                                                                \
-        /* vector_popback */                                                   \
-        _TYPE _PREFIX##_vector_popback(struct _PREFIX##_Vector* vector) {      \
+        /* vector_pop_back */                                                  \
+        _TYPE _PREFIX##_vector_pop_back(struct _PREFIX##_Vector* vector) {     \
                 _TYPE element = _PREFIX##_vector_get(                          \
                     vector, _PREFIX##_vector_size(vector) - 1);                \
                 _PREFIX##_vector_remove(vector,                                \
@@ -162,6 +176,22 @@
         _TYPE _PREFIX##_vector_get(struct _PREFIX##_Vector* vector,            \
                                    const size_t index) {                       \
                 return vector->data[index];                                    \
+        }                                                                      \
+                                                                               \
+        /* vector_swap */                                                      \
+        void _PREFIX##_vector_swap(struct _PREFIX##_Vector* vector,            \
+                                   const size_t index0, const size_t index1) { \
+                _TYPE tmp = _PREFIX##_vector_get(vector, index0);              \
+                _PREFIX##_vector_set(vector, index0,                           \
+                                     _PREFIX##_vector_get(vector, index1));    \
+                _PREFIX##_vector_set(vector, index1, tmp);                     \
+        }                                                                      \
+                                                                               \
+        /* vector_swap_back */                                                 \
+        void _PREFIX##_vector_swap_back(struct _PREFIX##_Vector* vector,       \
+                                        const size_t index) {                  \
+                _PREFIX##_vector_swap(vector, index,                           \
+                                      _PREFIX##_vector_size(vector) - 1);      \
         }                                                                      \
                                                                                \
         /*vector_remove*/                                                      \
