@@ -22,4 +22,5 @@ VECTOR_DECLARE(struct FL_int, FL_int)
 FREELIST_DECLARE(struct FL_int, FL_int)
 
 // component manager
-COMPONENT_MANAGER_DECLARE(int, i)
+VECTOR_DECLARE(int, Int)
+COMPONENT_MANAGER_DECLARE(int, Int)

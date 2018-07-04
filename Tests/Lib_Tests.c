@@ -1,6 +1,7 @@
 #include <check.h>
 #include <stdlib.h>
 
+#include "ComponentManager_Tests.h"
 #include "Freelist_Test.h"
 #include "Stack_Tests.h"
 #include "UTI_strcatTest.h"
@@ -19,6 +20,7 @@ int main(void) {
         srunner_add_suite(sr, stack_test_suite());
         srunner_add_suite(sr, freelist_test_suite());
         srunner_add_suite(sr, UTI_strcatTestSuite());
+        srunner_add_suite(sr, componentmanager_test_suite());
 
         srunner_run_all(sr, CK_NORMAL);
         number_failed = srunner_ntests_failed(sr);
