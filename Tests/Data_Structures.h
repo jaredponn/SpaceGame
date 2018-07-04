@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Lib/GenericComponentManager.h"
 #include "Lib/GenericFreeList.h"
 #include "Lib/GenericStack.h"
 #include "Lib/GenericVector.h"
@@ -19,3 +20,6 @@ struct FL_int {
 VECTOR_DECLARE(struct FL_int, FL_int)
 
 FREELIST_DECLARE(struct FL_int, FL_int)
+
+// component manager
+COMPONENT_MANAGER_DECLARE(int, i)

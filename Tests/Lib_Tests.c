@@ -11,8 +11,11 @@ int main(void) {
         Suite *s;
         SRunner *sr;
 
+        // starts withe the vector test suite
         s = vector_test_suite();
         sr = srunner_create(s);
+
+        // adds the rest of the test suites
         srunner_add_suite(sr, stack_test_suite());
         srunner_add_suite(sr, freelist_test_suite());
         srunner_add_suite(sr, UTI_strcatTestSuite());
