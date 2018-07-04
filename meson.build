@@ -8,13 +8,16 @@ inc = include_directories('Extras')
 inc = include_directories('Lib')
 
 srcs = ['Src/Main.c'
-       , 'Src/Engine/RunEngine.c'
+       , 'Src/Engine/Engine.c'
        , 'Src/Engine/Resources/ResourceRegistry.c'
        , 'Src/Engine/Resources/LoadResources.c'
        , 'Src/Engine/Components/Position.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'
-       , 'Lib/Util.c' ]
+       , 'Lib/Util.c' 
+       , 'Lib/E_FreeList.c' 
+       , 'Lib/sizet_Vector.c' 
+       ]
 
 executable('spacegame'
         , srcs
@@ -23,6 +26,7 @@ executable('spacegame'
 testsrcs = [ 'Lib/Util.c'  
            , 'Tests/Lib_Tests.c'
            , 'Tests/Data_Structures.c'
+           , 'Lib/sizet_Vector.c'
            ]
 unittests = executable('unittests', testsrcs, link_args :'-lcheck')
 test('unittests', unittests )
