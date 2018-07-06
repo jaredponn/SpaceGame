@@ -34,7 +34,7 @@ START_TEST(componentmanager_test) {
          * data: [0]
          */
         // at index 0, add value 0 to the array
-        Int_manager_add(&intmgr, 0, 0);
+        Int_manager_add_at(&intmgr, 0, 0);
 
         // checking the size / capacity of sparse_vector. SHould still be 10
         ck_assert_int_eq(sizet_vector_size(&intmgr.sparse_vector), 10);
@@ -67,7 +67,7 @@ START_TEST(componentmanager_test) {
          * data: [0,7]
          */
         // at index 3, add value 7 to the array
-        Int_manager_add(&intmgr, 3, 7);
+        Int_manager_add_at(&intmgr, 3, 7);
 
         // checking the size / capacity of sparse_vector. should still be 10
         ck_assert_int_eq(sizet_vector_size(&intmgr.sparse_vector), 10);
@@ -109,7 +109,7 @@ START_TEST(componentmanager_test) {
          */
         // clang-format on
         // at index 10, add value 4 to the array
-        Int_manager_add(&intmgr, 10, 4);
+        Int_manager_add_at(&intmgr, 10, 4);
 
         // checking the size / capacity of sparse_vector. Should change to 15,
         // because 10 is too small
@@ -156,7 +156,7 @@ START_TEST(componentmanager_test) {
          */
         // clang-format on
         // at index 0, add value 4 to the array
-        Int_manager_add(&intmgr, 0, 4);
+        Int_manager_add_at(&intmgr, 0, 4);
 
         // checking the size / capacity of sparse_vector. Should change to 15,
         // because 10 is too small
@@ -212,10 +212,10 @@ START_TEST(componentmanager_test2) {
          * data: [0,7,4]
          */
         // clang-format on
-        Int_manager_add(&intmgr, 0, 0);
-        Int_manager_add(&intmgr, 3, 7);
-        Int_manager_add(&intmgr, 10, 4);
-        Int_manager_add(&intmgr, 0, 4);
+        Int_manager_add_at(&intmgr, 0, 0);
+        Int_manager_add_at(&intmgr, 3, 7);
+        Int_manager_add_at(&intmgr, 10, 4);
+        Int_manager_add_at(&intmgr, 0, 4);
 
         // clang-format off
         /* Deleting index 0
@@ -374,11 +374,122 @@ START_TEST(componentmanager_test2) {
 }
 END_TEST
 
-// testing adding and deletion
 START_TEST(componentmanager_test3) {
         struct Int_Manager intmgr;
         /* initilizes an empty int manager with 5 reserved spots*/
         Int_manager_init(&intmgr, 5);
+
+        // clang-format off
+        /* Fill the index as follows:
+         * sparse_vector: [0, 1, 2, 3, 4] 
+         * global_indices: [0, 1, 2, 3, 4]
+         * data: [3,9,2,12,9]
+         */
+        // clang-format on
+        Int_manager_add_at(&intmgr, 0, 3);
+        Int_manager_add_at(&intmgr, 1, 9);
+        Int_manager_add_at(&intmgr, 2, 2);
+        Int_manager_add_at(&intmgr, 3, 12);
+        Int_manager_add_at(&intmgr, 4, 9);
+
+        // checking the get_data_at function when in bounds
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 0), 3);
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 1), 9);
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 2), 2);
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 3), 12);
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 4), 9);
+
+        // checking the get_data_at function when out of bounds
+        ck_assert_msg(Int_manager_get_data_at(&intmgr, 5) == NULL,
+                      "failed to recognize out of bounds error");
+        ck_assert_msg(Int_manager_get_data_at(&intmgr, 100) == NULL,
+                      "failed to recognize out of bounds error");
+
+        // deleting an index
+        // clang-format off
+        /* Fill the index as follows:
+         * sparse_vector: [0, 1, SIZE_MAX, 3, 2] 
+         * global_indices: [0, 1, 4, 3]
+         * data: [3,9,9,12]
+         */
+        // clang-format on
+        Int_manager_remove(&intmgr, 2);
+
+        // testing if everything is good still
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 0), 3);
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 1), 9);
+        ck_assert_msg(Int_manager_get_data_at(&intmgr, 2) == NULL,
+                      "failed to recognize deleted element");
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 3), 12);
+        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 4), 9);
+
+        Int_manager_free(&intmgr);
+}
+END_TEST
+// testing adding and deletion
+START_TEST(componentmanager_test4) {
+        struct Int_Manager intmgr;
+        /* initilizes an empty int manager with 5 reserved spots*/
+        Int_manager_init(&intmgr, 5);
+
+        // clang-format off
+        /* Fill the index as follows:
+         * sparse_vector: [0, 1, 2, 3, 4] 
+         * global_indices: [0, 1, 2, 3, 4]
+         * data: [0,1,2,3,4]
+         */
+        // clang-format on
+        for (size_t i = 0; i < sizet_vector_size(&intmgr.sparse_vector); ++i) {
+                Int_manager_add_at(&intmgr, i, (int)i);
+        }
+        // checking the size / capacity of sparse_vector.
+        ck_assert_int_eq(sizet_vector_size(&intmgr.sparse_vector), 5);
+        ck_assert_int_eq(sizet_vector_capacity(&intmgr.sparse_vector), 5);
+
+        // checking the size / capacity of global_indicies and data.
+        ck_assert_int_eq(sizet_vector_size(&intmgr.global_indices), 5);
+        ck_assert_int_eq(sizet_vector_capacity(&intmgr.global_indices), 5);
+        ck_assert_int_eq(Int_vector_size(&intmgr.data), 5);
+        ck_assert_int_eq(Int_vector_capacity(&intmgr.data), 5);
+
+        // clang-format off
+        /* deleting index 2, and at index 2 add value 7
+         * sparse_vector: [0, 1, 4, 3, 2] 
+         * global_indices: [0, 1, 4, 3, 2]
+         * data: [0,1,4,3,7]
+         */
+        // clang-format on
+        Int_manager_remove(&intmgr, 2);
+        Int_manager_add_at(&intmgr, 2, 7);
+
+        // checking the size / capacity of sparse_vector.
+        ck_assert_int_eq(sizet_vector_size(&intmgr.sparse_vector), 5);
+        ck_assert_int_eq(sizet_vector_capacity(&intmgr.sparse_vector), 5);
+
+        // checking the size / capacity of global_indicies and data.
+        ck_assert_int_eq(sizet_vector_size(&intmgr.global_indices), 5);
+        ck_assert_int_eq(sizet_vector_capacity(&intmgr.global_indices), 5);
+        ck_assert_int_eq(Int_vector_size(&intmgr.data), 5);
+        ck_assert_int_eq(Int_vector_capacity(&intmgr.data), 5);
+
+        // checking the values of the sparse_vector
+        ck_assert_int_eq(sizet_vector_get(&intmgr.sparse_vector, 0), 0);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.sparse_vector, 1), 1);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.sparse_vector, 2), 4);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.sparse_vector, 3), 3);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.sparse_vector, 4), 2);
+
+        // checking the values of the global_indices and data
+        ck_assert_int_eq(sizet_vector_get(&intmgr.global_indices, 0), 0);
+        ck_assert_int_eq(Int_vector_get(&intmgr.data, 0), 0);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.global_indices, 1), 1);
+        ck_assert_int_eq(Int_vector_get(&intmgr.data, 1), 1);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.global_indices, 2), 4);
+        ck_assert_int_eq(Int_vector_get(&intmgr.data, 2), 4);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.global_indices, 3), 3);
+        ck_assert_int_eq(Int_vector_get(&intmgr.data, 3), 3);
+        ck_assert_int_eq(sizet_vector_get(&intmgr.global_indices, 4), 2);
+        ck_assert_int_eq(Int_vector_get(&intmgr.data, 4), 7);
 
         Int_manager_free(&intmgr);
 }
@@ -399,6 +510,7 @@ static Suite *componentmanager_test_suite(void) {
         tcase_add_test(tc_core, componentmanager_test);
         tcase_add_test(tc_core, componentmanager_test2);
         tcase_add_test(tc_core, componentmanager_test3);
+        tcase_add_test(tc_core, componentmanager_test4);
         // tcase_add_test(tc_core, stack_test);
 
         suite_add_tcase(s, tc_core);
