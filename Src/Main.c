@@ -1,4 +1,4 @@
-#include "Engine/RunEngine.h"
+#include "Engine/Engine.h"
 
 int main(void) {
         // initializing the third party libraries (SDL)

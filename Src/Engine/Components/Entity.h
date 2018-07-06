@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Lib/GenericFreeList.h"
+#include "Lib/E_FreeList.h"
 #include "Lib/GenericVector.h"
 
 // -----------------------------------------
@@ -12,27 +12,41 @@
 typedef unsigned int Entity;
 VECTOR_DECLARE(Entity, Entity)
 
-struct FL_indices;
-struct FL_indices {
-        size_t next_free_index;
-};
-
-VECTOR_DECLARE(struct FL_indices, FL_indices)
-FREELIST_DECLARE(struct FL_indices, FL_indices)
-
 struct EntityManager;
 struct EntityManager {
         struct Entity_Vector entities;
-        struct FL_indices_FreeList free_elements;
+        struct E_FreeList free_elements;
 };
 
 // -----------------------------------------
-//    Componenets
+//    Components
 // -----------------------------------------
-
 typedef enum Components {
         COMPONENT_NONE = 1 << 0,
         COMPONENT_POSITION = 1 << 1,
         COMPONENT_APPEARANCE = 1 << 2
 
 } Components;
+
+// -----------------------------------------
+//    Utility types
+// -----------------------------------------
+
+typedef struct EntityIndex_Tuple {
+        size_t index;   // index of the entity
+        Entity entity;  // actual entity
+} EntityPos_Tuple;
+
+// -----------------------------------------
+//    Procedures
+// -----------------------------------------
+
+// initializes the entity manager
+void initEntityManager(struct EntityManager*, size_t);
+
+// adds a new entity to the Entity Manager, and returns where it was added
+size_t addNewEntity(struct EntityManager* entityManager,
+                    const Entity newEntity);
+
+// lazily delete an entity at a point, and returns the deleted Entity
+Entity deleteEntity(struct EntityManager* entityManager, const size_t index);
