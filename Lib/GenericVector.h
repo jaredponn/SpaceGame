@@ -205,7 +205,7 @@
                 --vector->size;                                                \
         }                                                                      \
                                                                                \
-        /*vector_remove*/                                                      \
+        /*vector_free*/                                                        \
         void _PREFIX##_vector_free(struct _PREFIX##_Vector* vector) {          \
                 free(vector->data);                                            \
         }
