@@ -6,7 +6,7 @@
 #include "sizet_Vector.h"
 
 /**
- * Macros for a generic component manager with add, and delete fucntions. To use
+ * Macros for a generic component manager with add, and remove fucntions. To use
  * this, ensure that you create a vector with the same _TYPE and same _PREFIX as
  * the component manager.
  */
@@ -43,18 +43,24 @@
         /* at "index" in "sparse_vector," a size_t will point to the "val" in  \
          * the tightly packed "data" vector. Increases the "next_packed_index" \
          * by 1 as well. WARNING: Does minor bounds checking - if the desired  \
-         * index is out of bounds, it will call pushback to increase the       \
-         * capcity of the vectors.*/                                           \
+         * index is out of bounds, it will realocate so the vector is 1.5x the \
+         * size of the required index. Also, it checks to see if the current   \
+         * index is free, so it will not add to the index UNLESS it is free.*/ \
         void _PREFIX##_manager_add(struct _PREFIX##_Manager* manager,          \
                                    const size_t index, _TYPE val);             \
                                                                                \
-        /* manager_delete */                                                   \
-        /* deletes the component in the packed array "data" by                 \
+        /* manager_remove */                                                   \
+        /* remove the component in the packed array "data" by                  \
          * vector_swap_back and vector_pop_back. Reduces "next_packed_index"   \
          * by 1 as well as sets the sparse_vector's "index" to size_t max to   \
-         * denote that it no longer exists . */                                \
-        void _PREFIX##_manager_delete(struct _PREFIX##_Manager* manager,       \
-                                      size_t index);
+         * denote that it no longer exists. It will not remove an index that   \
+         * is already remove */                                                \
+        void _PREFIX##_manager_remove(struct _PREFIX##_Manager* manager,       \
+                                      size_t index);                           \
+                                                                               \
+        /* manager_free */                                                     \
+        /* frees the data in the managers*/                                    \
+        void _PREFIX##_manager_free(struct _PREFIX##_Manager* manager);
 
 #define COMPONENT_MANAGER_DEFINE(_TYPE, _PREFIX)                               \
         /* manager_init */                                                     \
@@ -81,59 +87,106 @@
         /* manager_add */                                                      \
         void _PREFIX##_manager_add(struct _PREFIX##_Manager* manager,          \
                                    const size_t index, _TYPE val) {            \
-                /* if the desired index is outside of the sparse_vector, it    \
-                 * will eallocate to be 1.5X the current capacity and set the  \
-                 * size to be the same.*/                                      \
+                /* if the desired index is outside of the                      \
+                 * sparse_vector, it                                           \
+                 * will resize itself to be 1.5X the index */                  \
                 if (index >= sizet_vector_capacity(&manager->sparse_vector)) { \
-                        sizet_vector_push_back(&manager->sparse_vector,        \
-                                               manager->next_packed_index);    \
-                        manager->sparse_vector.size =                          \
-                            manager->sparse_vector.capacity;                   \
-                } else {                                                       \
+                        sizet_vector_resize(&manager->sparse_vector,           \
+                                            index * 1.5, SIZE_MAX);            \
+                }                                                              \
+                /*checks to see if it is actually a free index before adding   \
+                 * the val to the manager*/                                    \
+                if (sizet_vector_get(&manager->sparse_vector, index) ==        \
+                    SIZE_MAX) {                                                \
                         sizet_vector_set(&manager->sparse_vector, index,       \
                                          manager->next_packed_index);          \
-                }                                                              \
-                /* if the next_packed_index is the same as the data vector's   \
-                 * size (or global indices which should be the same), then     \
-                 * just push back the value to the array. Otherwise, use       \
-                 * vector_set.*/                                               \
-                if (manager->next_packed_index ==                              \
-                    sizet_vector_size(&manager->global_indices)) {             \
-                        sizet_vector_push_back(&manager->global_indices,       \
-                                               index);                         \
-                        _PREFIX##_vector_push_back(&manager->data, val);       \
-                        /* increases the next index by one, so that the next   \
-                         * add will push_back */                               \
-                        manager->next_packed_index += 1;                       \
-                } else {                                                       \
-                        /*if this branch is the case, then it is just filling  \
-                         * up a hole that was previously deleted, and there is \
-                         * no need to increment the next index by 1 then*/     \
-                        sizet_vector_set(&manager->global_indices, index,      \
-                                         val);                                 \
-                        _PREFIX##_vector_set(&manager->data, index, val);      \
+                        /* if the next_packed_index is the same as the data    \
+                         * vector's size (or global indices which should be    \
+                         * the same), then just push back the value to the     \
+                         * array. Otherwise, use vector_set.*/                 \
+                        if (manager->next_packed_index >=                      \
+                            sizet_vector_size(&manager->global_indices)) {     \
+                                sizet_vector_push_back(                        \
+                                    &manager->global_indices, index);          \
+                                _PREFIX##_vector_push_back(&manager->data,     \
+                                                           val);               \
+                                /* increases the next index by one, so that    \
+                                 * the next add will push_back */              \
+                                manager->next_packed_index += 1;               \
+                        } else {                                               \
+                                /*if this branch is the case, then it is just  \
+                                 * filling up a hole that was previously       \
+                                 * remove, and there is                        \
+                                 * no need to increment the next index by 1    \
+                                 * then*/                                      \
+                                sizet_vector_set(&manager->global_indices,     \
+                                                 index, val);                  \
+                                _PREFIX##_vector_set(&manager->data, index,    \
+                                                     val);                     \
+                        }                                                      \
                 }                                                              \
         }                                                                      \
                                                                                \
-        /* manager_delete TODO DOES CRAZY SHIT WHEN THERE"S NO INDEXES*/       \
-        void _PREFIX##_manager_delete(struct _PREFIX##_Manager* manager,       \
+        /* manager_remove */                                                   \
+        void _PREFIX##_manager_remove(struct _PREFIX##_Manager* manager,       \
                                       size_t index) {                          \
-                size_t lastSparseVectorIndex =                                 \
-                    sizet_vector_size(&manager->global_indices) - 1;           \
+                /* ensures that we only remove free indicies */                \
+                if (sizet_vector_get(&manager->sparse_vector, index) !=        \
+                    SIZE_MAX) {                                                \
+                        /*if there is only 1 index left, just pop_back it from \
+                         * the vectors*/                                       \
+                        if (sizet_vector_size(&manager->global_indices) ==     \
+                            1) {                                               \
+                                /* setting the sparse_vector index to SIZE_MAX \
+                                 */                                            \
+                                sizet_vector_set(&manager->sparse_vector,      \
+                                                 index, SIZE_MAX);             \
                                                                                \
-                /*swapping the sparse vector */                                \
-                sizet_vector_swap(&manager->sparse_vector, index,              \
-                                  lastSparseVectorIndex);                      \
+                                /* Popping the unused data at the end of the   \
+                                 * densely packed vectors */                   \
+                                sizet_vector_pop_back(                         \
+                                    &manager->global_indices);                 \
+                                _PREFIX##_vector_pop_back(&manager->data);     \
+                        } else {                                               \
+                                size_t lastSparseVectorIndex =                 \
+                                    sizet_vector_get(                          \
+                                        &manager->global_indices,              \
+                                        sizet_vector_size(                     \
+                                            &manager->global_indices) -        \
+                                            1);                                \
                                                                                \
-                /* swapping the global indices and packed data vector*/        \
-                sizet_vector_swap_back(&manager->global_indices, index);       \
-                _PREFIX##_vector_swap_back(&manager->data, index);             \
+                                /*swapping the sparse vector */                \
+                                sizet_vector_swap(&manager->sparse_vector,     \
+                                                  index,                       \
+                                                  lastSparseVectorIndex);      \
                                                                                \
-                /* setting the sparse_vector index to SIZE_MAX  */             \
-                sizet_vector_set(&manager->sparse_vector, index, SIZE_MAX);    \
+                                /* swapping the global indices and packed data \
+                                 * vector*/                                    \
+                                sizet_vector_swap_back(                        \
+                                    &manager->global_indices, index);          \
+                                _PREFIX##_vector_swap_back(&manager->data,     \
+                                                           index);             \
                                                                                \
-                /* Popping the unused data at the end of the densely packed    \
-                 * vectors */                                                  \
-                sizet_vector_pop_back(&manager->global_indices);               \
-                _PREFIX##_vector_pop_back(&manager->data);                     \
+                                /* setting the sparse_vector index to SIZE_MAX \
+                                 */                                            \
+                                sizet_vector_set(&manager->sparse_vector,      \
+                                                 index, SIZE_MAX);             \
+                                                                               \
+                                /* Popping the unused data at the end of the   \
+                                 * densely packed vectors */                   \
+                                sizet_vector_pop_back(                         \
+                                    &manager->global_indices);                 \
+                                _PREFIX##_vector_pop_back(&manager->data);     \
+                        }                                                      \
+                        /* required so the add function works properly*/       \
+                        --(manager->next_packed_index);                        \
+                }                                                              \
+        }                                                                      \
+                                                                               \
+        /* manager_free */                                                     \
+        /* frees the data in the managers*/                                    \
+        void _PREFIX##_manager_free(struct _PREFIX##_Manager* manager) {       \
+                sizet_vector_free(&manager->sparse_vector);                    \
+                sizet_vector_free(&manager->global_indices);                   \
+                _PREFIX##_vector_free(&manager->data);                         \
         }
