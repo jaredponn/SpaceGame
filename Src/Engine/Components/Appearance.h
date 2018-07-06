@@ -1,8 +1,9 @@
 #pragma once
 
+#include <SDL2/SDL.h>
+#include "Lib/GenericComponentManager.h"
 #include "Lib/GenericVector.h"
-#include "Lib/sizet_Vector.h"
-#include "SDL2/SDL.h"
+#include "Position.h"
 
 typedef struct Appearance {
         SDL_Texture* texture;
@@ -11,12 +12,8 @@ typedef struct Appearance {
 } Appearance;
 
 VECTOR_DECLARE(Appearance, Appearance)
+COMPONENT_MANAGER_DECLARE(Appearance, Appearance)
 
-struct AppearanceManager {
-        struct sizet_Vector id;
-        struct Appearance_Vector appearances;
-};
-
-// initilizes apperance manager
-void initAppearanceManager(struct AppearanceManager* appearancesManager,
-                           size_t capacity);
+// changes the position of the SDL_Rect, and modifies the width and height so
+// that it remains the same relative to the position
+void CPT_modifySdlRectPosition(SDL_Rect*, const Position);

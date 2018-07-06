@@ -1,12 +1,15 @@
 #include "Appearance.h"
+#include <math.h>
 
 VECTOR_DEFINE(Appearance, Appearance)
+COMPONENT_MANAGER_DEFINE(Appearance, Appearance)
 
-void initAppearanceManager(struct AppearanceManager* appearancesManager,
-                           size_t capacity) {
-        sizet_vector_init(&appearancesManager->id);
-        sizet_vector_reserve(&appearancesManager->id, capacity);
+void CPT_modifySdlRectPosition(SDL_Rect* rect, const Position pos) {
+        int nx = round(pos.x);
+        int ny = round(pos.y);
 
-        Appearance_vector_init(&appearancesManager->appearances);
-        Appearance_vector_reserve(&appearancesManager->appearances, capacity);
+        rect->w = rect->w + nx;
+        rect->h = rect->h + ny;
+        rect->x = nx;
+        rect->y = ny;
 }
