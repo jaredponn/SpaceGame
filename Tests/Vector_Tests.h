@@ -195,6 +195,56 @@ START_TEST(vector_test_3) {
 }
 END_TEST
 
+// testing the resize function
+START_TEST(vector_test_4) {
+        struct i_Vector testvec;
+        i_vector_init(&testvec);
+        i_vector_reserve(&testvec, 3);
+
+        /* Using resize to fill the vector with a value.
+         * testvec currently: []
+         * testvec after: [1,1,1]
+         */
+        i_vector_resize(&testvec, 3, 1);
+        ck_assert_int_eq(i_vector_size(&testvec), 3);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 3);
+
+        for (size_t i = 0; i < i_vector_size(&testvec); ++i) {
+                ck_assert_int_eq(i_vector_get(&testvec, i), 1);
+        }
+
+        /* Using resize to make it bigger and add new values
+         * testvec currently: [1,1,1]
+         * testvec after: [1,1,1,2,2,2]
+         */
+        i_vector_resize(&testvec, 6, 2);
+
+        ck_assert_int_eq(i_vector_size(&testvec), 6);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 6);
+
+        for (size_t i = 0; i < 3; ++i) {
+                ck_assert_int_eq(i_vector_get(&testvec, i), 1);
+        }
+
+        for (size_t i = 3; i < i_vector_size(&testvec); ++i) {
+                ck_assert_int_eq(i_vector_get(&testvec, i), 2);
+        }
+
+        /* Using resize to make it smaller
+         * testvec currently: [1,1,1,2,2,2]
+         * testvec after: [1,1]
+         */
+        i_vector_resize(&testvec, 2, 2);
+
+        ck_assert_int_eq(i_vector_size(&testvec), 2);
+        ck_assert_int_eq(i_vector_capacity(&testvec), 2);
+
+        for (size_t i = 0; i < 2; ++i) {
+                ck_assert_int_eq(i_vector_get(&testvec, i), 1);
+        }
+}
+END_TEST
+
 static Suite *vector_test_suite(void) {
         Suite *s;
         TCase *tc_core;
@@ -208,6 +258,7 @@ static Suite *vector_test_suite(void) {
         tcase_add_test(tc_core, vector_test_1);
         tcase_add_test(tc_core, vector_test_2);
         tcase_add_test(tc_core, vector_test_3);
+        tcase_add_test(tc_core, vector_test_4);
         // tcase_add_test(tc_core, stack_test);
 
         suite_add_tcase(s, tc_core);
