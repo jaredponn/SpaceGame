@@ -39,24 +39,31 @@
         void _PREFIX##_manager_init(struct _PREFIX##_Manager* manager,         \
                                     size_t capacity);                          \
                                                                                \
-        /* manager_add */                                                      \
+        /* manager_add_at */                                                   \
         /* at "index" in "sparse_vector," a size_t will point to the "val" in  \
          * the tightly packed "data" vector. Increases the "next_packed_index" \
          * by 1 as well. WARNING: Does minor bounds checking - if the desired  \
          * index is out of bounds, it will realocate so the vector is 1.5x the \
          * size of the required index. Also, it checks to see if the current   \
          * index is free, so it will not add to the index UNLESS it is free.*/ \
-        void _PREFIX##_manager_add(struct _PREFIX##_Manager* manager,          \
-                                   const size_t index, _TYPE val);             \
+        void _PREFIX##_manager_add_at(struct _PREFIX##_Manager* manager,       \
+                                      const size_t index, _TYPE val);          \
                                                                                \
         /* manager_remove */                                                   \
         /* remove the component in the packed array "data" by                  \
          * vector_swap_back and vector_pop_back. Reduces "next_packed_index"   \
          * by 1 as well as sets the sparse_vector's "index" to size_t max to   \
          * denote that it no longer exists. It will not remove an index that   \
-         * is already remove */                                                \
+         * is already removed */                                               \
         void _PREFIX##_manager_remove(struct _PREFIX##_Manager* manager,       \
                                       size_t index);                           \
+                                                                               \
+        /* manager_get_data_at */                                              \
+        /* at index, it will return the data it corrosponds to. If it is out   \
+         * of bounds, or there is no data for that point, it will return       \
+         * NULL*/                                                              \
+        _TYPE* _PREFIX##_manager_get_data_at(                                  \
+            struct _PREFIX##_Manager* manager, size_t index);                  \
                                                                                \
         /* manager_free */                                                     \
         /* frees the data in the managers*/                                    \
@@ -84,9 +91,9 @@
                 _PREFIX##_vector_reserve(&manager->data, capacity);            \
         }                                                                      \
                                                                                \
-        /* manager_add */                                                      \
-        void _PREFIX##_manager_add(struct _PREFIX##_Manager* manager,          \
-                                   const size_t index, _TYPE val) {            \
+        /* manager_add_at */                                                   \
+        void _PREFIX##_manager_add_at(struct _PREFIX##_Manager* manager,       \
+                                      const size_t index, _TYPE val) {         \
                 /* if the desired index is outside of the                      \
                  * sparse_vector, it                                           \
                  * will resize itself to be 1.5X the index */                  \
@@ -104,26 +111,12 @@
                          * vector's size (or global indices which should be    \
                          * the same), then just push back the value to the     \
                          * array. Otherwise, use vector_set.*/                 \
-                        if (manager->next_packed_index >=                      \
-                            sizet_vector_size(&manager->global_indices)) {     \
-                                sizet_vector_push_back(                        \
-                                    &manager->global_indices, index);          \
-                                _PREFIX##_vector_push_back(&manager->data,     \
-                                                           val);               \
-                                /* increases the next index by one, so that    \
-                                 * the next add will push_back */              \
-                                manager->next_packed_index += 1;               \
-                        } else {                                               \
-                                /*if this branch is the case, then it is just  \
-                                 * filling up a hole that was previously       \
-                                 * remove, and there is                        \
-                                 * no need to increment the next index by 1    \
-                                 * then*/                                      \
-                                sizet_vector_set(&manager->global_indices,     \
-                                                 index, val);                  \
-                                _PREFIX##_vector_set(&manager->data, index,    \
-                                                     val);                     \
-                        }                                                      \
+                        sizet_vector_push_back(&manager->global_indices,       \
+                                               index);                         \
+                        _PREFIX##_vector_push_back(&manager->data, val);       \
+                        /* increases the next index by one, so that            \
+                         * the next add will push_back */                      \
+                        ++(manager->next_packed_index);                        \
                 }                                                              \
         }                                                                      \
                                                                                \
@@ -180,6 +173,23 @@
                         }                                                      \
                         /* required so the add function works properly*/       \
                         --(manager->next_packed_index);                        \
+                }                                                              \
+        }                                                                      \
+                                                                               \
+        /* manager_get_data_at */                                              \
+        /* at index, it will return a pointer to the data it corrosponds to.   \
+         * If it is out of bounds, or there is no data for that point, it will \
+         * return NULL*/                                                       \
+        _TYPE* _PREFIX##_manager_get_data_at(                                  \
+            struct _PREFIX##_Manager* manager, size_t index) {                 \
+                if (index >= sizet_vector_size(&manager->sparse_vector) ||     \
+                    sizet_vector_get(&manager->sparse_vector, index) ==        \
+                        SIZE_MAX) {                                            \
+                        return NULL;                                           \
+                } else {                                                       \
+                        size_t dataIndex =                                     \
+                            sizet_vector_get(&manager->sparse_vector, index);  \
+                        return manager->data.data + dataIndex;                 \
                 }                                                              \
         }                                                                      \
                                                                                \
