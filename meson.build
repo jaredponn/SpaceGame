@@ -24,8 +24,8 @@ executable('spacegame'
         , link_args : ['-lSDL2', '-lSDL2_image'] )
 
 testsrcs = [ 'Lib/Util.c'  
-           , 'Tests/Lib_Tests.c'
-           , 'Tests/Data_Structures.c'
+           , 'UnitTesting/Run_Tests.c'
+           , 'Lib/tests/Data_Structures.c'
            , 'Lib/sizet_Vector.c'
            ]
 unittests = executable('unittests', testsrcs, link_args :'-lcheck')
