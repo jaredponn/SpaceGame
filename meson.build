@@ -6,6 +6,7 @@ project('SpaceGame', 'c',
 
 inc = include_directories('Extras')
 inc = include_directories('Lib')
+inc = include_directories('Src')
 
 srcs = ['Src/Main.c'
        , 'Src/Engine/Engine.c'
@@ -27,6 +28,7 @@ testsrcs = [ 'Lib/Util.c'
            , 'UnitTesting/Run_Tests.c'
            , 'Lib/tests/Data_Structures.c'
            , 'Lib/sizet_Vector.c'
+           , 'Src/Engine/Components/Appearance.c'
            ]
 unittests = executable('unittests', testsrcs, link_args :'-lcheck')
 test('unittests', unittests )
