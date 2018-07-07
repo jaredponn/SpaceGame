@@ -1,14 +1,41 @@
 #include "Appearance.h"
 
+// -----------------------------------------
+//    Macros
+// -----------------------------------------
 VECTOR_DEFINE(Appearance, Appearance)
 COMPONENT_MANAGER_DEFINE(Appearance, Appearance)
 
-void CPT_modifySdlRectPosition(SDL_Rect* rect, const Position pos) {
-        int nx = (int)pos.x;
-        int ny = (int)pos.y;
+// -----------------------------------------
+//    Internal declarations
+// -----------------------------------------
 
-        rect->w = rect->w + nx;
-        rect->h = rect->h + ny;
+static Position position_round(const Position val);
+
+// -----------------------------------------
+//    Function implementations
+// -----------------------------------------
+
+void CPT_setSdlRectPosition(SDL_Rect* rect, const Position pos) {
+        Position roundedPos = position_round(pos);
+
+        int nx = roundedPos.x;
+        int ny = roundedPos.y;
+
         rect->x = nx;
         rect->y = ny;
+}
+
+void CPT_modifySdlRectPosition(SDL_Rect* rect, const Position pos) {
+        Position roundedPos = position_round(pos);
+        int roundedx = roundedPos.x;
+        int roundedy = roundedPos.y;
+
+        rect->x += roundedx;
+        rect->y += roundedy;
+}
+
+// internals
+static Position position_round(const Position val) {
+        return (Position){.x = (int)val.x, .y = (int)val.y};
 }

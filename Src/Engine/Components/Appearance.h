@@ -14,6 +14,8 @@ typedef struct Appearance {
 VECTOR_DECLARE(Appearance, Appearance)
 COMPONENT_MANAGER_DECLARE(Appearance, Appearance)
 
-// changes the position of the SDL_Rect, and modifies the width and height so
-// that it remains the same relative to the position
-void CPT_modifySdlRectPosition(SDL_Rect*, const Position);
+// sets the position of the SDL_Rect
+void CPT_setSdlRectPosition(SDL_Rect*, const Position);
+
+// adds the position to the SDL_Rect
+void CPT_modifySdlRectPosition(SDL_Rect* rect, const Position pos);
