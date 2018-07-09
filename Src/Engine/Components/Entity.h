@@ -12,8 +12,8 @@
 typedef unsigned int Entity;
 VECTOR_DECLARE(Entity, Entity)
 
-struct EntityManager;
-struct EntityManager {
+struct Entity_Manager;
+struct Entity_Manager {
         struct Entity_Vector entities;
         struct E_FreeList free_elements;
 };
@@ -21,32 +21,24 @@ struct EntityManager {
 // -----------------------------------------
 //    Components
 // -----------------------------------------
-typedef enum Components {
+typedef enum CPT_Components {
         COMPONENT_NONE = 1 << 0,
         COMPONENT_POSITION = 1 << 1,
         COMPONENT_APPEARANCE = 1 << 2
 
-} Components;
-
-// -----------------------------------------
-//    Utility types
-// -----------------------------------------
-
-typedef struct EntityIndex_Tuple {
-        size_t index;   // index of the entity
-        Entity entity;  // actual entity
-} EntityPos_Tuple;
+} CPT_Components;
 
 // -----------------------------------------
 //    Procedures
 // -----------------------------------------
 
 // initializes the entity manager
-void initEntityManager(struct EntityManager*, size_t);
+void Entity_manager_init(struct Entity_Manager*, size_t);
 
 // adds a new entity to the Entity Manager, and returns where it was added
-size_t addNewEntity(struct EntityManager* entityManager,
-                    const Entity newEntity);
+size_t Entity_manager_add_new_entity(struct Entity_Manager* entityManager,
+                                     const Entity newEntity);
 
 // lazily delete an entity at a point, and returns the deleted Entity
-Entity deleteEntity(struct EntityManager* entityManager, const size_t index);
+Entity Entity_manager_remove(struct Entity_Manager* entityManager,
+                             const size_t index);
