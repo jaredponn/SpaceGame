@@ -1,14 +1,11 @@
 #pragma once
+#include "Lib/GenericComponentManager.h"
 #include "Lib/GenericVector.h"
 
 typedef struct Position {
-        float x;
-        float y;
+        float x;  // x coordinate
+        float y;  // y coordinate
 } Position;
 
 VECTOR_DECLARE(Position, Position)
-
-struct PositionManager;
-struct PositionManager {
-        struct Position_Vector positions;
-};
+COMPONENT_MANAGER_DECLARE(Position, Position)
