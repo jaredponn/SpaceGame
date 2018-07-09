@@ -7,16 +7,32 @@
 #define _EXTRAS_PATH "/home/jared/Programs/SpaceGame/Extras"
 // clang-format on
 
-// state
-struct ECS_ResourceRegistry RESOURCE_REGISTRY;
-
-// constants
+// -----------------------------------------
+//    Constants
+// -----------------------------------------
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
+
+// -----------------------------------------
+//    Internal function declarations
+// -----------------------------------------
+
+// deletes the entity along with all of its componenets
+void delete_entity(size_t index);
+
+// -----------------------------------------
+//    Procedures
+// -----------------------------------------
 
 void ECS_initLibraries() {
         RSC_initSDL(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
         RSC_initSDLImage(IMG_INIT_PNG);
+}
+
+void ECS_initComponents(struct ECS_Components *engine, size_t capacity) {
+        Entity_manager_init(&engine->entity_manager, capacity);
+        Position_manager_init(&engine->position_manager, capacity);
+        Appearance_manager_init(&engine->appearance_manager, capacity);
 }
 
 void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
@@ -36,7 +52,8 @@ void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
         resourceRegistry->cResources.cTextures.testTexture = testTexture;
 }
 
-void ECS_runEngine(struct ECS_ResourceRegistry resourceRegistry) {
+void ECS_runEngine(struct ECS_Components *engineComponents,
+                   struct ECS_ResourceRegistry *resourceRegistry) {
         while (1) {
                 SDL_Event e;
                 if (SDL_PollEvent(&e)) {
@@ -45,12 +62,12 @@ void ECS_runEngine(struct ECS_ResourceRegistry resourceRegistry) {
                         }
                 }
 
-                SDL_RenderClear(RESOURCE_REGISTRY.cRenderer);
+                SDL_RenderClear(resourceRegistry->cRenderer);
                 SDL_RenderCopy(
-                    RESOURCE_REGISTRY.cRenderer,
-                    RESOURCE_REGISTRY.cResources.cTextures.testTexture, NULL,
+                    resourceRegistry->cRenderer,
+                    resourceRegistry->cResources.cTextures.testTexture, NULL,
                     NULL);
-                SDL_RenderPresent(RESOURCE_REGISTRY.cRenderer);
+                SDL_RenderPresent(resourceRegistry->cRenderer);
         }
 }
 
@@ -58,3 +75,6 @@ void ECS_quitLibraries() {
         SDL_Quit();
         IMG_Quit();
 }
+// -----------------------------------------
+//    Internal functions' definitions
+// -----------------------------------------
