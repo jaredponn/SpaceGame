@@ -58,6 +58,11 @@
         void _PREFIX##_manager_remove(struct _PREFIX##_Manager* manager,       \
                                       size_t index);                           \
                                                                                \
+        /* manager_get_data */                                                 \
+        /* returns a const pointer to the vector of the data */                \
+        const struct _PREFIX##_Vector* _PREFIX##_manager_get_data(             \
+            const struct _PREFIX##_Manager* manager);                          \
+                                                                               \
         /* manager_get_data_at */                                              \
         /* at index, it will return the data it corrosponds to. If it is out   \
          * of bounds, or there is no data for that point, it will return       \
@@ -176,10 +181,13 @@
                 }                                                              \
         }                                                                      \
                                                                                \
+        /* manager_get_data */                                                 \
+        const struct _PREFIX##_Vector* _PREFIX##_manager_get_data(             \
+            const struct _PREFIX##_Manager* manager) {                         \
+                return &(manager->data);                                       \
+        }                                                                      \
+                                                                               \
         /* manager_get_data_at */                                              \
-        /* at index, it will return a pointer to the data it corrosponds to.   \
-         * If it is out of bounds, or there is no data for that point, it will \
-         * return NULL*/                                                       \
         _TYPE* _PREFIX##_manager_get_data_at(                                  \
             struct _PREFIX##_Manager* manager, size_t index) {                 \
                 if (index >= sizet_vector_size(&manager->sparse_vector) ||     \
