@@ -71,8 +71,13 @@
         /* vector_get */                                                       \
         /*gets the specified index of an element. WARNING does not do bounds   \
          * checking   */                                                       \
-        _TYPE _PREFIX##_vector_get(struct _PREFIX##_Vector*,                   \
+        _TYPE _PREFIX##_vector_get(const struct _PREFIX##_Vector*,             \
                                    const size_t index);                        \
+        /* vector_get_p*/                                                      \
+        /*gets the pointer to a specified index of an element. WARNING does    \
+         * not do bounds checking   */                                         \
+        _TYPE* _PREFIX##_vector_get_p(const struct _PREFIX##_Vector*,          \
+                                      const size_t index);                     \
                                                                                \
         /* vector_swap */                                                      \
         /* Swaps 2 specified indexes with each other.WARNING: Does not do      \
@@ -173,9 +178,15 @@
         }                                                                      \
                                                                                \
         /*vector_get*/                                                         \
-        _TYPE _PREFIX##_vector_get(struct _PREFIX##_Vector* vector,            \
+        _TYPE _PREFIX##_vector_get(const struct _PREFIX##_Vector* vector,      \
                                    const size_t index) {                       \
                 return vector->data[index];                                    \
+        }                                                                      \
+                                                                               \
+        /*vector_get_p*/                                                       \
+        _TYPE* _PREFIX##_vector_get_p(const struct _PREFIX##_Vector* vector,   \
+                                      const size_t index) {                    \
+                return vector->data + index;                                   \
         }                                                                      \
                                                                                \
         /* vector_swap */                                                      \
