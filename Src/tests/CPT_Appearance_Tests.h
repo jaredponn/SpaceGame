@@ -2,6 +2,7 @@
 #include <check.h>
 #include <stdbool.h>
 #include "Src/Engine/Components/Appearance.h"
+#include "Src/Engine/Components/Position.h"
 
 // tests if the rects are equal
 bool SDL_rectEquals(const SDL_Rect rect1, const SDL_Rect rect2);
@@ -19,9 +20,11 @@ START_TEST(modifySdlRectPosition_test) {
             "error in rectEquals function");
 
         // moving the position
+        CPT_modifySdlRectPosition(&rect, (Position){.x = -1, .y = 1});
+
         ck_assert_msg(
-            SDL_rectEquals(rect, (SDL_Rect){.x = 0, .y = 0, .w = 1, .h = 1}),
-            "error in rectEquals function");
+            SDL_rectEquals(rect, (SDL_Rect){.x = -1, .y = 1, .w = 1, .h = 1}),
+            "error in modify rect function");
 }
 END_TEST
 
