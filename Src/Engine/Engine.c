@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 // clang-format off
-#define _EXTRAS_PATH "/home/jared/Programs/SpaceGame/Extras"
+#define EXTRAS_PATH "/home/jared/Programs/SpaceGame/Extras"
 // clang-format on
 
 // -----------------------------------------
@@ -12,13 +12,6 @@
 // -----------------------------------------
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
-
-// -----------------------------------------
-//    Internal function declarations
-// -----------------------------------------
-
-// deletes the entity along with all of its componenets
-void delete_entity(size_t index);
 
 // -----------------------------------------
 //    Procedures
@@ -29,10 +22,17 @@ void ECS_initLibraries() {
         RSC_initSDLImage(IMG_INIT_PNG);
 }
 
-void ECS_initComponents(struct ECS_Components *engine, size_t capacity) {
-        Entity_manager_init(&engine->entity_manager, capacity);
-        Position_manager_init(&engine->position_manager, capacity);
-        Appearance_manager_init(&engine->appearance_manager, capacity);
+void ECS_initCore(struct ECS_Core *engineCore) {
+        engineCore->camera_position = (struct V2){.x = 0, .y = 0};
+        engineCore->dt = 0;
+}
+
+void ECS_initComponents(struct ECS_Components *engineComponents,
+                        size_t capacity) {
+        Entity_manager_init(&engineComponents->entity_manager, capacity);
+        Position_manager_init(&engineComponents->position_manager, capacity);
+        Appearance_manager_init(&engineComponents->appearance_manager,
+                                capacity);
 }
 
 void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
@@ -45,14 +45,15 @@ void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
 
         // TODO add proper error handling
         SDL_Texture *testTexture =
-            RSC_loadImage(renderer, _EXTRAS_PATH "/Images/bg.png");
+            RSC_loadImage(renderer, EXTRAS_PATH "/Images/bg.png");
 
         resourceRegistry->cWindow = window;
         resourceRegistry->cRenderer = renderer;
         resourceRegistry->cResources.cTextures.testTexture = testTexture;
 }
 
-void ECS_runEngine(struct ECS_Components *engineComponents,
+void ECS_runEngine(struct ECS_Core *engineCore,
+                   struct ECS_Components *engineComponents,
                    struct ECS_ResourceRegistry *resourceRegistry) {
         while (1) {
                 SDL_Event e;
@@ -75,6 +76,3 @@ void ECS_quitLibraries() {
         SDL_Quit();
         IMG_Quit();
 }
-// -----------------------------------------
-//    Internal functions' definitions
-// -----------------------------------------
