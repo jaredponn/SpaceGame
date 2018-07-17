@@ -14,17 +14,24 @@ srcs = ['Src/Main.c'
        # resource loading
        , 'Src/Engine/Resources/ResourceRegistry.c'
        , 'Src/Engine/Resources/LoadResources.c'
+       # Core
+       , 'Src/Engine/Core/EngineCore.c'
        # Components
+       , 'Src/Engine/Components/EngineComponents.c'
+       , 'Src/Engine/Components/Acceleration.c'
        , 'Src/Engine/Components/Position.c'
+       , 'Src/Engine/Components/Velocity.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'
        # Systems
        , 'Src/Engine/Systems/Render.c'
-       , 'Src/Engine/Systems/UpdatePosition.c'
+       , 'Src/Engine/Systems/UpdatePositions.c'
+       , 'Src/Engine/Systems/ApplyVelocity.c'
         # Lib
        , 'Lib/Util.c' 
        , 'Lib/E_FreeList.c' 
        , 'Lib/sizet_Vector.c' 
+       , 'Lib/V2.c' 
        ]
 
 executable('spacegame'
