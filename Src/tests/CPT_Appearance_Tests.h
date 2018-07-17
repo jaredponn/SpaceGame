@@ -20,7 +20,9 @@ START_TEST(modifySdlRectPosition_test) {
             "error in rectEquals function");
 
         // moving the position
-        CPT_modifySdlRectPosition(&rect, (Position){.x = -1, .y = 1});
+        Position expectedResult = (Position){.x = -1, .y = 1};
+        Position *expectedResult_p = &expectedResult;
+        CPT_modifySdlRectPosition(&rect, expectedResult_p);
 
         ck_assert_msg(
             SDL_rectEquals(rect, (SDL_Rect){.x = -1, .y = 1, .w = 1, .h = 1}),
