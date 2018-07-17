@@ -392,17 +392,17 @@ START_TEST(componentmanager_test3) {
         Int_manager_add_at(&intmgr, 3, 12);
         Int_manager_add_at(&intmgr, 4, 9);
 
-        // checking the get_data_at function when in bounds
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 0), 3);
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 1), 9);
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 2), 2);
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 3), 12);
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 4), 9);
+        // checking the get_data_p_at function when in bounds
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 0), 3);
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 1), 9);
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 2), 2);
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 3), 12);
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 4), 9);
 
-        // checking the get_data_at function when out of bounds
-        ck_assert_msg(Int_manager_get_data_at(&intmgr, 5) == NULL,
+        // checking the get_data_p_at function when out of bounds
+        ck_assert_msg(Int_manager_get_data_p_at(&intmgr, 5) == NULL,
                       "failed to recognize out of bounds error");
-        ck_assert_msg(Int_manager_get_data_at(&intmgr, 100) == NULL,
+        ck_assert_msg(Int_manager_get_data_p_at(&intmgr, 100) == NULL,
                       "failed to recognize out of bounds error");
 
         // deleting an index
@@ -416,12 +416,12 @@ START_TEST(componentmanager_test3) {
         Int_manager_remove(&intmgr, 2);
 
         // testing if everything is good still
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 0), 3);
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 1), 9);
-        ck_assert_msg(Int_manager_get_data_at(&intmgr, 2) == NULL,
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 0), 3);
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 1), 9);
+        ck_assert_msg(Int_manager_get_data_p_at(&intmgr, 2) == NULL,
                       "failed to recognize deleted element");
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 3), 12);
-        ck_assert_int_eq(*Int_manager_get_data_at(&intmgr, 4), 9);
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 3), 12);
+        ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 4), 9);
 
         Int_manager_free(&intmgr);
 }
