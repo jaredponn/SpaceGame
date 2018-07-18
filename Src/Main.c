@@ -4,20 +4,20 @@ int main(void) {
         // initializing the third party libraries (SDL)
         ECS_initLibraries();
 
-        // declaring/ initlizting the core
-        struct ECS_Core engineCore;
-        ECS_initCore(&engineCore);
+        // initalizing the engine
+        struct ECS_Components engineComponents;
+        ECS_initComponents(&engineComponents, 10000);
 
         // loading the resources
         struct ECS_ResourceRegistry resourceRegistry;
         ECS_loadInitResources(&resourceRegistry);
 
-        // initalizing the engine
-        struct ECS_Components engineComponents;
-        ECS_initComponents(&engineComponents, 10000);
+        // declaring/ initlizting the extras
+        struct ECS_Extras engineExtras;
+        ECS_initExtras(&engineExtras);
 
         // running the game
-        ECS_runEngine(&engineCore, &engineComponents, &resourceRegistry);
+        ECS_runEngine(&engineComponents, &resourceRegistry, &engineExtras);
 
         // closing resources
         ECS_destroyRegistry(&resourceRegistry);

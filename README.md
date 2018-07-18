@@ -38,3 +38,9 @@ https://www.brendanlong.com/unit-testing-c-with-check-and-autotools.html
 Writing your own vector:
 
 https://upcoder.com/3/roll-your-own-vector
+
+Lovely preprocessor abuse:
+
+https://en.wikipedia.org/wiki/X_Macro
+
+https://github.com/pfultz2/Cloak/wiki/C-Preprocessor-tricks,-tips,-and-idioms

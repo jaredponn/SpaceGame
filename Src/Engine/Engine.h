@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Components/EngineComponents.h"
-#include "Core/EngineCore.h"
+#include "Extras/EngineExtras.h"
 #include "Resources/LoadResources.h"
 #include "Resources/ResourceRegistry.h"
 
@@ -12,22 +12,22 @@
 // initializes SDL
 void ECS_initLibraries();
 
-// initializes the Core with default values of 0
-void ECS_initCore(struct ECS_Core*);
-
 // initializes the game engine. The size_t initialize size of the vectors
 void ECS_initComponents(struct ECS_Components*, size_t);
 
 // loads the resource registry with a renderer, window, and textures
 void ECS_loadInitResources(struct ECS_ResourceRegistry*);
 
+// initializes the extras with default values
+void ECS_initExtras(struct ECS_Extras*);
+
 // -----------------------------------------
 //    Run
 // -----------------------------------------
 
 // runs the engine with the resources
-void ECS_runEngine(struct ECS_Core*, struct ECS_Components*,
-                   struct ECS_ResourceRegistry*);
+void ECS_runEngine(struct ECS_Components*, struct ECS_ResourceRegistry*,
+                   struct ECS_Extras*);
 
 // -----------------------------------------
 //    Destructors
