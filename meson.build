@@ -14,8 +14,6 @@ srcs = ['Src/Main.c'
        # resource loading
        , 'Src/Engine/Resources/ResourceRegistry.c'
        , 'Src/Engine/Resources/LoadResources.c'
-       # Core
-       , 'Src/Engine/Core/EngineCore.c'
        # Components
        , 'Src/Engine/Components/EngineComponents.c'
        , 'Src/Engine/Components/Acceleration.c'
@@ -23,10 +21,15 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Components/Velocity.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'
+
        # Systems
        , 'Src/Engine/Systems/Render.c'
        , 'Src/Engine/Systems/UpdatePositions.c'
        , 'Src/Engine/Systems/ApplyVelocity.c'
+       , 'Src/Engine/Systems/ApplyAcceleration.c'
+
+       # extras
+       , 'Src/Engine/Extras/EngineExtras.c'
         # Lib
        , 'Lib/Util.c' 
        , 'Lib/E_FreeList.c' 
