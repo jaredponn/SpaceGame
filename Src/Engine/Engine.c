@@ -99,13 +99,19 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
 
                                         printf("NEXT FRE INDEX: %lu \n", tmp);
 
+                                        Acceleration_manager_add_at(
+                                            &engineComponents
+                                                 ->acceleration_manager,
+                                            tmp,
+                                            (Acceleration){.x = 0, .y = -0.1});
+
                                         Velocity_manager_add_at(
                                             &engineComponents->velocity_manager,
                                             tmp, (Velocity){.x = 0, .y = 1});
 
                                         Position_manager_add_at(
                                             &engineComponents->position_manager,
-                                            tmp, (Position){.x = 10, .y = 19});
+                                            tmp, (Position){.x = 10, .y = 100});
 
                                         Appearance_manager_add_at(
                                             &engineComponents
