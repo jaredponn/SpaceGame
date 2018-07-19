@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Lib/Time.h"
 
 #include "InputManager/Input.h"
 
@@ -20,6 +21,7 @@
 // -----------------------------------------
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
+const float FPS = 1.f / 64;
 
 // -----------------------------------------
 //    Procedures
@@ -64,21 +66,21 @@ void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
 
 void ECS_initExtras(struct ECS_Extras *engineCore) {
         engineCore->camera_position = (struct V2){.x = 0, .y = 0};
-        engineCore->dt = 0;
+        engineCore->dt = UTI_zeroTime();
 }
-
-// TODO TRY TO MAKE A RECTANGLE FALL DOwn THE SCREEN
 void ECS_runEngine(struct ECS_Components *engineComponents,
                    struct ECS_ResourceRegistry *resourceRegistry,
                    struct ECS_Extras *engineExtras) {
-        size_t tmp = 0;
-
-        /** SDL_RenderClear(resourceRegistry->cRenderer); */
+        // declarations
+        SDL_Event e;
+        Time t_i, t_f;
+        size_t nextGlobalFreeIndex = 0;
 
         while (1) {
-                // event handling
+                // timing the frame
+                t_i = UTI_getCurTime();
 
-                SDL_Event e;
+                // event handling
                 INP_updateInputState(&e);
 
                 // clears the background to black
@@ -93,35 +95,34 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                     .dstrect = (SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100},
                     .angle = 0};
 
-                engineExtras->dt = 1;
-
-                // fun
+                // function
                 if (INP_onKeyReleaseTap(SDL_SCANCODE_A)) {
-                        tmp = ECS_get_next_free_index(
+                        nextGlobalFreeIndex = ECS_get_next_free_index(
                             &engineComponents->free_elements);
 
                         Acceleration_manager_add_at(
-                            &engineComponents->acceleration_manager, tmp,
-                            (Acceleration){.x = 0, .y = -0.1});
+                            &engineComponents->acceleration_manager,
+                            nextGlobalFreeIndex,
+                            (Acceleration){.x = 0, .y = -2});
 
                         Velocity_manager_add_at(
-                            &engineComponents->velocity_manager, tmp,
-                            (Velocity){.x = 0, .y = 10});
+                            &engineComponents->velocity_manager,
+                            nextGlobalFreeIndex, (Velocity){.x = 0, .y = 2});
 
                         // testing
                         struct V2 transform = (struct V2){.x = 50, .y = 50};
 
                         Position_manager_add_at(
-                            &engineComponents->position_manager, tmp,
+                            &engineComponents->position_manager,
+                            nextGlobalFreeIndex,
                             V2_sub(INP_getMousePosition(), &transform));
 
                         Appearance_manager_add_at(
-                            &engineComponents->appearance_manager, tmp, test);
+                            &engineComponents->appearance_manager,
+                            nextGlobalFreeIndex, test);
                 }
 
-                V2_print(INP_getMousePosition());
-
-                // dont forget to copy the keys
+                // updated the old input state
                 INP_updateOldState();
 
                 // running the systems
@@ -136,7 +137,19 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                 SYS_renderCopy(resourceRegistry->cRenderer,
                                &engineComponents->appearance_manager);
 
+                // rendering
                 SDL_RenderPresent(resourceRegistry->cRenderer);
+
+                // sleeping to limit CPU usage
+                UTI_sleep(FPS > UTI_castTimeToSecs(engineExtras->dt)
+                              ? UTI_timeDiff(UTI_castSecsToTime(FPS),
+                                             engineExtras->dt)
+                              : UTI_zeroTime());
+
+                // setting the time
+                t_f = UTI_getCurTime();
+
+                engineExtras->dt = UTI_timeDiff(t_f, t_i);
         }
 }
 
