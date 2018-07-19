@@ -30,11 +30,16 @@ srcs = ['Src/Main.c'
 
        # extras
        , 'Src/Engine/Extras/EngineExtras.c'
+
+        # inputs
+       , 'Src/Engine/InputManager/Input.c'
+
         # Lib
        , 'Lib/Util.c' 
        , 'Lib/E_FreeList.c' 
        , 'Lib/sizet_Vector.c' 
        , 'Lib/V2.c' 
+       , 'Lib/Time.c'
        ]
 
 executable('spacegame'
