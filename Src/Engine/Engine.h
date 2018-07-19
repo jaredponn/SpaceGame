@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Components/EngineComponents.h"
-#include "Extras/EngineExtras.h"
+#include "ExtraState/EngineExtraState.h"
 #include "Resources/LoadResources.h"
 #include "Resources/ResourceRegistry.h"
 
@@ -19,7 +19,7 @@ void ECS_initComponents(struct ECS_Components*, size_t);
 void ECS_loadInitResources(struct ECS_ResourceRegistry*);
 
 // initializes the extras with default values
-void ECS_initExtras(struct ECS_Extras*);
+void ECS_initExtraState(struct ECS_ExtraState*);
 
 // -----------------------------------------
 //    Run
@@ -27,7 +27,7 @@ void ECS_initExtras(struct ECS_Extras*);
 
 // runs the engine with the resources
 void ECS_runEngine(struct ECS_Components*, struct ECS_ResourceRegistry*,
-                   struct ECS_Extras*);
+                   struct ECS_ExtraState*);
 
 // -----------------------------------------
 //    Destructors

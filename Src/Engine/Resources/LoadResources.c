@@ -1,5 +1,7 @@
 #include "LoadResources.h"
 #include "Lib/Util.h"
+// link for how to do descent RAII in c:
+// https://stackoverflow.com/questions/245742/examples-of-good-gotos-in-c-or-c
 
 // -----------------------------------------
 //    Procedures for SDL

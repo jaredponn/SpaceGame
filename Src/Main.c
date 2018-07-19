@@ -13,11 +13,11 @@ int main(void) {
         ECS_loadInitResources(&resourceRegistry);
 
         // declaring/ initlizting the extras
-        struct ECS_Extras engineExtras;
-        ECS_initExtras(&engineExtras);
+        struct ECS_ExtraState engineExtraState;
+        ECS_initExtraState(&engineExtraState);
 
         // running the game
-        ECS_runEngine(&engineComponents, &resourceRegistry, &engineExtras);
+        ECS_runEngine(&engineComponents, &resourceRegistry, &engineExtraState);
 
         // closing resources
         ECS_destroyRegistry(&resourceRegistry);

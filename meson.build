@@ -29,7 +29,7 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Systems/ApplyAcceleration.c'
 
        # extras
-       , 'Src/Engine/Extras/EngineExtras.c'
+       , 'Src/Engine/ExtraState/EngineExtraState.c'
 
         # inputs
        , 'Src/Engine/InputManager/Input.c'

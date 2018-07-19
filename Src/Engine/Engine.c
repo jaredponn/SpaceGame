@@ -64,13 +64,13 @@ void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
         resourceRegistry->cResources.cTextures.testTexture = testTexture;
 }
 
-void ECS_initExtras(struct ECS_Extras *engineCore) {
-        engineCore->camera_position = (struct V2){.x = 0, .y = 0};
-        engineCore->dt = UTI_zeroTime();
+void ECS_initExtraState(struct ECS_ExtraState *engineExtraState) {
+        engineExtraState->camera_position = (struct V2){.x = 0, .y = 0};
+        engineExtraState->dt = UTI_zeroTime();
 }
 void ECS_runEngine(struct ECS_Components *engineComponents,
                    struct ECS_ResourceRegistry *resourceRegistry,
-                   struct ECS_Extras *engineExtras) {
+                   struct ECS_ExtraState *engineExtraState) {
         // declarations
         SDL_Event e;
         Time t_i, t_f;
@@ -128,10 +128,10 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                 // running the systems
                 SYS_applyAcceleration(&engineComponents->acceleration_manager,
                                       &engineComponents->velocity_manager,
-                                      engineExtras->dt);
+                                      engineExtraState->dt);
                 SYS_applyVelocity(&engineComponents->velocity_manager,
                                   &engineComponents->position_manager,
-                                  engineExtras->dt);
+                                  engineExtraState->dt);
                 SYS_updatePositions(&engineComponents->position_manager,
                                     &engineComponents->appearance_manager);
                 SYS_renderCopy(resourceRegistry->cRenderer,
@@ -141,15 +141,15 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                 SDL_RenderPresent(resourceRegistry->cRenderer);
 
                 // sleeping to limit CPU usage
-                UTI_sleep(FPS > UTI_castTimeToSecs(engineExtras->dt)
+                UTI_sleep(FPS > UTI_castTimeToSecs(engineExtraState->dt)
                               ? UTI_timeDiff(UTI_castSecsToTime(FPS),
-                                             engineExtras->dt)
+                                             engineExtraState->dt)
                               : UTI_zeroTime());
 
                 // setting the time
                 t_f = UTI_getCurTime();
 
-                engineExtras->dt = UTI_timeDiff(t_f, t_i);
+                engineExtraState->dt = UTI_timeDiff(t_f, t_i);
         }
 }
 
