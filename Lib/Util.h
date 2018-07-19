@@ -9,8 +9,8 @@
 // -----------------------------------------
 
 // use MACRO_CONCAT to concatanate 2 macros together.
-#define MACRO_CONCAT(a, b) MACRO_CONCAT_(a, b)
-#define MACRO_CONCAT_(a, b) a##b
+#define MCAT(a, b) MCAT_(a, b)
+#define MCAT_(a, b) a##b
 
 // -----------------------------------------
 //    Procedures
