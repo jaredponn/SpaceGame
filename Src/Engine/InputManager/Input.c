@@ -40,13 +40,11 @@ void INP_updateInputState(SDL_Event* e) {
                         case SDL_KEYDOWN:
                                 INP_keys_curr[e->key.keysym.scancode] =
                                     SDL_KEYDOWN;
-                                printf("Key press detected\n");
                                 break;
 
                         case SDL_KEYUP:
                                 INP_keys_curr[e->key.keysym.scancode] =
                                     SDL_KEYUP;
-                                printf("Key release detected\n");
                                 break;
 
                         case SDL_MOUSEBUTTONDOWN:
