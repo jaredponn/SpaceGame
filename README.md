@@ -44,3 +44,8 @@ Lovely preprocessor abuse:
 https://en.wikipedia.org/wiki/X_Macro
 
 https://github.com/pfultz2/Cloak/wiki/C-Preprocessor-tricks,-tips,-and-idioms
+
+
+Resource management / RAII in C:
+
+https://stackoverflow.com/questions/245742/examples-of-good-gotos-in-c-or-c
