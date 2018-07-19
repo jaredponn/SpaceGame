@@ -28,6 +28,7 @@ const int SCREEN_HEIGHT = 720;
 void ECS_initLibraries() {
         RSC_initSDL(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
         RSC_initSDLImage(IMG_INIT_PNG);
+        INP_init();
 }
 
 void ECS_initComponents(struct ECS_Components *engineComponents,
@@ -89,13 +90,13 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                     .texture =
                         resourceRegistry->cResources.cTextures.testTexture,
                     .srcrect = (SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100},
-                    .dstrect = (SDL_Rect){.x = 0, .y = 0, .w = 10, .h = 10},
+                    .dstrect = (SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100},
                     .angle = 0};
 
                 engineExtras->dt = 1;
 
                 // fun
-                if (INP_onMousePressTap(SDL_BUTTON_LEFT)) {
+                if (INP_onKeyReleaseTap(SDL_SCANCODE_A)) {
                         tmp = ECS_get_next_free_index(
                             &engineComponents->free_elements);
 
@@ -108,7 +109,7 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                             (Velocity){.x = 0, .y = 10});
 
                         // testing
-                        struct V2 transform = (struct V2){.x = 5, .y = 5};
+                        struct V2 transform = (struct V2){.x = 50, .y = 50};
 
                         Position_manager_add_at(
                             &engineComponents->position_manager, tmp,
@@ -117,6 +118,8 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                         Appearance_manager_add_at(
                             &engineComponents->appearance_manager, tmp, test);
                 }
+
+                V2_print(INP_getMousePosition());
 
                 // dont forget to copy the keys
                 INP_updateOldState();
