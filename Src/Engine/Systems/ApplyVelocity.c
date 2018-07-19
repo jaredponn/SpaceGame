@@ -49,7 +49,8 @@ void SYS_applyVelocity(const struct Velocity_Manager* const velocityManager_p,
 static void SYS_addVelocityToPosition(const Velocity* const velocity_p,
                                       Position* const position_p, Time dt) {
         // calculating the change in distance
-        struct V2 changeInDistance = V2_smul(velocity_p, dt);
+        struct V2 changeInDistance =
+            V2_smul(velocity_p, UTI_castTimeToSecs(dt));
 
         // applying the velocity changes to the position
         *position_p = V2_add(position_p, &changeInDistance);

@@ -52,7 +52,8 @@ static void SYS_addAccelerationToVelocity(
     const Acceleration* const acceleration_p, Velocity* const velocity_p,
     Time dt) {
         // calculating the change in distance
-        struct V2 changeInDistance = V2_smul(acceleration_p, dt);
+        struct V2 changeInDistance =
+            V2_smul(acceleration_p, UTI_castTimeToSecs(dt));
 
         // applying the velocity changes to the position
         *velocity_p = V2_add(velocity_p, &changeInDistance);
