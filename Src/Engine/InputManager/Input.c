@@ -19,12 +19,22 @@ static struct INP_Mouse_State INP_mouse_state_old;
 // -----------------------------------------
 //    Procedures
 // -----------------------------------------
+
+void INP_init() {
+        for (size_t i = 0; i < NUM_OF_KEYS; ++i) {
+                INP_keys_curr[i] = SDL_KEYDOWN;
+                INP_keys_old[i] = SDL_KEYDOWN;
+        }
+        INP_mouse_state_curr.mouse.position = (struct V2){.x = 0, .y = 0};
+        INP_mouse_state_curr.mouse.button = SDL_BUTTON_LEFT;
+        INP_mouse_state_curr.mouse.state = SDL_RELEASED;
+        INP_mouse_state_curr.scroll.scroll_direction =
+            (struct V2){.x = 0, .y = 0};
+
+        INP_mouse_state_old = INP_mouse_state_curr;
+}
 void INP_updateInputState(SDL_Event* e) {
         while (SDL_PollEvent(e)) {
-                // update the mouse position
-                INP_mouse_state_curr.mouse.position = (struct V2){
-                    .x = (float)e->button.x, .y = (float)e->button.y};
-
                 // changes the button states (mouse and keyboard)
                 switch (e->type) {
                         case SDL_KEYDOWN:
@@ -57,6 +67,13 @@ void INP_updateInputState(SDL_Event* e) {
                                                 .y = (float)e->wheel.y};
                                 break;
 
+                        case SDL_MOUSEMOTION:
+                                INP_mouse_state_curr.mouse.position =
+                                    (struct V2){.x = (float)e->button.x,
+                                                .y = (float)e->button.y};
+
+                                break;
+
                         default:
                                 break;
                 }
@@ -87,12 +104,14 @@ bool INP_onKeyPressTap(SDL_Scancode key) {
 bool INP_onMouseReleaseTap(Uint8 button) {
         return (INP_mouse_state_curr.mouse.button == button &&
                 INP_mouse_state_curr.mouse.state == SDL_RELEASED &&
+                INP_mouse_state_old.mouse.button == button &&
                 INP_mouse_state_old.mouse.state == SDL_PRESSED);
 }
 
 bool INP_onMousePressTap(Uint8 button) {
         return (INP_mouse_state_curr.mouse.button == button &&
                 INP_mouse_state_curr.mouse.state == SDL_PRESSED &&
+                INP_mouse_state_old.mouse.button == button &&
                 INP_mouse_state_old.mouse.state == SDL_RELEASED);
 }
 

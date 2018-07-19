@@ -34,12 +34,14 @@ struct INP_Mouse_State {
 //    Procedures
 // -----------------------------------------
 
+// initlizes the input state vairables
+void INP_init();
+
 /* When checking for what key is pressed down, this system uses SDL's scancodes
  *
  * SDL SCAN CODES: https://wiki.libsdl.org/SDL_Scancode
  *
  */
-
 // updates keyboard state
 void INP_updateInputState(SDL_Event*);
 
