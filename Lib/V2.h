@@ -18,3 +18,6 @@ __attribute__((pure)) struct V2 V2_mul(const struct V2* const,
 // multiples a V2 together and a single value. Scalar multiplication
 // e.g. (1, 1) * 2 = (2, 2)
 __attribute__((pure)) struct V2 V2_smul(const struct V2* const, const float);
+
+// print V2
+void V2_print(const struct V2* const);
