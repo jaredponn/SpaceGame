@@ -6,6 +6,11 @@ __attribute__((pure)) struct V2 V2_add(const struct V2* const a,
         return (struct V2){.x = a->x + b->x, .y = a->y + b->y};
 }
 
+__attribute__((pure)) struct V2 V2_sub(const struct V2* const a,
+                                       const struct V2* const b) {
+        return (struct V2){.x = a->x - b->x, .y = a->y - b->y};
+}
+
 __attribute__((pure)) struct V2 V2_mul(const struct V2* const a,
                                        const struct V2* const b) {
         return (struct V2){.x = a->x * b->x, .y = a->y * b->y};

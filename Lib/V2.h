@@ -10,6 +10,11 @@ struct V2 {
 __attribute__((pure)) struct V2 V2_add(const struct V2* const,
                                        const struct V2* const);
 
+// adds two V2s together and returns the result of the vectors
+// e.g. (1, 1) - (2, 3) = (-1, -2)
+__attribute__((pure)) struct V2 V2_sub(const struct V2* const,
+                                       const struct V2* const);
+
 // multiples two V2s together and returns the result of the vectors
 // e.g. (1, 1) * (2, 3) = (2, 3)
 __attribute__((pure)) struct V2 V2_mul(const struct V2* const,
