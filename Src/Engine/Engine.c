@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include "InputManager/Input.h"
+
 #include "Systems/ApplyAcceleration.h"
 #include "Systems/ApplyVelocity.h"
 #include "Systems/Render.h"
@@ -73,62 +75,51 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
         /** SDL_RenderClear(resourceRegistry->cRenderer); */
 
         while (1) {
-                SDL_Event e;
+                // event handling
 
+                SDL_Event e;
+                INP_updateInputState(&e);
+
+                // clears the background to black
                 SDL_SetRenderDrawColor(resourceRegistry->cRenderer, 0, 0, 0, 0);
                 SDL_RenderClear(resourceRegistry->cRenderer);
 
+                // other shit
                 Appearance test = (Appearance){
                     .texture =
                         resourceRegistry->cResources.cTextures.testTexture,
                     .srcrect = (SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100},
-                    .dstrect = (SDL_Rect){.x = 0, .y = 0, .w = 400, .h = 300},
+                    .dstrect = (SDL_Rect){.x = 0, .y = 0, .w = 10, .h = 10},
                     .angle = 0};
 
                 engineExtras->dt = 1;
 
-                // TODO shitty event handler redo later
-                while (SDL_PollEvent(&e)) {
-                        /* We are only worried about SDL_KEYDOWN and SDL_KEYUP
-                         * events */
-                        switch (e.type) {
-                                case SDL_KEYDOWN:
+                // fun
+                if (INP_onMousePressTap(SDL_BUTTON_LEFT)) {
+                        tmp = ECS_get_next_free_index(
+                            &engineComponents->free_elements);
 
-                                        tmp = ECS_get_next_free_index(
-                                            &engineComponents->free_elements);
+                        Acceleration_manager_add_at(
+                            &engineComponents->acceleration_manager, tmp,
+                            (Acceleration){.x = 0, .y = -0.1});
 
-                                        printf("NEXT FRE INDEX: %lu \n", tmp);
+                        Velocity_manager_add_at(
+                            &engineComponents->velocity_manager, tmp,
+                            (Velocity){.x = 0, .y = 10});
 
-                                        Acceleration_manager_add_at(
-                                            &engineComponents
-                                                 ->acceleration_manager,
-                                            tmp,
-                                            (Acceleration){.x = 0, .y = -0.1});
+                        // testing
+                        struct V2 transform = (struct V2){.x = 5, .y = 5};
 
-                                        Velocity_manager_add_at(
-                                            &engineComponents->velocity_manager,
-                                            tmp, (Velocity){.x = 0, .y = 1});
+                        Position_manager_add_at(
+                            &engineComponents->position_manager, tmp,
+                            V2_sub(INP_getMousePosition(), &transform));
 
-                                        Position_manager_add_at(
-                                            &engineComponents->position_manager,
-                                            tmp, (Position){.x = 10, .y = 100});
-
-                                        Appearance_manager_add_at(
-                                            &engineComponents
-                                                 ->appearance_manager,
-                                            tmp, test);
-
-                                        printf("Key press detected\n");
-                                        break;
-
-                                case SDL_KEYUP:
-                                        printf("Key release detected\n");
-                                        break;
-
-                                default:
-                                        break;
-                        }
+                        Appearance_manager_add_at(
+                            &engineComponents->appearance_manager, tmp, test);
                 }
+
+                // dont forget to copy the keys
+                INP_updateOldState();
 
                 // running the systems
                 SYS_applyAcceleration(&engineComponents->acceleration_manager,
