@@ -71,7 +71,6 @@ void INP_updateInputState(SDL_Event* e) {
                                 INP_mouse_state_curr.mouse.position =
                                     (struct V2){.x = (float)e->button.x,
                                                 .y = (float)e->button.y};
-
                                 break;
 
                         default:
