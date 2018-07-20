@@ -1,12 +1,6 @@
 #include "Appearance.h"
 
 // -----------------------------------------
-//    Macros
-// -----------------------------------------
-VECTOR_DEFINE(Appearance, Appearance)
-COMPONENT_MANAGER_DEFINE(Appearance, Appearance)
-
-// -----------------------------------------
 //    Internal declarations
 // -----------------------------------------
 

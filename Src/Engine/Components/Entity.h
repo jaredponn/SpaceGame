@@ -21,5 +21,3 @@ typedef enum CPT_Components {
 
 } CPT_Components;
 
-VECTOR_DECLARE(Entity, Entity)
-COMPONENT_MANAGER_DECLARE(Entity, Entity)
