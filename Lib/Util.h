@@ -1,16 +1,9 @@
 #pragma once
+#include <assert.h>
 #include <stdlib.h>
 /**
  * Utility functions for this project
  */
-
-// -----------------------------------------
-//    Macros
-// -----------------------------------------
-
-// use MACRO_CONCAT to concatanate 2 macros together.
-#define MCAT(a, b) MCAT_(a, b)
-#define MCAT_(a, b) a##b
 
 // -----------------------------------------
 //    Procedures
