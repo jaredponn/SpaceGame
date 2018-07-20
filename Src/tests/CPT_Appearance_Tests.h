@@ -2,7 +2,7 @@
 #include <check.h>
 #include <stdbool.h>
 #include "Src/Engine/Components/Appearance.h"
-#include "Src/Engine/Components/Position.h"
+#include "Src/Engine/Components/Movement.h"
 
 // tests if the rects are equal
 bool SDL_rectEquals(const SDL_Rect rect1, const SDL_Rect rect2);
