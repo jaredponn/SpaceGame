@@ -76,7 +76,11 @@
          * however, it will be overwritten next freelist_add. It will also NOT \
          * check if the data is already deleted*/                              \
         void PREFIX##_freelist_removeat(struct PREFIX##_FreeList*,             \
-                                        const size_t);
+                                        const size_t);                         \
+                                                                               \
+        /* freelist_free */                                                    \
+        /* frees the free list's memory */                                     \
+        void PREFIX##_freelist_free(struct PREFIX##_FreeList*);
 
 #define FREELIST_DEFINE(TYPE, PREFIX)                                       \
         /* freelist_init */                                                 \
@@ -136,4 +140,9 @@
                 tmp.next_free_index = freelist->cur_free_index;             \
                 PREFIX##_vector_set(&freelist->data, index, tmp);           \
                 freelist->cur_free_index = index;                           \
+        }                                                                   \
+                                                                            \
+        /* freelist_free */                                                 \
+        void PREFIX##_freelist_free(struct PREFIX##_FreeList* freelist) {   \
+                PREFIX##_vector_free(&freelist->data);                      \
         }
