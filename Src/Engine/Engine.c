@@ -3,10 +3,11 @@
 
 #include "InputManager/Input.h"
 
-#include "Systems/ApplyAcceleration.h"
-#include "Systems/ApplyVelocity.h"
+#include "Systems/ApplyMovementTransforms.h"
 #include "Systems/Render.h"
 #include "Systems/UpdatePositions.h"
+
+#include "Components/MovementGenerics.h"
 
 #include <SDL2/SDL.h>
 #include <stdbool.h>
@@ -31,20 +32,6 @@ void ECS_initLibraries() {
         RSC_initSDL(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
         RSC_initSDLImage(IMG_INIT_PNG);
         INP_init();
-}
-
-void ECS_initComponents(struct ECS_Components *engineComponents,
-                        size_t capacity) {
-        E_freelist_init(&engineComponents->free_elements);
-        E_freelist_reserve(&engineComponents->free_elements, capacity);
-
-        Entity_manager_init(&engineComponents->entity_manager, capacity);
-        Acceleration_manager_init(&engineComponents->acceleration_manager,
-                                  capacity);
-        Velocity_manager_init(&engineComponents->velocity_manager, capacity);
-        Position_manager_init(&engineComponents->position_manager, capacity);
-        Appearance_manager_init(&engineComponents->appearance_manager,
-                                capacity);
 }
 
 void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
@@ -101,24 +88,25 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                             &engineComponents->free_elements);
 
                         Acceleration_manager_add_at(
-                            &engineComponents->acceleration_manager,
+                            ECS_manager_get(Acceleration)(engineComponents),
                             nextGlobalFreeIndex,
                             (Acceleration){.x = 0, .y = -2});
 
                         Velocity_manager_add_at(
-                            &engineComponents->velocity_manager,
+                            ECS_manager_get(Velocity)(engineComponents),
                             nextGlobalFreeIndex, (Velocity){.x = 0, .y = 2});
 
                         // testing
-                        struct V2 transform = (struct V2){.x = 50, .y = 50};
+                        Position transform = (Position){.x = 50, .y = 50};
 
                         Position_manager_add_at(
-                            &engineComponents->position_manager,
+                            ECS_manager_get(Position)(engineComponents),
                             nextGlobalFreeIndex,
-                            V2_sub(INP_getMousePosition(), &transform));
+                            MVT_sub((const Position *)INP_getMousePosition(),
+                                    &transform));
 
                         Appearance_manager_add_at(
-                            &engineComponents->appearance_manager,
+                            ECS_manager_get(Appearance)(engineComponents),
                             nextGlobalFreeIndex, test);
                 }
 
@@ -126,16 +114,21 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                 INP_updateOldState();
 
                 // running the systems
-                SYS_applyAcceleration(&engineComponents->acceleration_manager,
-                                      &engineComponents->velocity_manager,
-                                      engineExtraState->dt);
-                SYS_applyVelocity(&engineComponents->velocity_manager,
-                                  &engineComponents->position_manager,
+                SYS_applyAcceleration(
+                    ECS_manager_get(Acceleration)(engineComponents),
+                    ECS_manager_get(Velocity)(engineComponents),
+                    engineExtraState->dt);
+
+                SYS_applyVelocity(ECS_manager_get(Velocity)(engineComponents),
+                                  ECS_manager_get(Position)(engineComponents),
                                   engineExtraState->dt);
-                SYS_updatePositions(&engineComponents->position_manager,
-                                    &engineComponents->appearance_manager);
+                SYS_updatePositions(
+                    ECS_manager_get(Position)(engineComponents),
+                    ECS_manager_get(Appearance)(engineComponents));
+
                 SYS_renderCopy(resourceRegistry->cRenderer,
-                               &engineComponents->appearance_manager);
+
+                               ECS_manager_get(Appearance)(engineComponents));
 
                 // rendering
                 SDL_RenderPresent(resourceRegistry->cRenderer);

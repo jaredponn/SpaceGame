@@ -12,9 +12,6 @@
 // initializes SDL
 void ECS_initLibraries();
 
-// initializes the game engine. The size_t initialize size of the vectors
-void ECS_initComponents(struct ECS_Components*, size_t);
-
 // loads the resource registry with a renderer, window, and textures
 void ECS_loadInitResources(struct ECS_ResourceRegistry*);
 
@@ -32,9 +29,6 @@ void ECS_runEngine(struct ECS_Components*, struct ECS_ResourceRegistry*,
 // -----------------------------------------
 //    Destructors
 // -----------------------------------------
-
-// TODO
-void ECS_freeComponents(struct ECS_Components*, size_t);
 
 // TODO
 void ECS_freeResources(struct ECS_ResourceRegistry*);
