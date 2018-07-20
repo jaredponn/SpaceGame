@@ -2,7 +2,7 @@
 # export CC=/usr/bin/clang
 
 project('SpaceGame', 'c',
- default_options : ['c_std=c11', '-Wall','-Wextra'] )
+ default_options : ['c_std=c11', '-Wall','-Wextra', '-O2'] )
 
 inc = include_directories('Extras')
 inc = include_directories('Lib')
@@ -16,17 +16,14 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Resources/LoadResources.c'
        # Components
        , 'Src/Engine/Components/EngineComponents.c'
-       , 'Src/Engine/Components/Acceleration.c'
-       , 'Src/Engine/Components/Position.c'
-       , 'Src/Engine/Components/Velocity.c'
+       , 'Src/Engine/Components/Movement.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'
 
        # Systems
        , 'Src/Engine/Systems/Render.c'
        , 'Src/Engine/Systems/UpdatePositions.c'
-       , 'Src/Engine/Systems/ApplyVelocity.c'
-       , 'Src/Engine/Systems/ApplyAcceleration.c'
+       , 'Src/Engine/Systems/ApplyMovementTransforms.c'
 
        # extras
        , 'Src/Engine/ExtraState/EngineExtraState.c'
