@@ -7,6 +7,8 @@
 #include "Systems/Render.h"
 #include "Systems/UpdatePositions.h"
 
+#include "Components/EngineComponentGenerics.h"
+#include "Components/EngineComponents.h"
 #include "Components/MovementGenerics.h"
 
 #include <SDL2/SDL.h>
@@ -87,27 +89,28 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                         nextGlobalFreeIndex = ECS_get_next_free_index(
                             &engineComponents->free_elements);
 
-                        Acceleration_manager_add_at(
-                            ECS_manager_get(Acceleration)(engineComponents),
-                            nextGlobalFreeIndex,
-                            (Acceleration){.x = 0, .y = -2});
+                        // adding acceleration
+                        Acceleration tmpacc = (Acceleration){.x = 0, .y = -2};
+                        ECS_add_elem_at(engineComponents, &tmpacc,
+                                        nextGlobalFreeIndex);
 
-                        Velocity_manager_add_at(
-                            ECS_manager_get(Velocity)(engineComponents),
-                            nextGlobalFreeIndex, (Velocity){.x = 0, .y = 2});
+                        // adding velocity
+                        Velocity tmpvel = (Velocity){.x = 0, .y = -2};
+                        ECS_add_elem_at(engineComponents, &tmpvel,
+                                        nextGlobalFreeIndex);
 
-                        // testing
+                        // adding position
                         Position transform = (Position){.x = 50, .y = 50};
-
-                        Position_manager_add_at(
-                            ECS_manager_get(Position)(engineComponents),
-                            nextGlobalFreeIndex,
+                        Position tmppos =
                             MVT_sub((const Position *)INP_getMousePosition(),
-                                    &transform));
+                                    &transform);
+                        ECS_add_elem_at(engineComponents, &tmppos,
+                                        nextGlobalFreeIndex);
 
-                        Appearance_manager_add_at(
-                            ECS_manager_get(Appearance)(engineComponents),
-                            nextGlobalFreeIndex, test);
+                        // adding appearance
+                        Appearance tmpapp = test;
+                        ECS_add_elem_at(engineComponents, &tmpapp,
+                                        nextGlobalFreeIndex);
                 }
 
                 // updated the old input state

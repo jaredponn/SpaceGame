@@ -67,7 +67,8 @@ START_TEST(componentmanager_test) {
          * data: [0,7]
          */
         // at index 3, add value 7 to the array
-        Int_manager_add_at(&intmgr, 3, 7);
+        int tmp1 = 7;
+        Int_manager_add_at(&intmgr, 3, &tmp1);
 
         // checking the size / capacity of sparse_vector. should still be 10
         ck_assert_int_eq(sizet_vector_size(&intmgr.sparse_vector), 10);
@@ -109,7 +110,8 @@ START_TEST(componentmanager_test) {
          */
         // clang-format on
         // at index 10, add value 4 to the array
-        Int_manager_add_at(&intmgr, 10, 4);
+        int tmp2 = 4;
+        Int_manager_add_at(&intmgr, 10, &tmp2);
 
         // checking the size / capacity of sparse_vector. Should change to 15,
         // because 10 is too small
@@ -156,7 +158,8 @@ START_TEST(componentmanager_test) {
          */
         // clang-format on
         // at index 0, add value 4 to the array
-        Int_manager_add_at(&intmgr, 0, 4);
+        int tmp3 = 4;
+        Int_manager_add_at(&intmgr, 0, &tmp3);
 
         // checking the size / capacity of sparse_vector. Should change to 15,
         // because 10 is too small
@@ -212,10 +215,14 @@ START_TEST(componentmanager_test2) {
          * data: [0,7,4]
          */
         // clang-format on
-        Int_manager_add_at(&intmgr, 0, 0);
-        Int_manager_add_at(&intmgr, 3, 7);
-        Int_manager_add_at(&intmgr, 10, 4);
-        Int_manager_add_at(&intmgr, 0, 4);
+        int tmp0 = 0;
+        int tmp1 = 7;
+        int tmp2 = 4;
+        int tmp3 = 4;
+        Int_manager_add_at(&intmgr, 0, &tmp0);
+        Int_manager_add_at(&intmgr, 3, &tmp1);
+        Int_manager_add_at(&intmgr, 10, &tmp2);
+        Int_manager_add_at(&intmgr, 0, &tmp3);
 
         // clang-format off
         /* Deleting index 0
@@ -385,12 +392,17 @@ START_TEST(componentmanager_test3) {
          * global_indices: [0, 1, 2, 3, 4]
          * data: [3,9,2,12,9]
          */
+        int tmp0 = 3;
+        int tmp1 = 9;
+        int tmp2 = 2;
+        int tmp3 = 12;
+        int tmp4 = 9;
         // clang-format on
-        Int_manager_add_at(&intmgr, 0, 3);
-        Int_manager_add_at(&intmgr, 1, 9);
-        Int_manager_add_at(&intmgr, 2, 2);
-        Int_manager_add_at(&intmgr, 3, 12);
-        Int_manager_add_at(&intmgr, 4, 9);
+        Int_manager_add_at(&intmgr, 0, &tmp0);
+        Int_manager_add_at(&intmgr, 1, &tmp1);
+        Int_manager_add_at(&intmgr, 2, &tmp2);
+        Int_manager_add_at(&intmgr, 3, &tmp3);
+        Int_manager_add_at(&intmgr, 4, &tmp4);
 
         // checking the get_data_p_at function when in bounds
         ck_assert_int_eq(*Int_manager_get_data_p_at(&intmgr, 0), 3);
@@ -439,8 +451,10 @@ START_TEST(componentmanager_test4) {
          * data: [0,1,2,3,4]
          */
         // clang-format on
+        int tmp;
         for (size_t i = 0; i < sizet_vector_size(&intmgr.sparse_vector); ++i) {
-                Int_manager_add_at(&intmgr, i, (int)i);
+                tmp = (int)i;
+                Int_manager_add_at(&intmgr, i, &tmp);
         }
         // checking the size / capacity of sparse_vector.
         ck_assert_int_eq(sizet_vector_size(&intmgr.sparse_vector), 5);
@@ -459,8 +473,9 @@ START_TEST(componentmanager_test4) {
          * data: [0,1,4,3,7]
          */
         // clang-format on
+        int tmp1 = 7;
         Int_manager_remove(&intmgr, 2);
-        Int_manager_add_at(&intmgr, 2, 7);
+        Int_manager_add_at(&intmgr, 2, &tmp1);
 
         // checking the size / capacity of sparse_vector.
         ck_assert_int_eq(sizet_vector_size(&intmgr.sparse_vector), 5);

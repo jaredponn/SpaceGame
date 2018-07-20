@@ -47,7 +47,7 @@
          * size of the required index. Also, it checks to see if the current   \
          * index is free, so it will not add to the index UNLESS it is free.*/ \
         void PREFIX##_manager_add_at(struct PREFIX##_Manager* manager,         \
-                                     const size_t index, TYPE val);            \
+                                     const size_t index, TYPE* val);           \
                                                                                \
         /* manager_remove */                                                   \
         /* remove the component in the packed array "data" by                  \
@@ -108,7 +108,7 @@
                                                                                \
         /* manager_add_at */                                                   \
         void PREFIX##_manager_add_at(struct PREFIX##_Manager* manager,         \
-                                     const size_t index, TYPE val) {           \
+                                     const size_t index, TYPE* val) {          \
                 /* if the desired index is outside of the                      \
                  * sparse_vector, it                                           \
                  * will resize itself to be 1.5X the index */                  \
@@ -128,7 +128,7 @@
                          * array. Otherwise, use vector_set.*/                 \
                         sizet_vector_push_back(&manager->global_indices,       \
                                                index);                         \
-                        PREFIX##_vector_push_back(&manager->data, val);        \
+                        PREFIX##_vector_push_back(&manager->data, *val);       \
                         /* increases the next index by one, so that            \
                          * the next add will push_back */                      \
                         ++manager->next_packed_index;                          \
