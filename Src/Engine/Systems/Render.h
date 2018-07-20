@@ -1,4 +1,5 @@
 #include "Src/Engine/Components/Appearance.h"
+#include "Src/Engine/Components/EngineComponents.h"
 
 // -----------------------------------------
 //    Procedures
