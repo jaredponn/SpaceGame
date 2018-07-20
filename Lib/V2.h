@@ -1,5 +1,9 @@
 #pragma once
 
+// -----------------------------------------
+//    Regular V2
+// -----------------------------------------
+
 struct V2 {
         float x;  // x coordinate
         float y;  // y coordinate
