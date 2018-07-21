@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include "Lib/GenericComponentManager.h"
 #include "Lib/GenericVector.h"
 
@@ -9,7 +10,7 @@
 
 // bit shifted integer corrosponding to the enum Componenets that keeps track of
 // which Components the entity contains
-typedef unsigned int Entity;
+typedef uint64_t Entity;
 
 // how the different components are classified
 typedef enum CPT_Components {
@@ -20,4 +21,3 @@ typedef enum CPT_Components {
         CPT_APPEARANCE = 1 << 4
 
 } CPT_Components;
-
