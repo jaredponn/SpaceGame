@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "InputManager.h"
 
 #define NUM_OF_KEYS 284
 

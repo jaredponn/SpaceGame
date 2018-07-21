@@ -48,7 +48,7 @@ void INP_updateInputState(SDL_Event*);
 // updates keybaor dstate. Must be called after the event handler
 void INP_updateOldState();
 
-// returns a const pointer to the keys
+// returns pointer to the keys
 const Uint32* INP_getCurrKeys();
 // returns a const pointer to the mouse state
 const struct INP_Mouse_State* INP_getCurrMouseState();

@@ -1,7 +1,7 @@
 #include "Engine.h"
 #include "Lib/Time.h"
 
-#include "InputManager/Input.h"
+#include "Input/InputManager.h"
 
 #include "Systems/ApplyMovementTransforms.h"
 #include "Systems/Render.h"
