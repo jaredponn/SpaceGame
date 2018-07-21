@@ -14,22 +14,28 @@ srcs = ['Src/Main.c'
        # resource loading
        , 'Src/Engine/Resources/ResourceRegistry.c'
        , 'Src/Engine/Resources/LoadResources.c'
+
        # Components
        , 'Src/Engine/Components/EngineComponents.c'
        , 'Src/Engine/Components/Movement.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'
+       , 'Src/Engine/Components/Aabb.c'
 
        # Systems
        , 'Src/Engine/Systems/Render.c'
        , 'Src/Engine/Systems/UpdatePositions.c'
        , 'Src/Engine/Systems/ApplyMovementTransforms.c'
+       , 'Src/Engine/Systems/TestRectAabb.h'
 
        # extras
        , 'Src/Engine/ExtraState/EngineExtraState.c'
 
         # inputs
        , 'Src/Engine/InputManager/Input.c'
+
+        # Evenet manager
+       , 'Src/Engine/EventManager/EventManager.c'
 
         # Lib
        , 'Lib/Util.c' 
