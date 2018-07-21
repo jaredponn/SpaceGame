@@ -21,6 +21,13 @@
 const float FPS = 1.f / 64;
 
 // -----------------------------------------
+//    Private declartaions
+// -----------------------------------------
+
+// sleeps the engine to not overuse cpu
+static void ECS_sleep(float FPS, Time dt);
+
+// -----------------------------------------
 //    Procedures
 // -----------------------------------------
 
@@ -111,10 +118,7 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                 SDL_RenderPresent(resourceRegistry->cRenderer);
 
                 // sleeping to limit CPU usage
-                UTI_sleep(FPS > UTI_castTimeToSecs(engineExtraState->dt)
-                              ? UTI_timeDiff(UTI_castSecsToTime(FPS),
-                                             engineExtraState->dt)
-                              : UTI_zeroTime());
+                ECS_sleep(FPS, engineExtraState->dt);
 
                 // setting the time
                 t_f = UTI_getCurTime();
@@ -126,4 +130,13 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
 void ECS_quitLibraries() {
         SDL_Quit();
         IMG_Quit();
+}
+// -----------------------------------------
+//    Private function implementations
+// -----------------------------------------
+
+static void ECS_sleep(float FPS, Time dt) {
+        UTI_sleep(FPS > UTI_castTimeToSecs(dt)
+                      ? UTI_timeDiff(UTI_castSecsToTime(FPS), dt)
+                      : UTI_zeroTime());
 }
