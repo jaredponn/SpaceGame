@@ -15,15 +15,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-// clang-format off
-#define EXTRAS_PATH "/home/jared/Programs/SpaceGame/Extras"
-// clang-format on
-
 // -----------------------------------------
 //    Constants
 // -----------------------------------------
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
 const float FPS = 1.f / 64;
 
 // -----------------------------------------
@@ -36,29 +30,9 @@ void ECS_initLibraries() {
         INP_init();
 }
 
-void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry) {
-        SDL_Window *window = RSC_createInitWindow(
-            "Space Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
-
-        SDL_Renderer *renderer =
-            RSC_createInitRenderer(window, SDL_RENDERER_ACCELERATED);
-
-        // TODO add proper error handling
-        SDL_Texture *testTexture =
-            RSC_loadImage(renderer, EXTRAS_PATH "/Images/bg.png");
-
-        resourceRegistry->cWindow = window;
-        resourceRegistry->cRenderer = renderer;
-        resourceRegistry->cResources.cTextures.testTexture = testTexture;
-}
-
-void ECS_initExtraState(struct ECS_ExtraState *engineExtraState) {
-        engineExtraState->camera_position = (struct V2){.x = 0, .y = 0};
-        engineExtraState->dt = UTI_zeroTime();
-}
 void ECS_runEngine(struct ECS_Components *engineComponents,
                    struct ECS_ResourceRegistry *resourceRegistry,
+                   struct ECS_EventManager *engineEventManager,
                    struct ECS_ExtraState *engineExtraState) {
         // declarations
         SDL_Event e;
