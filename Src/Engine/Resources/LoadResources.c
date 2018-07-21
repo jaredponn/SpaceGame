@@ -101,7 +101,15 @@ SDL_Texture* RSC_loadImage(SDL_Renderer* renderer, const char* path) {
                 // error handling
                 if (surface == NULL) {
                         RSC_SDLIImageErrorHandler(surfaceErrMsg);
-                        return NULL;
+                        surface = SDL_CreateRGBSurface(0, 1, 1, 32, 0, 0, 0, 0);
+
+                        // maybe add more proper error handling for SDL_FillRect
+                        SDL_FillRect(surface, NULL,
+                                     SDL_MapRGB(surface->format, 255, 0, 0));
+
+                        RSC_SDLIImageErrorHandler(
+                            "Failed to load image, so loading a red rectangle "
+                            "instead");
                 }
 
                 free(surfaceErrMsg);

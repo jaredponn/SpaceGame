@@ -8,3 +8,6 @@ struct ECS_ExtraState {
         struct V2 camera_position;  // camera position
         // TODO keys / input
 };
+
+// initializes the extras with default values
+void ECS_initExtraState(struct ECS_ExtraState*);

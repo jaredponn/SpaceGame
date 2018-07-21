@@ -34,5 +34,8 @@ struct ECS_ResourceRegistry {
 //    Procedures
 // -----------------------------------------
 
+// loads the resource registry with a renderer, window, and textures
+void ECS_loadInitResources(struct ECS_ResourceRegistry*);
+
 // clears and deallocates all resources in the registry
 void ECS_destroyRegistry(struct ECS_ResourceRegistry*);
