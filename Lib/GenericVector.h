@@ -97,6 +97,10 @@
         void PREFIX##_vector_remove(struct PREFIX##_Vector*,                   \
                                     const size_t index);                       \
                                                                                \
+        /* vector_lazy_clear */                                                \
+        /*lazily clears a vector by setting the size back to 0*/               \
+        void PREFIX##_vector_lazy_clear(struct PREFIX##_Vector*);              \
+                                                                               \
         /* vector_free */                                                      \
         /*frees the memory allocated by the vector.       */                   \
         void PREFIX##_vector_free(struct PREFIX##_Vector*);
@@ -212,6 +216,11 @@
                             vector, i, PREFIX##_vector_get(vector, i + 1));    \
                 }                                                              \
                 --vector->size;                                                \
+        }                                                                      \
+                                                                               \
+        /* vector_lazy_clear */                                                \
+        void PREFIX##_vector_lazy_clear(struct PREFIX##_Vector* vector) {      \
+                vector->size = 0;                                              \
         }                                                                      \
                                                                                \
         /*vector_free*/                                                        \
