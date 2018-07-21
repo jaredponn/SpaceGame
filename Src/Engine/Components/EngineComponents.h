@@ -5,6 +5,7 @@
 #include "Lib/GenericComponentManager.h"
 #include "Lib/GenericVector.h"
 
+#include "Aabb.h"
 #include "Appearance.h"
 #include "Entity.h"
 #include "Movement.h"
@@ -19,7 +20,8 @@
         X_CPT(Position)     \
         X_CPT(Velocity)     \
         X_CPT(Acceleration) \
-        X_CPT(Appearance)
+        X_CPT(Appearance)   \
+        X_CPT(RectAabb0)
 
 // Defines how to name the managers in ECS_Components
 #define MANAGER_NAME(name) m_##name
