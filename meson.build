@@ -32,7 +32,8 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/ExtraState/EngineExtraState.c'
 
         # inputs
-       , 'Src/Engine/InputManager/Input.c'
+       , 'Src/Engine/Input/InputManager.c'
+       , 'Src/Engine/Input/InputHandler.c'
 
         # Evenet manager
        , 'Src/Engine/EventManager/EventManager.c'
