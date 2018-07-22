@@ -19,7 +19,7 @@ void ECS_initLibraries();
 
 // runs the engine with the resources
 void ECS_runEngine(struct ECS_Components*, struct ECS_ResourceRegistry*,
-                   struct ECS_EventManager*, struct ECS_ExtraState*);
+                   struct Event_Vector*, struct ECS_ExtraState*);
 
 // -----------------------------------------
 //    Destructors
