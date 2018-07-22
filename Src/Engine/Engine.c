@@ -39,7 +39,7 @@ void ECS_initLibraries() {
 
 void ECS_runEngine(struct ECS_Components *engineComponents,
                    struct ECS_ResourceRegistry *resourceRegistry,
-                   struct ECS_EventManager *engineEventManager,
+                   struct Event_Vector *engineEventManager,
                    struct ECS_ExtraState *engineExtraState) {
         // declarations
         SDL_Event e;
