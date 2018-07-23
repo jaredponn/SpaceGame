@@ -3,6 +3,7 @@
 #include "Components/EngineComponents.h"
 #include "EventManager/EventManager.h"
 #include "ExtraState/EngineExtraState.h"
+#include "Input/InputMap.h"
 #include "Resources/LoadResources.h"
 #include "Resources/ResourceRegistry.h"
 
@@ -12,6 +13,7 @@
 
 // initializes SDL
 void ECS_initLibraries();
+void ECS_initInput(struct INP_InputMap*);
 
 // -----------------------------------------
 //    Run
@@ -19,7 +21,8 @@ void ECS_initLibraries();
 
 // runs the engine with the resources
 void ECS_runEngine(struct ECS_Components*, struct ECS_ResourceRegistry*,
-                   struct Event_Vector*, struct ECS_ExtraState*);
+                   struct INP_InputMap*, struct Event_Vector*,
+                   struct ECS_ExtraState*);
 
 // -----------------------------------------
 //    Destructors
