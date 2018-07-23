@@ -32,8 +32,9 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/ExtraState/EngineExtraState.c'
 
         # inputs
-       , 'Src/Engine/Input/InputManager.c'
+       , 'Src/Engine/Input/GameInputMaps.c'
        , 'Src/Engine/Input/InputHandler.c'
+       , 'Src/Engine/Input/InputMap.c'
 
         # Evenet manager
        , 'Src/Engine/EventManager/EventManager.c'

@@ -14,16 +14,20 @@ int main(void) {
         struct ECS_ResourceRegistry resourceRegistry;
         ECS_loadInitResources(&resourceRegistry);
 
+        struct INP_InputMap inputMap;
+        ECS_initInput(&inputMap);
+
         // declaring/ initlizting the extras
         struct ECS_ExtraState engineExtraState;
         ECS_initExtraState(&engineExtraState);
 
-        struct ECS_EventManager engineEventManager;
-        ECS_initEventManager(&engineEventManager, INITCAPACITY);
+        struct Event_Vector engineEventManager;
+        Event_vector_init(&engineEventManager);
+        Event_vector_reserve(&engineEventManager, INITCAPACITY);
 
         // running the game
-        ECS_runEngine(&engineComponents, &resourceRegistry, &engineEventManager,
-                      &engineExtraState);
+        ECS_runEngine(&engineComponents, &resourceRegistry, &inputMap,
+                      &engineEventManager, &engineExtraState);
 
         // closing resources
         ECS_destroyRegistry(&resourceRegistry);
