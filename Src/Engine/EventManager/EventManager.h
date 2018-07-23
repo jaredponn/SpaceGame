@@ -36,7 +36,7 @@ typedef union EVT_Signal {
 
 // Event type
 typedef struct Event {
-        unsigned int type;       /**< type that each event should have */
+        EVT_Type type;           /**< type that each event should have */
         union EVT_Signal signal; /**< data for the event */
 } Event;
 
