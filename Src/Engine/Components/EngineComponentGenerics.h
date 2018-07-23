@@ -18,9 +18,3 @@
 
 #define F_CPT_ADD(type) type*:ECS_add_##type##_at,
 #define ECS_add_elem_at(components, val, index) _Generic((val), REMOVE_EXTRA_COMMA(DEFER1(MAP)(F_CPT_ADD, LIST_OF_COMPONENTS))) (components, val, index)
-
-/*
-// creating generic MVT_add (V2_add) function
-#define F_MVT_add(type)const type* : type##_add,
-#define MVT_add(a, b) _Generic((a),REMOVE_EXTRA_COMMA(DEFER1(MAP)(F_MVT_add, LIST_OF_MOVEMENTS))) (a,b)
-*/
