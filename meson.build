@@ -2,7 +2,9 @@
 # export CC=/usr/bin/clang
 
 project('SpaceGame', 'c',
- default_options : ['c_std=c11', '-Wall','-Wextra', '-O2'] )
+ default_options : ['c_std=c11'] )
+
+add_project_arguments(' -Wall', '-Wextra', '-O2', language : 'c')
 
 inc = include_directories('Extras')
 inc = include_directories('Lib')
@@ -23,10 +25,10 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Components/Aabb.c'
 
        # Systems
-       , 'Src/Engine/Systems/Render.c'
+       , 'Src/Engine/Systems/RenderCopy.c'
        , 'Src/Engine/Systems/UpdatePositions.c'
        , 'Src/Engine/Systems/ApplyMovementTransforms.c'
-       , 'Src/Engine/Systems/TestRectAabb.h'
+       , 'Src/Engine/Systems/AabbHitTest.c'
 
        # extras
        , 'Src/Engine/ExtraState/EngineExtraState.c'
