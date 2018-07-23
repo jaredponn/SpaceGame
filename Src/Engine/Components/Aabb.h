@@ -44,9 +44,6 @@ DECLARE_RECTAABB_LAYER()
 DECLARE_CIRCAABB_LAYER()
 DECLARE_SEGAABB_LAYER()
 
-// declaring additional layers
-DECLARE_RECTAABB_LAYER(0)
-
 // -----------------------------------------
 //    Hit test procedures
 // -----------------------------------------

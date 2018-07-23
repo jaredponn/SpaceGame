@@ -16,5 +16,8 @@
    */
 #define X_CPT(val) val,
 
-#define F_CPT_ADD(type) type*:ECS_add_##type##_at,
-#define ECS_add_elem_at(components, val, index) _Generic((val), REMOVE_EXTRA_COMMA(DEFER1(MAP)(F_CPT_ADD, LIST_OF_COMPONENTS))) (components, val, index)
+#define F_CPT_ADD(type) type*:ECS_add##type##At,
+#define ECS_addComponentAt(components, val, index) _Generic((val), REMOVE_EXTRA_COMMA(DEFER1(MAP)(F_CPT_ADD, LIST_OF_COMPONENTS))) (components, val, index)
+
+// adds component to the current free index
+#define ECS_addComponent(components, val) ECS_addComponentAt(components, val,ECS_getCurFreeIndex(components))

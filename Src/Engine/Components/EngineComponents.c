@@ -13,14 +13,17 @@ void ECS_initComponents(struct ECS_Components* engineComponents,
 #undef X_CPT
 }
 
-size_t ECS_get_next_free_index(struct E_FreeList* freeElements) {
-        return E_freelist_add(freeElements, (E){SIZE_MAX});
+size_t ECS_updateCurFreeIndex(struct ECS_Components* components) {
+        return E_freelist_add(&components->free_elements, (E){SIZE_MAX});
 }
 
-void ECS_delete_entity_at(struct ECS_Components* engineComponents,
-                          size_t index) {
+size_t ECS_getCurFreeIndex(struct ECS_Components* components) {
+        return E_freelist_get_curr_free_index(&components->free_elements);
+}
+
+void ECS_deleteEntityAt(struct ECS_Components* engineComponents, size_t index) {
         // marking the index free for the next get_next_free_index function
-        E_freelist_removeat(&engineComponents->free_elements, index);
+        E_freelist_remove_at(&engineComponents->free_elements, index);
 
         // deleting the components each of the managers
 #define X_CPT(name) \
@@ -47,8 +50,8 @@ LIST_OF_COMPONENTS
 
 // defining the compoent manager adders
 #define X_CPT(type)                                                          \
-        void ECS_add_##type##_at(struct ECS_Components* engineComponents,    \
-                                 type* val, size_t index) {                  \
+        void ECS_add##type##At(struct ECS_Components* engineComponents,      \
+                               type* val, size_t index) {                    \
                 type##_manager_add_at(                                       \
                     ECS_get_##type##_manager(engineComponents), index, val); \
         }

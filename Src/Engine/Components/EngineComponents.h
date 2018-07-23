@@ -21,7 +21,7 @@
         X_CPT(Velocity)     \
         X_CPT(Acceleration) \
         X_CPT(Appearance)   \
-        X_CPT(RectAabb0)
+        X_CPT(RectAabb)
 
 // Defines how to name the managers in ECS_Components
 #define MANAGER_NAME(name) m_##name
@@ -51,7 +51,7 @@ struct ECS_Components {
             free_elements;  // for keeping track of where to add and delete
                             // things in the sparse arrays
 
-        // clang-format off
+// clang-format off
         // putting the managers inside of this struct
         #define X_CPT(name) struct name##_Manager MANAGER_NAME(name);
         LIST_OF_COMPONENTS
@@ -66,10 +66,13 @@ struct ECS_Components {
 // initializes the compoenets engine. The size_t initialize size of the vectors
 void ECS_initComponents(struct ECS_Components*, size_t);
 
-// gets the next free index and marks that index as taken so that free index
-// will no longer be a free idnex. Basically a wrapper for "freelist_add," and
-// fills the added element with SIZE_MAX
-size_t ECS_get_next_free_index(struct E_FreeList*);
+// updates the next free index, so when calling ECS_getCurFreeIndex, it will
+// give a free index. Basically a wrapper for
+// "freelist_add," and fills the added element with SIZE_MAX
+size_t ECS_updateCurFreeIndex(struct ECS_Components*);
+
+// gets the current free index
+size_t ECS_getCurFreeIndex(struct ECS_Components*);
 
 // getter for the managers from ECS_Components. returns a non const pointer so
 // permits editing of the manager
@@ -78,7 +81,7 @@ size_t ECS_get_next_free_index(struct E_FreeList*);
  */
 #define ECS_manager_get(type) MANAGER_GETTER_NAME(type)
 
-// creating getters for the managers
+// declaring getters for the managers
 #define X_CPT(name)                                       \
         struct name##_Manager* MANAGER_GETTER_NAME(name)( \
             struct ECS_Components*);
@@ -86,16 +89,16 @@ LIST_OF_COMPONENTS
 #undef X_CPT
 
 // ECS_add_TYPE_at()
-/* an internal function that makes the generic ECS_add_elem_at(...) function
+/* declares the generic ECS_add_elem_at(...) function
  * work
  */
 #define X_CPT(type) \
-        void ECS_add_##type##_at(struct ECS_Components*, type*, size_t);
+        void ECS_add##type##At(struct ECS_Components*, type*, size_t);
 LIST_OF_COMPONENTS
 #undef X_CPT
 
 // deletes an enttiy at a given point
-void ECS_delete_entity_at(struct ECS_Components*, size_t);
+void ECS_deleteEntityAt(struct ECS_Components*, size_t);
 
 // frees the components
 void ECS_freeComponents(struct ECS_Components*);
