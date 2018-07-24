@@ -7,6 +7,7 @@
 // Lib tests includes
 #include "Lib/tests/ComponentManager_Tests.h"
 #include "Lib/tests/Freelist_Test.h"
+#include "Lib/tests/PackedVector_Tests.h"
 #include "Lib/tests/Stack_Tests.h"
 #include "Lib/tests/UTI_strcatTest.h"
 #include "Lib/tests/Vector_Tests.h"
@@ -60,7 +61,8 @@ int libTests(Suite* s, SRunner* sr) {
         srunner_add_suite(sr, stack_test_suite());
         srunner_add_suite(sr, freelist_test_suite());
         srunner_add_suite(sr, UTI_strcatTestSuite());
-        srunner_add_suite(sr, componentmanager_test_suite());
+        // srunner_add_suite(sr, componentmanager_test_suite());
+        srunner_add_suite(sr, packedvector_test_suite());
 
         srunner_run_all(sr, CK_NORMAL);
 
