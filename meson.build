@@ -4,8 +4,6 @@
 project('SpaceGame', 'c',
  default_options : ['c_std=c11'] )
 
-add_project_arguments(' -Wall', '-Wextra', '-O2', language : 'c')
-
 inc = include_directories('Extras')
 inc = include_directories('Lib')
 inc = include_directories('Src')
@@ -51,6 +49,7 @@ srcs = ['Src/Main.c'
 
 executable('spacegame'
         , srcs
+        , c_args : ['-Wall', '-Wextra', '-O2']
         , link_args : ['-lSDL2', '-lSDL2_image'] )
 
 testsrcs = [ 'Lib/Util.c'  
@@ -59,5 +58,6 @@ testsrcs = [ 'Lib/Util.c'
            , 'Lib/sizet_Vector.c'
            , 'Src/Engine/Components/Appearance.c'
            ]
-unittests = executable('unittests', testsrcs, link_args :'-lcheck')
+unittests = executable('unittests', testsrcs, c_args : ['-Wall', '-Wextra', '-O2'],link_args :'-lcheck')
+        
 test('unittests', unittests )
