@@ -21,7 +21,7 @@
         X_CPT(Velocity)     \
         X_CPT(Acceleration) \
         X_CPT(Appearance)   \
-        X_CPT(RectAabb)
+        X_CPT(Aabb)
 
 // Defines how to name the managers in ECS_Components
 #define MANAGER_NAME(name) m_##name
@@ -51,7 +51,7 @@ struct ECS_Components {
             free_elements;  // for keeping track of where to add and delete
                             // things in the sparse arrays
 
-// clang-format off
+        // clang-format off
         // putting the managers inside of this struct
         #define X_CPT(name) struct name##_Manager MANAGER_NAME(name);
         LIST_OF_COMPONENTS

@@ -1,35 +1,8 @@
 #pragma once
 #include <stdbool.h>
+#include <stdint.h>
+#include "Lib/GenericComponentManager.h"
 #include "Lib/V2.h"
-
-// -----------------------------------------
-//    Macros for generating Aabbs
-// -----------------------------------------
-
-#define DECLARE_RECTAABB_LAYER(layername)                          \
-        /*Types*/                                                  \
-        /*RectAabb - used for detecting collisions of rectangles*/ \
-        typedef struct RectAabb##layername {                       \
-                struct V2 pMin;                                    \
-                struct V2 pMax;                                    \
-        } RectAabb##layername;
-
-#define DECLARE_CIRCAABB_LAYER(layername)                       \
-        /*Types*/                                               \
-        /*CircAabb - used for detecting collisions of circles*/ \
-        typedef struct CircAabb##layername {                    \
-                struct V2 center;                               \
-                float radius;                                   \
-        } CircAabb##layername;
-
-#define DECLARE_SEGAABB_LAYER(layername)                              \
-        /*Types*/                                                     \
-        /*SegAabb - used for detecting collisions of a line segment*/ \
-        typedef struct SegAabb##layername {                           \
-                struct V2 pMin;                                       \
-                struct V2 pMax;                                       \
-        } SegAabb##layername;
-
 // -----------------------------------------
 //    Data for Aabbs
 // -----------------------------------------
@@ -40,9 +13,43 @@
 
 // declares the default Rect and Circle Aabb which will becasted tofor every
 // type
-DECLARE_RECTAABB_LAYER()
-DECLARE_CIRCAABB_LAYER()
-DECLARE_SEGAABB_LAYER()
+
+/*RectAabb - used for detecting collisions of rectangles*/
+typedef struct RectAabb {
+        struct V2 pMin;
+        struct V2 pMax;
+} RectAabb;
+
+/*CircAabb - used for detecting collisions of circles*/
+typedef struct CircAabb {
+        struct V2 center;
+        float radius;
+} CircAabb;
+
+/*SegAabb - used for detecting collisions of a line segment*/
+typedef struct SegAabb {
+        struct V2 pMin;
+        struct V2 pMax;
+} SegAabb;
+
+// -----------------------------------------
+//    final aabb type thats super inefficent, but less complicated and easier to
+//    understand and implement for plebians
+// -----------------------------------------
+typedef enum CPT_AabbType { yRECT_AABB, CIRC_AABB, SEG_AABB } CPT_AabbType;
+typedef enum CPT_CollisionLayers {
+        et,
+} CPT_CollisionLayers;
+
+typedef struct Aabb {
+        uint8_t aabbType : 4;
+        uint8_t collisionLayer : 4;
+        union {
+                RectAabb rectAabb;
+                CircAabb circAabb;
+                SegAabb segAabb;
+        };
+} Aabb;
 
 // -----------------------------------------
 //    Hit test procedures

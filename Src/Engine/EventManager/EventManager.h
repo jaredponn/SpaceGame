@@ -32,7 +32,7 @@ typedef struct EVT_CollisionSignal {
 // union that contains the data
 typedef union EVT_Signal {
         EVT_CollisionSignal collision;
-} EVT_Event;
+} EVT_Signal;
 
 // Event type
 typedef struct Event {

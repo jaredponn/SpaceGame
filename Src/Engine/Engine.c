@@ -2,7 +2,7 @@
 #include "Lib/Time.h"
 
 #include "Systems/ApplyMovementTransforms.h"
-#include "Systems/Render.h"
+#include "Systems/RenderCopy.h"
 #include "Systems/UpdatePositions.h"
 
 #include "Components/EngineComponentGenerics.h"
@@ -50,8 +50,6 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
         // declarations
         SDL_Event sdlEvent; /**< sdl event */
         Time t_i, t_f;      /**< time for calculating the time delta */
-        size_t nextGlobalFreeIndex =
-            0; /**< next free global index for adding new entities*/
 
         INP_setDefaultMap(inputMap);
 
@@ -105,25 +103,21 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                                     Event_vector_get(engineEventManager, i);
                                 switch (gameEvent.type) {
                                         case EVT_Spawn: {
-                                                nextGlobalFreeIndex =
-                                                    ECS_get_next_free_index(
-                                                        &engineComponents
-                                                             ->free_elements);
+                                                ECS_updateCurFreeIndex(
+                                                    engineComponents);
 
                                                 // adding acceleration
                                                 Acceleration tmpacc =
                                                     (Acceleration){.x = 0,
                                                                    .y = -2};
-                                                ECS_add_elem_at(
-                                                    engineComponents, &tmpacc,
-                                                    nextGlobalFreeIndex);
+                                                ECS_addComponent(
+                                                    engineComponents, &tmpacc);
 
                                                 // adding velocity
                                                 Velocity tmpvel =
                                                     (Velocity){.x = 0, .y = -2};
-                                                ECS_add_elem_at(
-                                                    engineComponents, &tmpvel,
-                                                    nextGlobalFreeIndex);
+                                                ECS_addComponent(
+                                                    engineComponents, &tmpvel);
 
                                                 // adding position
                                                 Position transform = (Position){
@@ -132,15 +126,13 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                                                     (const Position *)
                                                         INP_getMousePosition(),
                                                     &transform);
-                                                ECS_add_elem_at(
-                                                    engineComponents, &tmppos,
-                                                    nextGlobalFreeIndex);
+                                                ECS_addComponent(
+                                                    engineComponents, &tmppos);
 
                                                 // adding appearance
                                                 Appearance tmpapp = test;
-                                                ECS_add_elem_at(
-                                                    engineComponents, &tmpapp,
-                                                    nextGlobalFreeIndex);
+                                                ECS_addComponent(
+                                                    engineComponents, &tmpapp);
                                         } break;
                                         case EVT_Collision:
                                                 break;
