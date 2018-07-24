@@ -21,9 +21,9 @@ int main(void) {
         struct ECS_ExtraState engineExtraState;
         ECS_initExtraState(&engineExtraState);
 
-        struct Event_Vector engineEventManager;
-        Event_vector_init(&engineEventManager);
-        Event_vector_reserve(&engineEventManager, INITCAPACITY);
+        struct EventManager engineEventManager;
+        EventManager_init(&engineEventManager);
+        EventManager_reserve(&engineEventManager, INITCAPACITY);
 
         // running the game
         ECS_runEngine(&engineComponents, &resourceRegistry, &inputMap,

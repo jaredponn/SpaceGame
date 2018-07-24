@@ -49,14 +49,14 @@ typedef Event INP_MouseScroll;
 // -----------------------------------------
 struct INP_InputMap;
 struct INP_InputMap {
-        struct KeyBind_Vector keyPressMappings;   /**< vector of the bindings
+        struct KeyBindVector keyPressMappings;   /**< vector of the bindings
                                                   given   in a key up event */
-        struct KeyBind_Vector keyReleaseMappings; /**< vector of the bindings
+        struct KeyBindVector keyReleaseMappings; /**< vector of the bindings
                                                 given in a keydown event */
-        struct MouseKeyBind_Vector
+        struct MouseKeyBindVector
             mouseButtonPressMappings; /**< vector of bindings when the mouse
                                       button is released (SDL_RELEASED) */
-        struct MouseKeyBind_Vector
+        struct MouseKeyBindVector
             mouseButtonReleaseMappings; /**< vector of bindings when the mouse
                                       button is released (SDL_PRESSED)*/
 

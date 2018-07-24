@@ -1,3 +1,3 @@
 #include "EventManager.h"
 
-VECTOR_DEFINE(Event, Event)
+VECTOR_TYPE_DEFINE(Event, EventManager)

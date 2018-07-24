@@ -3,4 +3,4 @@
 #include <stdlib.h>
 #include "GenericVector.h"
 
-VECTOR_DECLARE(size_t, sizet)
+VECTOR_DECLARE(size_t, Sizet)

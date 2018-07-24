@@ -1,3 +1,3 @@
 #include "sizet_Vector.h"
 
-VECTOR_DEFINE(size_t, sizet)
+VECTOR_DEFINE(size_t, Sizet)

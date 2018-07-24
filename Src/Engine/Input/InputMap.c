@@ -10,9 +10,8 @@
 //    private func declarations
 // -----------------------------------------
 
-static void INP_addKeyBinding(struct KeyBind_Vector*,
-                              const struct INP_KeyBind*);
-static void INP_addMouseKeyBinding(struct MouseKeyBind_Vector*,
+static void INP_addKeyBinding(struct KeyBindVector*, const struct INP_KeyBind*);
+static void INP_addMouseKeyBinding(struct MouseKeyBindVector*,
                                    const struct INP_MouseKeyBind*);
 
 // -----------------------------------------
@@ -21,20 +20,20 @@ static void INP_addMouseKeyBinding(struct MouseKeyBind_Vector*,
 
 void INP_initInputMap(struct INP_InputMap* inputMap) {
         // initlizing the vectors
-        KeyBind_vector_init(&inputMap->keyPressMappings);
-        KeyBind_vector_init(&inputMap->keyReleaseMappings);
+        KeyBindVector_init(&inputMap->keyPressMappings);
+        KeyBindVector_init(&inputMap->keyReleaseMappings);
 
-        KeyBind_vector_reserve(&inputMap->keyPressMappings,
-                               NUM_OF_KEYBOARD_KEYS);
-        KeyBind_vector_reserve(&inputMap->keyReleaseMappings,
-                               NUM_OF_KEYBOARD_KEYS);
+        KeyBindVector_reserve(&inputMap->keyPressMappings,
+                              NUM_OF_KEYBOARD_KEYS);
+        KeyBindVector_reserve(&inputMap->keyReleaseMappings,
+                              NUM_OF_KEYBOARD_KEYS);
 
-        MouseKeyBind_vector_init(&inputMap->mouseButtonPressMappings);
-        MouseKeyBind_vector_init(&inputMap->mouseButtonReleaseMappings);
-        MouseKeyBind_vector_reserve(&inputMap->mouseButtonPressMappings,
-                                    NUM_OF_MOUSE_BUTTONS);
-        MouseKeyBind_vector_reserve(&inputMap->mouseButtonReleaseMappings,
-                                    NUM_OF_MOUSE_BUTTONS);
+        MouseKeyBindVector_init(&inputMap->mouseButtonPressMappings);
+        MouseKeyBindVector_init(&inputMap->mouseButtonReleaseMappings);
+        MouseKeyBindVector_reserve(&inputMap->mouseButtonPressMappings,
+                                   NUM_OF_MOUSE_BUTTONS);
+        MouseKeyBindVector_reserve(&inputMap->mouseButtonReleaseMappings,
+                                   NUM_OF_MOUSE_BUTTONS);
 
         inputMap->mouseMovementEvent = (Event){.type = EVT_Empty};
         inputMap->mouseScrollEvent = (Event){.type = EVT_Empty};
@@ -42,19 +41,19 @@ void INP_initInputMap(struct INP_InputMap* inputMap) {
 
 void INP_clearInputMap(struct INP_InputMap* inputMap) {
         // initlizing the vectors
-        KeyBind_vector_lazy_clear(&inputMap->keyPressMappings);
-        KeyBind_vector_lazy_clear(&inputMap->keyReleaseMappings);
+        KeyBindVector_lazy_clear(&inputMap->keyPressMappings);
+        KeyBindVector_lazy_clear(&inputMap->keyReleaseMappings);
 
-        MouseKeyBind_vector_lazy_clear(&inputMap->mouseButtonPressMappings);
-        MouseKeyBind_vector_lazy_clear(&inputMap->mouseButtonReleaseMappings);
+        MouseKeyBindVector_lazy_clear(&inputMap->mouseButtonPressMappings);
+        MouseKeyBindVector_lazy_clear(&inputMap->mouseButtonReleaseMappings);
 }
 
 void ECS_freeInputMap(struct INP_InputMap* inputMap) {
-        KeyBind_vector_free(&inputMap->keyPressMappings);
-        KeyBind_vector_free(&inputMap->keyReleaseMappings);
+        KeyBindVector_free(&inputMap->keyPressMappings);
+        KeyBindVector_free(&inputMap->keyReleaseMappings);
 
-        MouseKeyBind_vector_free(&inputMap->mouseButtonPressMappings);
-        MouseKeyBind_vector_free(&inputMap->mouseButtonReleaseMappings);
+        MouseKeyBindVector_free(&inputMap->mouseButtonPressMappings);
+        MouseKeyBindVector_free(&inputMap->mouseButtonReleaseMappings);
 }
 
 // -----------------------------------------
@@ -99,14 +98,14 @@ VECTOR_DEFINE(struct INP_MouseKeyBind, MouseKeyBind)
 //    Private function implementaitons
 // -----------------------------------------
 
-static void INP_addKeyBinding(struct KeyBind_Vector* vec,
+static void INP_addKeyBinding(struct KeyBindVector* vec,
                               const struct INP_KeyBind* keyBind) {
-        size_t vecLength = KeyBind_vector_size(vec);
+        size_t vecLength = KeyBindVector_size(vec);
 
         struct INP_KeyBind* curKey_p = NULL;
 
         for (size_t i = 0; i < vecLength; ++i) {
-                curKey_p = KeyBind_vector_get_p(vec, i);
+                curKey_p = KeyBindVector_get_p(vec, i);
 
                 if (keyBind->sdlKey == curKey_p->sdlKey) {
                         curKey_p->sdlKey = keyBind->sdlKey;
@@ -114,17 +113,17 @@ static void INP_addKeyBinding(struct KeyBind_Vector* vec,
                 }
         }
 
-        KeyBind_vector_push_back(vec, *keyBind);
+        KeyBindVector_push_back(vec, *keyBind);
 }
 
-static void INP_addMouseKeyBinding(struct MouseKeyBind_Vector* vec,
+static void INP_addMouseKeyBinding(struct MouseKeyBindVector* vec,
                                    const struct INP_MouseKeyBind* keyBind) {
-        size_t vecLength = MouseKeyBind_vector_size(vec);
+        size_t vecLength = MouseKeyBindVector_size(vec);
 
         struct INP_MouseKeyBind* curKey_p = NULL;
 
         for (size_t i = 0; i < vecLength; ++i) {
-                curKey_p = MouseKeyBind_vector_get_p(vec, i);
+                curKey_p = MouseKeyBindVector_get_p(vec, i);
 
                 if (keyBind->sdlButton == curKey_p->sdlButton) {
                         curKey_p->sdlButton = keyBind->sdlButton;
@@ -132,5 +131,5 @@ static void INP_addMouseKeyBinding(struct MouseKeyBind_Vector* vec,
                 }
         }
 
-        MouseKeyBind_vector_push_back(vec, *keyBind);
+        MouseKeyBindVector_push_back(vec, *keyBind);
 }

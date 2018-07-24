@@ -18,13 +18,13 @@ static void SYS_addAccelerationToVelocity(const Acceleration* const,
 //    Public function implementations
 // -----------------------------------------
 
-void SYS_applyVelocity(const struct Velocity_Manager* const velocityManager_p,
-                       struct Position_Manager* const positionManager_p,
+void SYS_applyVelocity(const struct VelocityManager* const velocityManager_p,
+                       struct PositionManager* const positionManager_p,
                        const Time dt) {
-        //  getting the Velocity_Vector and its length
-        const struct Velocity_Vector* velocityData_p =
-            Velocity_manager_get_data(velocityManager_p);
-        size_t velocityDataLength = Velocity_vector_size(velocityData_p);
+        //  getting the VelocityVector and its length
+        const struct VelocityVector* velocityData_p =
+            VelocityManager_get_packed_data(velocityManager_p);
+        size_t velocityDataLength = VelocityVector_size(velocityData_p);
 
         // temp value of the global index of the current
         size_t globalIndex;
@@ -35,13 +35,13 @@ void SYS_applyVelocity(const struct Velocity_Manager* const velocityManager_p,
 
         for (size_t i = 0; i < velocityDataLength; ++i) {
                 // gets the i'th velocity pointer
-                tmpVelocity_p = Velocity_vector_get_p(velocityData_p, i);
+                tmpVelocity_p = VelocityVector_get_p(velocityData_p, i);
 
                 // gets the corrosponding position pointer
                 globalIndex =
-                    Velocity_manager_get_index_from(velocityManager_p, i);
-                tmpPosition_p = Position_manager_get_data_p_at(
-                    positionManager_p, globalIndex);
+                    VelocityManager_get_index_from(velocityManager_p, i);
+                tmpPosition_p =
+                    PositionManager_get_p_at(positionManager_p, globalIndex);
 
                 // modifying the position
                 SYS_addVelocityToPosition(tmpVelocity_p, tmpPosition_p, dt);
@@ -53,12 +53,12 @@ void SYS_applyVelocity(const struct Velocity_Manager* const velocityManager_p,
 // -----------------------------------------
 
 void SYS_applyAcceleration(
-    const struct Acceleration_Manager* const velocityManager_p,
-    struct Velocity_Manager* const positionManager_p, const Time dt) {
-        //  getting the Acceleration_Vector and its length
-        const struct Acceleration_Vector* velocityData_p =
-            Acceleration_manager_get_data(velocityManager_p);
-        size_t velocityDataLength = Acceleration_vector_size(velocityData_p);
+    const struct AccelerationManager* const velocityManager_p,
+    struct VelocityManager* const positionManager_p, const Time dt) {
+        //  getting the AccelerationVector and its length
+        const struct AccelerationVector* velocityData_p =
+            AccelerationManager_get_packed_data(velocityManager_p);
+        size_t velocityDataLength = AccelerationVector_size(velocityData_p);
 
         // temp value of the global index of the current
         size_t globalIndex;
@@ -69,14 +69,13 @@ void SYS_applyAcceleration(
 
         for (size_t i = 0; i < velocityDataLength; ++i) {
                 // gets the i'th velocity pointer
-                tmpAcceleration_p =
-                    Acceleration_vector_get_p(velocityData_p, i);
+                tmpAcceleration_p = AccelerationVector_get_p(velocityData_p, i);
 
                 // gets the corrosponding position pointer
                 globalIndex =
-                    Acceleration_manager_get_index_from(velocityManager_p, i);
-                tmpVelocity_p = Velocity_manager_get_data_p_at(
-                    positionManager_p, globalIndex);
+                    AccelerationManager_get_index_from(velocityManager_p, i);
+                tmpVelocity_p =
+                    VelocityManager_get_p_at(positionManager_p, globalIndex);
 
                 // modifying the position
                 SYS_addAccelerationToVelocity(tmpAcceleration_p, tmpVelocity_p,

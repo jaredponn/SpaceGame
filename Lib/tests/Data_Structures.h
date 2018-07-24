@@ -10,23 +10,15 @@
 STACK_DECLARE(int, i)
 
 // vector
-VECTOR_DECLARE(int, i)
+VECTOR_DECLARE(int, int)
 
 // freelist
-struct FL_int {
+struct FLInt {
         int myData;
         size_t next_free_index;
 };
-
-VECTOR_DECLARE(struct FL_int, FL_int)
-
-FREELIST_DECLARE(struct FL_int, FL_int)
+VECTOR_DECLARE(struct FLInt, FLInt)
+FREELIST_DECLARE(struct FLInt, FLInt, FLInt)
 
 // packed vector
-
-VECTOR_DECLARE(int, int)
-PACKEDVECTOR_DECLARE(int, int)
-
-// component manager
-VECTOR_DECLARE(int, Int)
-COMPONENT_MANAGER_DECLARE(int, Int)
+PACKEDVECTOR_DECLARE(int, int, int)

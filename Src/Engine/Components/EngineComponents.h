@@ -36,7 +36,7 @@
 // declares the component managers:
 #define X_CPT(name)                \
         VECTOR_DECLARE(name, name) \
-        COMPONENT_MANAGER_DECLARE(name, name)
+        BASIC_COMPONENT_MANAGER_DECLARE(name, name, name)
 LIST_OF_COMPONENTS
 #undef X_CPT
 
@@ -47,13 +47,13 @@ LIST_OF_COMPONENTS
 // god object of state
 struct ECS_Components;
 struct ECS_Components {
-        struct E_FreeList
+        struct EFreeList
             free_elements;  // for keeping track of where to add and delete
                             // things in the sparse arrays
 
         // clang-format off
         // putting the managers inside of this struct
-        #define X_CPT(name) struct name##_Manager MANAGER_NAME(name);
+        #define X_CPT(name) struct name##Manager MANAGER_NAME(name);
         LIST_OF_COMPONENTS
         #undef X_CPT
         // clang-format on
@@ -82,9 +82,8 @@ size_t ECS_getCurFreeIndex(struct ECS_Components*);
 #define ECS_manager_get(type) MANAGER_GETTER_NAME(type)
 
 // declaring getters for the managers
-#define X_CPT(name)                                       \
-        struct name##_Manager* MANAGER_GETTER_NAME(name)( \
-            struct ECS_Components*);
+#define X_CPT(name) \
+        struct name##Manager* MANAGER_GETTER_NAME(name)(struct ECS_Components*);
 LIST_OF_COMPONENTS
 #undef X_CPT
 

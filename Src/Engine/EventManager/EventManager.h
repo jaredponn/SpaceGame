@@ -40,4 +40,5 @@ typedef struct Event {
         union EVT_Signal signal; /**< data for the event */
 } Event;
 
-VECTOR_DECLARE(Event, Event)
+// the event manager is a wrapper around a vector object
+VECTOR_TYPE_DECLARE(Event, EventManager)

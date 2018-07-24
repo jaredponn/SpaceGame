@@ -16,5 +16,5 @@ struct FL_index {
 
 typedef struct FL_index E;
 
-VECTOR_DECLARE(E, E)
-FREELIST_DECLARE(E, E)
+VECTOR_DECLARE(E, E)  // declares vector of type E -> EVector
+FREELIST_DECLARE(E, E, E)
