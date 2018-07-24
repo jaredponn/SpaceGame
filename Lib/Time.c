@@ -1,11 +1,16 @@
+//#define _XOPEN_SOURCE 700
+#define _DEFAULT_SOURCE
+
 #include "Time.h"
 #include <stdio.h>
 #include <unistd.h>
+
 // -----------------------------------------
 //    Private functoins declarations
 // -----------------------------------------
 
-static useconds_t UTI_castTimeToUSecs(Time);
+// unsigned int refers to time in microsecoonds
+static unsigned int UTI_castTimeToUSecs(Time);
 
 // -----------------------------------------
 //    public function implementations
@@ -42,6 +47,6 @@ void UTI_sleep(Time time) { usleep(UTI_castTimeToUSecs(time)); }
 //    private function implementations
 // -----------------------------------------
 
-static useconds_t UTI_castTimeToUSecs(Time val) {
+static unsigned int UTI_castTimeToUSecs(Time val) {
         return (val.tv_sec * 1000000) + (val.tv_nsec / 1000);
 }

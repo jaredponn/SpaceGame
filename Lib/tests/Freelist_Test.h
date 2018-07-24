@@ -43,8 +43,8 @@ START_TEST(freelist_test) {
         ck_assert_int_eq(FL_int_vector_size(&testfreelist.data), 6);
         ck_assert_int_eq(FL_int_vector_capacity(&testfreelist.data), 6);
 
-        // testing the removeat function. Removing the firstelement
-        FL_int_freelist_removeat(&testfreelist, 0);
+        // testing the remove_at function. Removing the firstelement
+        FL_int_freelist_remove_at(&testfreelist, 0);
         ck_assert_int_eq(FL_int_freelist_get(&testfreelist, 0).myData, 0);
         ck_assert_int_eq(FL_int_freelist_get(&testfreelist, 0).next_free_index,
                          6);
@@ -56,10 +56,10 @@ START_TEST(freelist_test) {
         ck_assert_int_eq(FL_int_freelist_get(&testfreelist, 0).myData, 7);
 
         // more removing testing
-        FL_int_freelist_removeat(&testfreelist, 0);
-        FL_int_freelist_removeat(&testfreelist, 1);
-        FL_int_freelist_removeat(&testfreelist, 2);
-        FL_int_freelist_removeat(&testfreelist, 4);
+        FL_int_freelist_remove_at(&testfreelist, 0);
+        FL_int_freelist_remove_at(&testfreelist, 1);
+        FL_int_freelist_remove_at(&testfreelist, 2);
+        FL_int_freelist_remove_at(&testfreelist, 4);
         FL_int_freelist_add(
             &testfreelist,
             (struct FL_int){.myData = 100, .next_free_index = SIZE_MAX});
