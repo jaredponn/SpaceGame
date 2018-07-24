@@ -2,6 +2,7 @@
 
 #include "Lib/GenericComponentManager.h"
 #include "Lib/GenericFreeList.h"
+#include "Lib/GenericPackedVector.h"
 #include "Lib/GenericStack.h"
 #include "Lib/GenericVector.h"
 
@@ -20,6 +21,11 @@ struct FL_int {
 VECTOR_DECLARE(struct FL_int, FL_int)
 
 FREELIST_DECLARE(struct FL_int, FL_int)
+
+// packed vector
+
+VECTOR_DECLARE(int, int)
+PACKEDVECTOR_DECLARE(int, int)
 
 // component manager
 VECTOR_DECLARE(int, Int)
