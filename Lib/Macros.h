@@ -124,6 +124,18 @@ usage: #define FUNCTION(a) 1234
 #define _map() MAP
 // clang-format on
 
+/* map2 -> takes two elements and applies a function that takes two arguments to
+ * them
+ */
+
+// clang-format off
+#define MAP2(f, a, b,...)                                            \
+        f(a, b) IF_ELSE(HAS_ARGS(__VA_ARGS__))                       \
+                        (DEFER2(_map2)()(f, __VA_ARGS__))            \
+                        (/* do nothing if there are no args left */)
+#define _map2() MAP2
+// clang-format on
+
 // clang-format off
 /*MAP_INIT maps over all elements but the last
 usage:
@@ -153,6 +165,8 @@ EVAL(MAP_INIT(FUNCTION,a)) -> a
 
 // remoes trailing commas: a,b,c, -> a,b,c
 #define REMOVE_EXTRA_COMMA(...) EVAL(DEFER1(MAP_INIT)(POSTFIX_COMMA, __VA_ARGS__))
+// an ID function yields the same effect as REMOVE_EXTRA_COMA
+#define ID_VA_ARGS(...) REMOVE_EXTRA_COMMA(__VA_ARGS__)
 
 // clang-format on
 
