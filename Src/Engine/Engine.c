@@ -5,7 +5,6 @@
 #include "Systems/RenderCopy.h"
 #include "Systems/UpdatePositions.h"
 
-#include "Components/EngineComponentGenerics.h"
 #include "Components/EngineComponents.h"
 #include "Components/MovementGenerics.h"
 
@@ -107,17 +106,16 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                                                     engineComponents);
 
                                                 // adding acceleration
-                                                Acceleration tmpacc =
-                                                    (Acceleration){.x = 0,
-                                                                   .y = -2};
-                                                ECS_addComponent(
-                                                    engineComponents, &tmpacc);
+                                                ECS_addComponent(Acceleration)(
+                                                    engineComponents,
+                                                    &(Acceleration){.x = 0,
+                                                                    .y = -2});
 
                                                 // adding velocity
-                                                Velocity tmpvel =
-                                                    (Velocity){.x = 0, .y = -2};
-                                                ECS_addComponent(
-                                                    engineComponents, &tmpvel);
+                                                ECS_addComponent(Velocity)(
+                                                    engineComponents,
+                                                    &(Velocity){.x = 0,
+                                                                .y = -2});
 
                                                 // adding position
                                                 Position transform = (Position){
@@ -126,12 +124,12 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                                                     (const Position *)
                                                         INP_getMousePosition(),
                                                     &transform);
-                                                ECS_addComponent(
+                                                ECS_addComponent(Position)(
                                                     engineComponents, &tmppos);
 
                                                 // adding appearance
                                                 Appearance tmpapp = test;
-                                                ECS_addComponent(
+                                                ECS_addComponent(Appearance)(
                                                     engineComponents, &tmpapp);
                                         } break;
                                         case EVT_Collision:

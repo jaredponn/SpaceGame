@@ -141,8 +141,8 @@
                                                                                \
                         SizetVector_push_back(&packedvector->packed_indices,   \
                                               index);                          \
-                        TYPE##Vector_push_back(&packedvector->packed_data,     \
-                                               *val);                          \
+                        VECPREFIX##Vector_push_back(                           \
+                            &packedvector->packed_data, *val);                 \
                         /* increases the next index by one, so that            \
                          * the next add will push_back */                      \
                         ++packedvector->next_packed_index;                     \
