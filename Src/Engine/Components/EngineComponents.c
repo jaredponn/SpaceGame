@@ -35,7 +35,7 @@ void ECS_deleteEntityAt(struct ECS_Components* engineComponents, size_t index) {
 // defining the componenet managers
 #define X_CPT(name)               \
         VECTOR_DEFINE(name, name) \
-        BASIC_COMPONENT_MANAGER_DEFINE(name, name, name)
+        COMPONENT_MANAGER_DEFINE(name, name, name)
 LIST_OF_COMPONENTS
 #undef X_CPT
 

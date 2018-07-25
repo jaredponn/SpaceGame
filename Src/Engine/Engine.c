@@ -70,20 +70,20 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
 
                 // running the systems / sending events to the event manager
                 SYS_applyAcceleration(
-                    ECS_manager_get(Acceleration)(engineComponents),
-                    ECS_manager_get(Velocity)(engineComponents),
+                    ECS_managerGet(Acceleration)(engineComponents),
+                    ECS_managerGet(Velocity)(engineComponents),
                     engineExtraState->dt);
 
-                SYS_applyVelocity(ECS_manager_get(Velocity)(engineComponents),
-                                  ECS_manager_get(Position)(engineComponents),
+                SYS_applyVelocity(ECS_managerGet(Velocity)(engineComponents),
+                                  ECS_managerGet(Position)(engineComponents),
                                   engineExtraState->dt);
                 SYS_updatePositions(
-                    ECS_manager_get(Position)(engineComponents),
-                    ECS_manager_get(Appearance)(engineComponents));
+                    ECS_managerGet(Position)(engineComponents),
+                    ECS_managerGet(Appearance)(engineComponents));
 
                 SYS_renderCopy(resourceRegistry->cRenderer,
 
-                               ECS_manager_get(Appearance)(engineComponents));
+                               ECS_managerGet(Appearance)(engineComponents));
 
                 // rendering
                 SDL_RenderPresent(resourceRegistry->cRenderer);
