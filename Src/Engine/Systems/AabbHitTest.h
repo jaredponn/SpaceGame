@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Src/Engine/Components/EngineComponents.h"
+#include "Src/Engine/Components/Components.h"
 #include "Src/Engine/EventManager/EventManager.h"
 
 // -----------------------------------------

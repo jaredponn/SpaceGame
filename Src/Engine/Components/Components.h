@@ -1,6 +1,5 @@
 #pragma once
 
-// lib includes
 #include "Lib/E_FreeList.h"
 #include "Lib/GenericComponentManager.h"
 #include "Lib/GenericVector.h"
@@ -11,6 +10,11 @@
 #include "Entity.h"
 #include "Movement.h"
 
+/**
+ * Components.h -> an aggregration of all the components in a single file.
+ * Declares the CPT_Set struct -> a super struct that contains all the
+ * compoents in it and associated getters, setters, and adders
+ */
 // -----------------------------------------
 //    Macros
 // -----------------------------------------
@@ -26,16 +30,16 @@
         X_CPT(Appearance, Appearance)      \
         X_CPT(Aabb, Aabb)
 
-// Defines how to name the managers in ECS_Components
+// Defines how to name the managers in CPT_Set
 #define MANAGER_NAME(name) m_##name
 
-// defines how to name the manger getters from a ECS_Components
+// defines how to name the manger getters from a CPT_Set
 #define MANAGER_GETTER_NAME(name) CPT_get##name##manager
 
-// defines how to name the manger adders from a ECS_Components
+// defines how to name the manger adders from a CPT_Set
 #define MANAGER_ADD_AT_NAME(name) CPT_add##name##At
 
-// defines how to name manager adders from a ECS_Components
+// defines how to name manager adders from a CPT_Set
 #define MANAGER_ADD_NAME(name) CPT_add##name
 // -----------------------------------------
 //    Declaring the component managers
@@ -53,11 +57,10 @@ LIST_OF_COMPONENTS
 // -----------------------------------------
 
 // god object of state
-struct ECS_Components;
-struct ECS_Components {
-        struct EFreeList
-            free_elements;  // for keeping track of where to add and delete
-                            // things in the sparse arrays
+struct CPT_Set;
+struct CPT_Set {
+        struct EFreeList free_elements; /**< keepstrack of where to add and
+                                           delete things in the sparse arrays */
 
         // clang-format off
         // putting the managers inside of this struct
@@ -72,36 +75,36 @@ struct ECS_Components {
 // -----------------------------------------
 
 // initializes the compoenets engine. The size_t initialize size of the vectors
-void ECS_initComponents(struct ECS_Components*, size_t);
+void CPT_initComponents(struct CPT_Set*, size_t);
 
-// updates the next free index, so when calling ECS_getCurFreeIndex, it will
+// updates the next free index, so when calling CPT_getCurFreeIndex, it will
 // give a free index. Basically a wrapper for
 // "freelist_add," and fills the added element with SIZE_MAX
-size_t ECS_updateCurFreeIndex(struct ECS_Components*);
+size_t CPT_updateCurFreeIndex(struct CPT_Set*);
 
 // gets the current free index
-size_t ECS_getCurFreeIndex(struct ECS_Components*);
+size_t CPT_getCurFreeIndex(struct CPT_Set*);
 
 // deletes an enttiy at a given point
-void ECS_deleteEntityAt(struct ECS_Components*, size_t);
+void CPT_deleteEntityAt(struct CPT_Set*, size_t);
 
 // frees the components
-void ECS_freeComponents(struct ECS_Components*);
+void CPT_freeComponents(struct CPT_Set*);
 
 // -----------------------------------------
 //    Getters
 // -----------------------------------------
-// getter for the managers from ECS_Components. returns a non const pointer so
+// getter for the managers from CPT_Set. returns a non const pointer so
 // permits editing of the contents of the manager
 /*Example usage: To get the Apearance component:
- * ECS_managerGet(Appearance)(engineComponents_p);
+ * CPT_managerGet(Appearance)(engineComponents_p);
  */
 
-#define ECS_managerGet(name) MANAGER_GETTER_NAME(name)
+#define CPT_managerGet(name) MANAGER_GETTER_NAME(name)
 
 /// CPT_get<name>manager
 #define X_CPT(type, name) \
-        struct name##Manager* MANAGER_GETTER_NAME(name)(struct ECS_Components*);
+        struct name##Manager* MANAGER_GETTER_NAME(name)(struct CPT_Set*);
 LIST_OF_COMPONENTS
 #undef X_CPT
 
@@ -110,14 +113,13 @@ LIST_OF_COMPONENTS
 // -----------------------------------------
 // strictly internals are here for the EngineComponentGenerics.h file
 
-// ECS_add<name>At(components, index, val )
+// CPT_add<name>At(components, index, val )
 #define X_CPT(type, name) \
-        void MANAGER_ADD_AT_NAME(name)(struct ECS_Components*, size_t, type*);
+        void MANAGER_ADD_AT_NAME(name)(struct CPT_Set*, size_t, type*);
 LIST_OF_COMPONENTS
 #undef X_CPT
 
-// ECS_add<name>(components, index, val )
-#define X_CPT(type, name) \
-        void MANAGER_ADD_NAME(name)(struct ECS_Components*, type*);
+// CPT_add<name>(components, index, val )
+#define X_CPT(type, name) void MANAGER_ADD_NAME(name)(struct CPT_Set*, type*);
 LIST_OF_COMPONENTS
 #undef X_CPT

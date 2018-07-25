@@ -13,11 +13,11 @@
 typedef uint64_t Entity;
 
 // how the different components are classified
-typedef enum CPT_Components {
+typedef enum CPT_ComponentTypes {
         CPT_NONE = 1 << 0,
         CPT_POSITION = 1 << 1,
         CPT_VELOCITY = 1 << 2,
         CPT_ACCELERATION = 1 << 3,
         CPT_APPEARANCE = 1 << 4
 
-} CPT_Components;
+} CPT_ComponentTypes;

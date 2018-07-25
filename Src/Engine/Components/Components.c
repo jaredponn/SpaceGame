@@ -1,8 +1,7 @@
-#include "EngineComponents.h"
+#include "Components.h"
 #include "stdint.h"
 
-void ECS_initComponents(struct ECS_Components* engineComponents,
-                        size_t capacity) {
+void CPT_initComponents(struct CPT_Set* engineComponents, size_t capacity) {
         EFreeList_init(&engineComponents->free_elements);
         EFreeList_reserve(&engineComponents->free_elements, capacity);
 
@@ -13,15 +12,15 @@ void ECS_initComponents(struct ECS_Components* engineComponents,
 #undef X_CPT
 }
 
-size_t ECS_updateCurFreeIndex(struct ECS_Components* components) {
+size_t CPT_updateCurFreeIndex(struct CPT_Set* components) {
         return EFreeList_add(&components->free_elements, (E){SIZE_MAX});
 }
 
-size_t ECS_getCurFreeIndex(struct ECS_Components* components) {
+size_t CPT_getCurFreeIndex(struct CPT_Set* components) {
         return EFreeList_get_curr_free_index(&components->free_elements);
 }
 
-void ECS_deleteEntityAt(struct ECS_Components* engineComponents, size_t index) {
+void CPT_deleteEntityAt(struct CPT_Set* engineComponents, size_t index) {
         // marking the index free for the next get_next_free_index function
         EFreeList_remove_at(&engineComponents->free_elements, index);
 
@@ -40,37 +39,35 @@ LIST_OF_COMPONENTS
 #undef X_CPT
 
 // defining the component manager getters
-#define X_CPT(type, name)                                     \
-        struct name##Manager* MANAGER_GETTER_NAME(name)(      \
-            struct ECS_Components * engineComponents) {       \
-                return &engineComponents->MANAGER_NAME(name); \
+#define X_CPT(type, name)                                                   \
+        struct name##Manager* MANAGER_GETTER_NAME(name)(struct CPT_Set *    \
+                                                        engineComponents) { \
+                return &engineComponents->MANAGER_NAME(name);               \
         }
 LIST_OF_COMPONENTS
 #undef X_CPT
 
-// ECS_add<name>At(components, index, val )
+// CPT_add<name>At(components, index, val )
 #define X_CPT(type, name)                                                     \
-        void MANAGER_ADD_AT_NAME(name)(                                       \
-            struct ECS_Components * engineComponents, size_t index,           \
-            type * val) {                                                     \
+        void MANAGER_ADD_AT_NAME(name)(struct CPT_Set * engineComponents,     \
+                                       size_t index, type * val) {            \
                 name##Manager_add_at(                                         \
                     MANAGER_GETTER_NAME(name)(engineComponents), index, val); \
         }
 LIST_OF_COMPONENTS
 #undef X_CPT
 
-// ECS_add<name>(components, index, val )
-#define X_CPT(type, name)                                               \
-        void MANAGER_ADD_NAME(name)(struct ECS_Components * components, \
-                                    type * val) {                       \
-                MANAGER_ADD_AT_NAME(name)                               \
-                (components, ECS_getCurFreeIndex(components), val);     \
+// CPT_add<name>(components, index, val )
+#define X_CPT(type, name)                                                      \
+        void MANAGER_ADD_NAME(name)(struct CPT_Set * components, type * val) { \
+                MANAGER_ADD_AT_NAME(name)                                      \
+                (components, CPT_getCurFreeIndex(components), val);            \
         }
 LIST_OF_COMPONENTS
 #undef X_CPT
 
 // free components
-void ECS_freeComponents(struct ECS_Components* engineComponents) {
+void CPT_freeComponents(struct CPT_Set* engineComponents) {
         EFreeList_free(&engineComponents->free_elements);
 
         // initilizes all the components with capacity

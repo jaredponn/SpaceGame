@@ -11,12 +11,13 @@ inc = include_directories('Src')
 srcs = ['Src/Main.c'
        , 'Src/Engine/Engine.c'
 
-       # resource loading
+       #aa resource loading
        , 'Src/Engine/Resources/ResourceRegistry.c'
        , 'Src/Engine/Resources/LoadResources.c'
 
        # Components
-       , 'Src/Engine/Components/EngineComponents.c'
+       #, 'Src/Engine/Components/ComponentSets.c'
+       , 'Src/Engine/Components/Components.c'
        , 'Src/Engine/Components/Movement.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Lib/Time.h"
-#include "Src/Engine/Components/EngineComponents.h"
+#include "Src/Engine/Components/Components.h"
 #include "Src/Engine/Components/Movement.h"
 
 // applies the velocity to the position to change the positions
