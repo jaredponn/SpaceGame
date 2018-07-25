@@ -12,7 +12,7 @@
 
 /**
  * Components.h -> an aggregration of all the components in a single file.
- * Declares the CPT_Set struct -> a super struct that contains all the
+ * Declares the CPT_Components struct -> a super struct that contains all the
  * compoents in it and associated getters, setters, and adders
  */
 // -----------------------------------------
@@ -30,16 +30,16 @@
         X_CPT(Appearance, Appearance)      \
         X_CPT(Aabb, Aabb)
 
-// Defines how to name the managers in CPT_Set
+// Defines how to name the managers in CPT_Components
 #define MANAGER_NAME(name) m_##name
 
-// defines how to name the manger getters from a CPT_Set
+// defines how to name the manger getters from a CPT_Components
 #define MANAGER_GETTER_NAME(name) CPT_get##name##manager
 
-// defines how to name the manger adders from a CPT_Set
+// defines how to name the manger adders from a CPT_Components
 #define MANAGER_ADD_AT_NAME(name) CPT_add##name##At
 
-// defines how to name manager adders from a CPT_Set
+// defines how to name manager adders from a CPT_Components
 #define MANAGER_ADD_NAME(name) CPT_add##name
 // -----------------------------------------
 //    Declaring the component managers
@@ -57,12 +57,12 @@ LIST_OF_COMPONENTS
 // -----------------------------------------
 
 // god object of state
-struct CPT_Set;
-struct CPT_Set {
+struct CPT_Components;
+struct CPT_Components {
         struct EFreeList free_elements; /**< keepstrack of where to add and
                                            delete things in the sparse arrays */
 
-        // clang-format off
+// clang-format off
         // putting the managers inside of this struct
         #define X_CPT(type, name) struct name##Manager MANAGER_NAME(name);
         LIST_OF_COMPONENTS
@@ -75,26 +75,26 @@ struct CPT_Set {
 // -----------------------------------------
 
 // initializes the compoenets engine. The size_t initialize size of the vectors
-void CPT_initComponents(struct CPT_Set*, size_t);
+void CPT_initComponents(struct CPT_Components*, size_t);
 
 // updates the next free index, so when calling CPT_getCurFreeIndex, it will
 // give a free index. Basically a wrapper for
 // "freelist_add," and fills the added element with SIZE_MAX
-size_t CPT_updateCurFreeIndex(struct CPT_Set*);
+size_t CPT_updateCurFreeIndex(struct CPT_Components*);
 
 // gets the current free index
-size_t CPT_getCurFreeIndex(struct CPT_Set*);
+size_t CPT_getCurFreeIndex(struct CPT_Components*);
 
 // deletes an enttiy at a given point
-void CPT_deleteEntityAt(struct CPT_Set*, size_t);
+void CPT_deleteEntityAt(struct CPT_Components*, size_t);
 
 // frees the components
-void CPT_freeComponents(struct CPT_Set*);
+void CPT_freeComponents(struct CPT_Components*);
 
 // -----------------------------------------
 //    Getters
 // -----------------------------------------
-// getter for the managers from CPT_Set. returns a non const pointer so
+// getter for the managers from CPT_Components. returns a non const pointer so
 // permits editing of the contents of the manager
 /*Example usage: To get the Apearance component:
  * CPT_managerGet(Appearance)(engineComponents_p);
@@ -104,7 +104,7 @@ void CPT_freeComponents(struct CPT_Set*);
 
 /// CPT_get<name>manager
 #define X_CPT(type, name) \
-        struct name##Manager* MANAGER_GETTER_NAME(name)(struct CPT_Set*);
+        struct name##Manager* MANAGER_GETTER_NAME(name)(struct CPT_Components*);
 LIST_OF_COMPONENTS
 #undef X_CPT
 
@@ -115,11 +115,12 @@ LIST_OF_COMPONENTS
 
 // CPT_add<name>At(components, index, val )
 #define X_CPT(type, name) \
-        void MANAGER_ADD_AT_NAME(name)(struct CPT_Set*, size_t, type*);
+        void MANAGER_ADD_AT_NAME(name)(struct CPT_Components*, size_t, type*);
 LIST_OF_COMPONENTS
 #undef X_CPT
 
 // CPT_add<name>(components, index, val )
-#define X_CPT(type, name) void MANAGER_ADD_NAME(name)(struct CPT_Set*, type*);
+#define X_CPT(type, name) \
+        void MANAGER_ADD_NAME(name)(struct CPT_Components*, type*);
 LIST_OF_COMPONENTS
 #undef X_CPT

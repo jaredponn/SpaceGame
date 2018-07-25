@@ -42,7 +42,7 @@ void ECS_initInput(struct INP_InputMap *inputMap) {
         INP_initMouseState();
 }
 
-void ECS_runEngine(struct CPT_Set *engineCptSets,
+void ECS_runEngine(struct CPT_Components *engineComponents,
                    struct ECS_ResourceRegistry *resourceRegistry,
                    struct INP_InputMap *inputMap,
                    struct EventManager *engineEventManager,
@@ -70,19 +70,20 @@ void ECS_runEngine(struct CPT_Set *engineCptSets,
 
                 // running the systems / sending events to the event manager
                 SYS_applyAcceleration(
-                    CPT_managerGet(Acceleration)(engineCptSets),
-                    CPT_managerGet(Velocity)(engineCptSets),
+                    CPT_managerGet(Acceleration)(engineComponents),
+                    CPT_managerGet(Velocity)(engineComponents),
                     engineExtraState->dt);
 
-                SYS_applyVelocity(CPT_managerGet(Velocity)(engineCptSets),
-                                  CPT_managerGet(Position)(engineCptSets),
+                SYS_applyVelocity(CPT_managerGet(Velocity)(engineComponents),
+                                  CPT_managerGet(Position)(engineComponents),
                                   engineExtraState->dt);
-                SYS_updatePositions(CPT_managerGet(Position)(engineCptSets),
-                                    CPT_managerGet(Appearance)(engineCptSets));
+                SYS_updatePositions(
+                    CPT_managerGet(Position)(engineComponents),
+                    CPT_managerGet(Appearance)(engineComponents));
 
                 SYS_renderCopy(resourceRegistry->cRenderer,
 
-                               CPT_managerGet(Appearance)(engineCptSets));
+                               CPT_managerGet(Appearance)(engineComponents));
 
                 // rendering
                 SDL_RenderPresent(resourceRegistry->cRenderer);
@@ -103,17 +104,17 @@ void ECS_runEngine(struct CPT_Set *engineCptSets,
                                 switch (gameEvent.type) {
                                         case EVT_Spawn: {
                                                 CPT_updateCurFreeIndex(
-                                                    engineCptSets);
+                                                    engineComponents);
 
                                                 // adding acceleration
                                                 CPT_addComponent(
-                                                    engineCptSets,
+                                                    engineComponents,
                                                     &(Acceleration){.x = 0,
                                                                     .y = -2});
 
                                                 // adding velocity
                                                 CPT_addComponent(
-                                                    engineCptSets,
+                                                    engineComponents,
                                                     &(Velocity){.x = 0,
                                                                 .y = -2});
 
@@ -124,13 +125,13 @@ void ECS_runEngine(struct CPT_Set *engineCptSets,
                                                     (const Position *)
                                                         INP_getMousePosition(),
                                                     &transform);
-                                                CPT_addComponent(engineCptSets,
-                                                                 &tmppos);
+                                                CPT_addComponent(
+                                                    engineComponents, &tmppos);
 
                                                 // adding appearance
                                                 Appearance tmpapp = test;
-                                                CPT_addComponent(engineCptSets,
-                                                                 &tmpapp);
+                                                CPT_addComponent(
+                                                    engineComponents, &tmpapp);
                                         } break;
                                         case EVT_Collision:
                                                 break;
