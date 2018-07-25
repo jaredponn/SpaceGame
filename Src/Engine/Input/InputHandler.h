@@ -26,7 +26,7 @@ struct INP_MouseState {
 void INP_initMouseState();
 
 // parses the SDL_Event's and sends them to the Event_Vector
-void INP_parseInputs(SDL_Event*, struct INP_InputMap*, struct Event_Vector*);
+void INP_parseInputs(SDL_Event*, struct INP_InputMap*, struct EventManager*);
 
 // getting the mouse position
 const struct V2* INP_getMousePosition();

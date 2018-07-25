@@ -45,7 +45,7 @@ void ECS_initInput(struct INP_InputMap *inputMap) {
 void ECS_runEngine(struct ECS_Components *engineComponents,
                    struct ECS_ResourceRegistry *resourceRegistry,
                    struct INP_InputMap *inputMap,
-                   struct Event_Vector *engineEventManager,
+                   struct EventManager *engineEventManager,
                    struct ECS_ExtraState *engineExtraState) {
         // declarations
         SDL_Event sdlEvent; /**< sdl event */
@@ -70,20 +70,20 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
 
                 // running the systems / sending events to the event manager
                 SYS_applyAcceleration(
-                    ECS_manager_get(Acceleration)(engineComponents),
-                    ECS_manager_get(Velocity)(engineComponents),
+                    ECS_managerGet(Acceleration)(engineComponents),
+                    ECS_managerGet(Velocity)(engineComponents),
                     engineExtraState->dt);
 
-                SYS_applyVelocity(ECS_manager_get(Velocity)(engineComponents),
-                                  ECS_manager_get(Position)(engineComponents),
+                SYS_applyVelocity(ECS_managerGet(Velocity)(engineComponents),
+                                  ECS_managerGet(Position)(engineComponents),
                                   engineExtraState->dt);
                 SYS_updatePositions(
-                    ECS_manager_get(Position)(engineComponents),
-                    ECS_manager_get(Appearance)(engineComponents));
+                    ECS_managerGet(Position)(engineComponents),
+                    ECS_managerGet(Appearance)(engineComponents));
 
                 SYS_renderCopy(resourceRegistry->cRenderer,
 
-                               ECS_manager_get(Appearance)(engineComponents));
+                               ECS_managerGet(Appearance)(engineComponents));
 
                 // rendering
                 SDL_RenderPresent(resourceRegistry->cRenderer);
@@ -94,13 +94,13 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                 // parsing the events
                 {
                         size_t eventVectorLength =
-                            Event_vector_size(engineEventManager);
+                            EventManager_size(engineEventManager);
 
                         Event gameEvent;
 
                         for (size_t i = 0; i < eventVectorLength; ++i) {
                                 gameEvent =
-                                    Event_vector_get(engineEventManager, i);
+                                    EventManager_get(engineEventManager, i);
                                 switch (gameEvent.type) {
                                         case EVT_Spawn: {
                                                 ECS_updateCurFreeIndex(
@@ -141,7 +141,7 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                                 }
                         }
 
-                        Event_vector_lazy_clear(engineEventManager);
+                        EventManager_lazy_clear(engineEventManager);
                 }
 
                 // sleeping to limit CPU usage

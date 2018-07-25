@@ -14,15 +14,15 @@ static void renderCopyAppearance(SDL_Renderer*, const Appearance*);
 // -----------------------------------------
 
 void SYS_renderCopy(SDL_Renderer* renderer,
-                    const struct Appearance_Manager* appearanceManager) {
-        const struct Appearance_Vector* appVec_p =
-            Appearance_manager_get_data(appearanceManager);
+                    const struct AppearanceManager* appearanceManager) {
+        const struct AppearanceVector* appVec_p =
+            AppearanceManager_get_packed_data(appearanceManager);
 
-        size_t size = Appearance_vector_size(appVec_p);
+        size_t size = AppearanceVector_size(appVec_p);
 
         for (size_t i = 0; i < size; ++i) {
                 renderCopyAppearance(renderer,
-                                     Appearance_vector_get_p(appVec_p, i));
+                                     AppearanceVector_get_p(appVec_p, i));
         }
 }
 

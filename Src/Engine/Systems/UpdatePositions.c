@@ -10,12 +10,12 @@ static void SYS_moveAppearanceTo(Appearance*, const Position* const);
 //    Public function implementations
 // -----------------------------------------
 
-void SYS_updatePositions(const struct Position_Manager* positionManager_p,
-                         struct Appearance_Manager* appearanceManager_p) {
+void SYS_updatePositions(const struct PositionManager* positionManager_p,
+                         struct AppearanceManager* appearanceManager_p) {
         // getting the Position_Vector and its length
-        const struct Position_Vector* positionData =
-            Position_manager_get_data(positionManager_p);
-        size_t postionDataLength = Position_vector_size(positionData);
+        const struct PositionVector* positionData =
+            PositionManager_get_packed_data(positionManager_p);
+        size_t postionDataLength = PositionVector_size(positionData);
 
         // global index of the position that it is known by all other components
         size_t globalIndex;
@@ -26,12 +26,12 @@ void SYS_updatePositions(const struct Position_Manager* positionManager_p,
 
         for (size_t i = 0; i < postionDataLength; ++i) {
                 // gets the position pointer
-                tmpPosition_p = Position_vector_get_p(positionData, i);
+                tmpPosition_p = PositionVector_get_p(positionData, i);
 
                 // gets the corrosponding appearance pointer for th eposition
                 globalIndex =
-                    Position_manager_get_index_from(positionManager_p, i);
-                tmpAppearance_p = Appearance_manager_get_data_p_at(
+                    PositionManager_get_index_from(positionManager_p, i);
+                tmpAppearance_p = AppearanceManager_get_p_at(
                     appearanceManager_p, globalIndex);
 
                 // updates

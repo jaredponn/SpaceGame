@@ -21,7 +21,7 @@ void ECS_initInput(struct INP_InputMap*);
 
 // runs the engine with the resources
 void ECS_runEngine(struct ECS_Components*, struct ECS_ResourceRegistry*,
-                   struct INP_InputMap*, struct Event_Vector*,
+                   struct INP_InputMap*, struct EventManager*,
                    struct ECS_ExtraState*);
 
 // -----------------------------------------
