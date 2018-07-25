@@ -15,16 +15,16 @@
 //    Macros
 // -----------------------------------------
 
-// listof components using X macros
-#define LIST_OF_COMPONENTS                \
-        /*X_CPT(TYPE, PREFIX)*/           \
-        X_CPT(Entity, Entity)             \
-        X_CPT(Position, Position)         \
-        X_CPT(Velocity, Velocity)         \
-        X_CPT(Acceleration, Acceleration) \
-        X_CPT(Appearance, Appearance)     \
-        X_CPT(Aabb, Aabb0)                \
-        X_CPT(Aabb, Aabb1)
+// listof components using X macros. Used to generate vectors, and packed
+// vectors of the given type, prefixed by the type.
+#define LIST_OF_COMPONENTS                 \
+        /*X_CPT(TYPE, VEC/PKDVEC PREFIX)*/ \
+        X_CPT(Entity, Entity)              \
+        X_CPT(Position, Position)          \
+        X_CPT(Velocity, Velocity)          \
+        X_CPT(Acceleration, Acceleration)  \
+        X_CPT(Appearance, Appearance)      \
+        X_CPT(Aabb, Aabb)
 
 // Defines how to name the managers in ECS_Components
 #define MANAGER_NAME(name) m_##name
@@ -108,11 +108,7 @@ LIST_OF_COMPONENTS
 // -----------------------------------------
 //    Adders
 // -----------------------------------------
-// adds to the current index
-#define ECS_addComponent(name) MANAGER_ADD_NAME(name)
-
-// adds a component to a given index
-#define ECS_addComponentAt(name) MANAGER_ADD_AT_NAME(name)
+// strictly internals are here for the EngineComponentGenerics.h file
 
 // ECS_add<name>At(components, index, val )
 #define X_CPT(type, name) \
