@@ -5,6 +5,7 @@
 #include "Systems/RenderCopy.h"
 #include "Systems/UpdatePositions.h"
 
+#include "Components/EngineComponentGenerics.h"
 #include "Components/EngineComponents.h"
 #include "Components/MovementGenerics.h"
 
@@ -106,13 +107,13 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                                                     engineComponents);
 
                                                 // adding acceleration
-                                                ECS_addComponent(Acceleration)(
+                                                ECS_addComponent(
                                                     engineComponents,
                                                     &(Acceleration){.x = 0,
                                                                     .y = -2});
 
                                                 // adding velocity
-                                                ECS_addComponent(Velocity)(
+                                                ECS_addComponent(
                                                     engineComponents,
                                                     &(Velocity){.x = 0,
                                                                 .y = -2});
@@ -124,12 +125,12 @@ void ECS_runEngine(struct ECS_Components *engineComponents,
                                                     (const Position *)
                                                         INP_getMousePosition(),
                                                     &transform);
-                                                ECS_addComponent(Position)(
+                                                ECS_addComponent(
                                                     engineComponents, &tmppos);
 
                                                 // adding appearance
                                                 Appearance tmpapp = test;
-                                                ECS_addComponent(Appearance)(
+                                                ECS_addComponent(
                                                     engineComponents, &tmpapp);
                                         } break;
                                         case EVT_Collision:
