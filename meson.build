@@ -17,20 +17,21 @@ srcs = ['Src/Main.c'
 
        # Components
        #, 'Src/Engine/Components/ComponentSets.c'
+
        , 'Src/Engine/Components/Components.c'
        , 'Src/Engine/Components/Movement.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'
        , 'Src/Engine/Components/Aabb.c'
 
-       # Systems
-       , 'Src/Engine/Systems/RenderCopy.c'
+       #/ Systems
+       , 'Src/Engine/Systems/Render.c'
        , 'Src/Engine/Systems/UpdatePositions.c'
        , 'Src/Engine/Systems/ApplyMovementTransforms.c'
        , 'Src/Engine/Systems/AabbHitTest.c'
 
        # extras
-       , 'Src/Engine/ExtraState/EngineExtraState.c'
+       ,'Src/Engine/ExtraState/EngineExtraState.c'
 
         # inputs
        , 'Src/Engine/Input/GameInputMaps.c'
@@ -42,7 +43,7 @@ srcs = ['Src/Main.c'
 
         # Lib
        , 'Lib/Util.c' 
-       , 'Lib/E_FreeList.c' 
+       , 'Lib/MarkedFreeList.c' 
        , 'Lib/sizet_Vector.c' 
        , 'Lib/V2.c' 
        , 'Lib/Time.c'
@@ -50,13 +51,16 @@ srcs = ['Src/Main.c'
 
 executable('spacegame'
         , srcs
-        , c_args : ['-Wall', '-Wextra', '-O2']
+        , c_args : ['-Wall', '-Wextra', '-O2', '-g']
         , link_args : ['-lSDL2', '-lSDL2_image'] )
 
 testsrcs = [ 'Lib/Util.c'  
            , 'UnitTesting/Run_Tests.c'
            , 'Lib/tests/Data_Structures.c'
            , 'Lib/sizet_Vector.c'
+           , 'Lib/E_FreeList.c'
+           , 'Lib/MarkedFreeList.c' 
+           , 'Src/Engine/Components/Components.c'
            , 'Src/Engine/Components/Appearance.c'
            ]
 unittests = executable('unittests', testsrcs, c_args : ['-Wall', '-Wextra', '-O2'],link_args :'-lcheck')
