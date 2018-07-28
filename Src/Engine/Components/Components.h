@@ -35,7 +35,7 @@
 #define MANAGER_NAME(name) m_##name
 
 // defines how to name the manger getters from a CPT_Components
-#define MANAGER_GETTER_NAME(name) CPT_get##name##manager
+#define MANAGER_GETTER_NAME(name) CPT_get##name##Manager
 
 // defines how to name the manger adders from a CPT_Components
 #define MANAGER_ADD_AT_NAME(name) CPT_add##name##At
@@ -63,7 +63,7 @@ struct CPT_Components {
 	struct MarkedFreeList free_elements; /**< keepstrack of where to add and
 					   delete things in the sparse arrays */
 
-// clang-format off
+	// clang-format off
         // putting the managers inside of this struct
         #define X_CPT(type, name) struct name##Manager MANAGER_NAME(name);
         LIST_OF_COMPONENTS

@@ -76,21 +76,20 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 
 		// running the systems / sending events to the event manager
 		SYS_applyAcceleration(
-			CPT_managerGet(Acceleration)(engineComponents),
-			CPT_managerGet(Velocity)(engineComponents),
+			CPT_getAccelerationManager(engineComponents),
+			CPT_getVelocityManager(engineComponents),
 			engineExtraState->dt);
 
-		SYS_applyVelocity(CPT_managerGet(Velocity)(engineComponents),
-				  CPT_managerGet(Position)(engineComponents),
+		SYS_applyVelocity(CPT_getVelocityManager(engineComponents),
+				  CPT_getPositionManager(engineComponents),
 				  engineExtraState->dt);
-		SYS_updatePositions(
-			CPT_managerGet(Position)(engineComponents),
-			CPT_managerGet(Appearance)(engineComponents),
-			CPT_managerGet(ARectAabb)(engineComponents),
-			CPT_managerGet(BRectAabb)(engineComponents));
+		SYS_updatePositions(CPT_getPositionManager(engineComponents),
+				    CPT_getAppearanceManager(engineComponents),
+				    CPT_getARectAabbManager(engineComponents),
+				    CPT_getBRectAabbManager(engineComponents));
 
 		SYS_renderCopy(resourceRegistry->cRenderer,
-			       CPT_managerGet(Appearance)(engineComponents));
+			       CPT_getAppearanceManager(engineComponents));
 
 		/** SYS_renderDebugRectAabb( */
 		/**         resourceRegistry->cRenderer, */
@@ -101,11 +100,11 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		SYS_renderDebugRectAabb(
 			resourceRegistry->cRenderer,
 			resourceRegistry->cResources.cTextures.aabbDebugTexture,
-			CPT_managerGet(BRectAabb)(engineComponents));
+			CPT_getBRectAabbManager(engineComponents));
 
 
-		SYS_rectAabbHitTest(CPT_managerGet(ARectAabb)(engineComponents),
-				    CPT_managerGet(BRectAabb)(engineComponents),
+		SYS_rectAabbHitTest(CPT_getARectAabbManager(engineComponents),
+				    CPT_getBRectAabbManager(engineComponents),
 				    engineEventManager);
 
 		// rendering
