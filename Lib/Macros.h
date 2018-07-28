@@ -31,7 +31,8 @@
 #define _mcat(a, b) a##b
 
 /* depth evaluation for macros*/
-#define EVAL(...) EVAL1024(__VA_ARGS__)
+#define EVAL(...) EVAL2048(__VA_ARGS__)
+#define EVAL2048(...) EVAL1024(EVAL1024(__VA_ARGS__))
 #define EVAL1024(...) EVAL512(EVAL512(__VA_ARGS__))
 #define EVAL512(...) EVAL256(EVAL256(__VA_ARGS__))
 #define EVAL256(...) EVAL128(EVAL128(__VA_ARGS__))
@@ -73,13 +74,13 @@ usage: BOOL(0) -> 0
 /* IMPLEMENTING IF STATEMENTS
  interface: IF_ELSE(1)(en)(nil) -> returns en
  interface: IF_ELSE(0)(en)(nil) -> returns nil
-        IF_ELSE(123)(true)(false) -> true
-        IF_ELSE(0)(true)(false) -> false
+	IF_ELSE(123)(true)(false) -> true
+	IF_ELSE(0)(true)(false) -> false
 */
 #define IF_ELSE(condition) MCAT(_if_, BOOL(condition))
-#define _if_1(...) \
-        __VA_ARGS__ _if_1_else  // if it is true, execute the first statement
-#define _if_0(...) _if_0_else   // if it is false, execute the second statement
+#define _if_1(...)                                                             \
+	__VA_ARGS__ _if_1_else // if it is true, execute the first statement
+#define _if_0(...) _if_0_else  // if it is false, execute the second statement
 
 #define _if_1_else(...)
 #define _if_0_else(...) __VA_ARGS__
@@ -113,7 +114,7 @@ usage: ONE_ARG_LEFT() -> 1 for true BUG
 
 /* map
 usage: #define FUNCTION(a) 1234
-        EVAL(MAP(FUNCTION, a, b, c)) -> 1234, 1234, 1234, 1234
+	EVAL(MAP(FUNCTION, a, b, c)) -> 1234, 1234, 1234, 1234
 */
 
 // clang-format off
@@ -164,7 +165,7 @@ EVAL(MAP_INIT(FUNCTION,a)) -> a
 #define POSTFIX_COMMA(val) val,
 
 // remoes trailing commas: a,b,c, -> a,b,c
-#define REMOVE_EXTRA_COMMA(...) EVAL(DEFER1(MAP_INIT)(POSTFIX_COMMA, __VA_ARGS__))
+#define REMOVE_EXTRA_COMMA(...) EVAL(DEFER2(MAP_INIT)(POSTFIX_COMMA, __VA_ARGS__))
 // an ID function yields the same effect as REMOVE_EXTRA_COMA
 #define ID_VA_ARGS(...) REMOVE_EXTRA_COMMA(__VA_ARGS__)
 
@@ -181,9 +182,9 @@ EVAL(MAP_INIT(FUNCTION,a)) -> a
  * Let's say we have the following:
 
 #define XMACRO  \
-        X_g(int)  \
-        X_g(char) \
-        X_g(deffed)
+	X_g(int)  \
+	X_g(char) \
+	X_g(deffed)
 // notice we need to postfix the X() macro with a unique identifier
 
 // we define the X macro to convert the expression to a list. Note: when
@@ -201,7 +202,7 @@ macro must expand into a list of arguements
 XMACRO))) (val)
 
 typedef struct deffed {
-        int a;
+	int a;
 } deffed;
 
 void intfunc(int a) { printf("INT FUNC %i\n", a); }
@@ -214,14 +215,14 @@ void defaultfunc(float a) { printf("DEFAULT FUNC %f\n", a); }
 
 
 int main() {
-        int a = 1;
-        char b = 'a';
-        deffed c = {2};
-        float d = 1.2f;
-        genericFunction(a);
-        genericFunction(b);
-        genericFunction((deffed){2});
-        // genericFunction(d); will cause compiel error
+	int a = 1;
+	char b = 'a';
+	deffed c = {2};
+	float d = 1.2f;
+	genericFunction(a);
+	genericFunction(b);
+	genericFunction((deffed){2});
+	// genericFunction(d); will cause compiel error
 }
 
  * Notes: with this method, if it is fed a type not accounted for in the Xmacro,
