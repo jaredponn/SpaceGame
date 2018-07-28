@@ -14,20 +14,21 @@
 
 // textures
 struct ECS_Textures {
-        SDL_Texture* testTexture;
+	SDL_Texture *testTexture;
+	SDL_Texture *aabbDebugTexture;
 };
 
 // Resources
 struct ECS_Resources {
-        struct ECS_Textures cTextures;
+	struct ECS_Textures cTextures;
 };
 
 // accumalation of where to find all the various game resources. Sort of like
 // Haskell lenses to focus on specific parts
 struct ECS_ResourceRegistry {
-        SDL_Window* cWindow;
-        SDL_Renderer* cRenderer;
-        struct ECS_Resources cResources;
+	SDL_Window *cWindow;
+	SDL_Renderer *cRenderer;
+	struct ECS_Resources cResources;
 };
 
 // -----------------------------------------
@@ -35,7 +36,7 @@ struct ECS_ResourceRegistry {
 // -----------------------------------------
 
 // loads the resource registry with a renderer, window, and textures
-void ECS_loadInitResources(struct ECS_ResourceRegistry*);
+void ECS_loadInitResources(struct ECS_ResourceRegistry *);
 
 // clears and deallocates all resources in the registry
-void ECS_destroyRegistry(struct ECS_ResourceRegistry*);
+void ECS_destroyRegistry(struct ECS_ResourceRegistry *);
