@@ -40,6 +40,8 @@ static void SYS_moveRectAabbTo(void *, const Position *);
 				(struct constdata_prefix##Manager *)constdata,      \
 				transformdata_prefix##Manager_get_index_from(       \
 					transformdata, i));                         \
+			/** checking if that data exists before applying the        \
+			 * transform*/                                              \
 			if (transformdata_prefix##Tmp != NULL                       \
 			    && constdata_prefix##Tmp != NULL)                       \
 				func(transformdata_prefix##Tmp,                     \

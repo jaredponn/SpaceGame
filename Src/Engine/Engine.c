@@ -13,6 +13,8 @@
 #include "Input/GameInputMaps.h"
 #include "Input/InputHandler.h"
 
+#include "EventManager/EventEffects.h"
+
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -49,11 +51,11 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		   struct ECS_ResourceRegistry *resourceRegistry,
 		   struct INP_InputMap *inputMap,
 		   struct EventManager *engineEventManager,
-		   struct ECS_ExtraState *engineExtraState)
+		   struct EXS_ExtraState *engineExtraState)
 {
 	// declarations
 	SDL_Event sdlEvent; /**< sdl event */
-	Time t_i, t_f;      /**< time for calculating the time delta */
+	Time t_i, t_f;      /**< times for calculating the time delta */
 
 	INP_setDefaultMap(inputMap);
 
@@ -64,15 +66,6 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		// clears the background to black
 		SDL_SetRenderDrawColor(resourceRegistry->cRenderer, 0, 0, 0, 0);
 		SDL_RenderClear(resourceRegistry->cRenderer);
-
-		Appearance test = (Appearance){
-			.texture = resourceRegistry->cResources.cTextures
-					   .testTexture,
-			.srcrect =
-				(SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100},
-			.dstrect =
-				(SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100},
-			.angle = 0};
 
 		// running the systems / sending events to the event manager
 		SYS_applyAcceleration(
@@ -87,9 +80,11 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				    CPT_getAppearanceManager(engineComponents),
 				    CPT_getARectAabbManager(engineComponents),
 				    CPT_getBRectAabbManager(engineComponents));
+		EXS_applyCameraVelocity(engineExtraState);
 
 		SYS_renderCopy(resourceRegistry->cRenderer,
-			       CPT_getAppearanceManager(engineComponents));
+			       CPT_getAppearanceManager(engineComponents),
+			       &engineExtraState->camera);
 
 		/** SYS_renderDebugRectAabb( */
 		/**         resourceRegistry->cRenderer, */
@@ -100,7 +95,8 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		SYS_renderDebugRectAabb(
 			resourceRegistry->cRenderer,
 			resourceRegistry->cResources.cTextures.aabbDebugTexture,
-			CPT_getBRectAabbManager(engineComponents));
+			CPT_getBRectAabbManager(engineComponents),
+			&engineExtraState->camera);
 
 
 		SYS_rectAabbHitTest(CPT_getARectAabbManager(engineComponents),
@@ -125,114 +121,34 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 					EventManager_get(engineEventManager, i);
 				switch (gameEvent.type) {
 
-				case EVT_SpawnA: {
-					CPT_updateCurFreeIndex(
-						engineComponents);
+				case EVT_SpawnA:
+					EVT_spawnTestARect(engineComponents,
+							   resourceRegistry,
+							   engineExtraState);
+					break;
 
-					// adding acceleration
-					CPT_addComponent(
-						engineComponents,
-						&(Acceleration){.x = 0,
-								.y = -2});
+				case EVT_SpawnB:
+					EVT_spawnTestBRect(engineComponents,
+							   resourceRegistry,
+							   engineExtraState);
 
-					// adding velocity
-					CPT_addComponent(
-						engineComponents,
-						&(Velocity){.x = 0, .y = -2});
-
-					// adding position
-					Position transform =
-						(Position){.x = 50, .y = 50};
-					Position tmppos = MVT_sub(
-						(const Position *)
-							INP_getMousePosition(),
-						&transform);
-					CPT_addComponent(engineComponents,
-							 &tmppos);
-
-					// adding appearance
-					Appearance tmpapp = test;
-					CPT_addComponent(engineComponents,
-							 &tmpapp);
-
-					// adding Arectaabb
-					CPT_addComponent(
-						engineComponents,
-						&(ARectAabb){
-							.pMin = *(struct
-								  V2 *)&tmppos,
-							.pMax = V2_add(
-								(struct
-								 V2 *)&tmppos,
-								&(struct
-								  V2){.x = 100,
-								      .y = 100})});
-
-				} break;
-
-				case EVT_SpawnB: {
-					CPT_updateCurFreeIndex(
-						engineComponents);
-
-					// adding acceleration
-					CPT_addComponent(
-						engineComponents,
-						&(Acceleration){.x = 0,
-								.y = -2});
-
-					// adding velocity
-					CPT_addComponent(
-						engineComponents,
-						&(Velocity){.x = 0, .y = -2});
-
-					// adding position
-					Position transform =
-						(Position){.x = 50, .y = 50};
-					Position tmppos = MVT_sub(
-						(const Position *)
-							INP_getMousePosition(),
-						&transform);
-					CPT_addComponent(engineComponents,
-							 &tmppos);
-
-					// adding appearance
-					Appearance tmpapp = test;
-					CPT_addComponent(engineComponents,
-							 &tmpapp);
-
-					// adding brectaabb
-					CPT_addComponent(
-						engineComponents,
-						&(BRectAabb){
-							.pMin = *(struct
-								  V2 *)&tmppos,
-							.pMax = V2_add(
-								(struct
-								 V2 *)&tmppos,
-								&(struct
-								  V2){.x = 100,
-								      .y = 100})});
-
-				} break;
+					break;
 				case EVT_Collision: {
-					/** printf("\nCOLLISION OCCURED "
-					 * __FILE__ */
-					/**        " ----\n"); */
 
 					CPT_deleteEntityAt(
 						engineComponents,
 						gameEvent.collision.a);
-					/** printf("Deleting entity at: %lu \n",
-					 */
-					/**        gameEvent.collision.a); */
 
 					CPT_deleteEntityAt(
 						engineComponents,
 						gameEvent.collision.b);
+				} break;
 
-					/** printf("Deleting entity at: %lu \n",
-					 */
-					/**        gameEvent.collision.b); */
+				case EVT_CameraMovement: {
+
+					EVT_updateCameraVelocity(
+						engineExtraState,
+						&gameEvent.camera_velocity);
 				} break;
 				default:
 					break;

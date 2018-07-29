@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Lib/GenericVector.h"
-#include "Src/Engine/Components/Entity.h"
+#include "Lib/V2.h"
 /**
- * Event manager ----
+ * Event manager
  * The eventmanager is a vector of Events. The Event is a wrapper around a type
  * and the Signal (each input event can be thought of as a signal from a system)
  */
@@ -18,6 +18,7 @@ typedef enum EVT_Type {
 	EVT_SpawnA,    /**< basic spawn signal */
 	EVT_SpawnB,    /**< basic spawn signal */
 	EVT_Collision, /**< basic collision signal */
+	EVT_CameraMovement,
 } EVT_Type;
 
 // the global_index of the entities that have collided
@@ -26,10 +27,11 @@ typedef struct EVT_CollisionSignal {
 	size_t b; /**< id of the second entity */
 } EVT_CollisionSignal;
 
+typedef struct V2 EVT_CameraMovementSignal;
+
 // -----------------------------------------
 //    Higher order event types
 // -----------------------------------------
-
 // Event type
 typedef struct Event {
 	EVT_Type type; /**< type that each event should have */
@@ -37,9 +39,17 @@ typedef struct Event {
 	/** signals of possible events */
 	union {
 		EVT_CollisionSignal collision;
+		EVT_CameraMovementSignal camera_velocity;
 	};
 
 } Event;
 
+// -----------------------------------------
+//    Event manager
+// -----------------------------------------
 // the event manager is a wrapper around a vector object
 VECTOR_TYPE_DECLARE(Event, EventManager)
+
+// -----------------------------------------
+//    Event effects -- effects to run given an event
+// -----------------------------------------

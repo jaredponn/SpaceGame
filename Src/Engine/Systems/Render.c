@@ -7,28 +7,35 @@
 // renders an appearance. Essentially a wrapper for SDL_RenderCopyEx, but
 // assumes that we do not wish to flip to change the center of the object, nor
 // flip it.
-static void renderCopyAppearance(SDL_Renderer *, const Appearance *);
+static void renderCopyAppearance(SDL_Renderer *, const Appearance *,
+				 const struct EXS_GameCamera *);
+
+static SDL_Rect convertSdlRectToScreenRect(const SDL_Rect *,
+					   const struct EXS_GameCamera *);
 
 // -----------------------------------------
 //    Public function implementations
 // -----------------------------------------
 
 void SYS_renderCopy(SDL_Renderer *renderer,
-		    const struct AppearanceManager *appearanceManager)
+		    const struct AppearanceManager *appearanceManager,
+		    const struct EXS_GameCamera *gameCamera)
 {
 	const struct AppearanceVector *appVec_p =
 		AppearanceManager_get_packed_data(appearanceManager);
 
-	size_t size = AppearanceVector_size(appVec_p);
+	size_t vecLength = AppearanceVector_size(appVec_p);
 
-	for (size_t i = 0; i < size; ++i) {
+	for (size_t i = 0; i < vecLength; ++i) {
 		renderCopyAppearance(renderer,
-				     AppearanceVector_get_p(appVec_p, i));
+				     AppearanceVector_get_p(appVec_p, i),
+				     gameCamera);
 	}
 }
 
 void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
-			     const void *rectAabbManager)
+			     const void *rectAabbManager,
+			     struct EXS_GameCamera *gameCamera)
 {
 	const struct RectAabbVector *rectAabbVec =
 		RectAabbManager_get_packed_data(rectAabbManager);
@@ -36,16 +43,19 @@ void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
 	size_t size = RectAabbVector_size(rectAabbVec);
 
 	RectAabb tmp;
+	SDL_Rect tmpsdlrect;
 	struct V2 lengths;
 
 	for (size_t i = 0; i < size; ++i) {
 		tmp = RectAabbVector_get(rectAabbVec, i);
 		lengths = V2_sub(&tmp.pMax, &tmp.pMin);
-		SDL_RenderCopy(renderer, debugTexture, NULL,
-			       &(SDL_Rect){.x = tmp.pMin.x,
-					   .y = tmp.pMin.y,
-					   .w = lengths.x,
-					   .h = lengths.y});
+		tmpsdlrect =
+			convertSdlRectToScreenRect(&(SDL_Rect){.x = tmp.pMin.x,
+							       .y = tmp.pMin.y,
+							       .w = lengths.x,
+							       .h = lengths.y},
+						   gameCamera);
+		SDL_RenderCopy(renderer, debugTexture, NULL, &tmpsdlrect);
 	}
 }
 
@@ -54,9 +64,23 @@ void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
 // -----------------------------------------
 
 static void renderCopyAppearance(SDL_Renderer *renderer,
-				 const Appearance *appearance)
+				 const Appearance *appearance,
+				 const struct EXS_GameCamera *gameCamera)
 {
+	// converting it from world corridantes to screen coordiantes
+	SDL_Rect screenSdlRect =
+		convertSdlRectToScreenRect(&appearance->dstrect, gameCamera);
+
 	SDL_RenderCopyEx(renderer, appearance->texture, &appearance->srcrect,
-			 &appearance->dstrect, appearance->angle, NULL,
+			 &screenSdlRect, appearance->angle, NULL,
 			 SDL_FLIP_NONE);
+}
+
+static SDL_Rect
+convertSdlRectToScreenRect(const SDL_Rect *sdlRect,
+			   const struct EXS_GameCamera *gameCamera)
+{
+
+	return CPT_subtractSdlRectPosition(sdlRect,
+					   &gameCamera->camera_position);
 }

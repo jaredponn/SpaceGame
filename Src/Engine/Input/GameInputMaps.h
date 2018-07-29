@@ -2,4 +2,4 @@
 
 #include "InputMap.h"
 
-void INP_setDefaultMap(struct INP_InputMap*);
+void INP_setDefaultMap(struct INP_InputMap *);
