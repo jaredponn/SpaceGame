@@ -11,13 +11,11 @@ inc = include_directories('Src')
 srcs = ['Src/Main.c'
        , 'Src/Engine/Engine.c'
 
-       #aa resource loading
+       # resource loading
        , 'Src/Engine/Resources/ResourceRegistry.c'
        , 'Src/Engine/Resources/LoadResources.c'
 
        # Components
-       #, 'Src/Engine/Components/ComponentSets.c'
-
        , 'Src/Engine/Components/Components.c'
        , 'Src/Engine/Components/Movement.c'
        , 'Src/Engine/Components/Appearance.c'
@@ -34,12 +32,13 @@ srcs = ['Src/Main.c'
        ,'Src/Engine/ExtraState/EngineExtraState.c'
 
         # inputs
-       , 'Src/Engine/Input/GameInputMaps.c'
        , 'Src/Engine/Input/InputHandler.c'
+       , 'Src/Engine/Input/GameInputMaps.c'
        , 'Src/Engine/Input/InputMap.c'
 
         # Evenet manager
        , 'Src/Engine/EventManager/EventManager.c'
+       , 'Src/Engine/EventManager/EventEffects.c'
 
         # Lib
        , 'Lib/Util.c' 
