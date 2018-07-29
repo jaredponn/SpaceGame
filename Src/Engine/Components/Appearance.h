@@ -4,16 +4,23 @@
 #include "Lib/GenericComponentManager.h"
 #include "Lib/GenericVector.h"
 #include "Movement.h"
+#include "Lib/V2.h"
 
 typedef struct Appearance {
-        SDL_Texture* texture;
-        SDL_Rect srcrect;  // source rectangle
-        SDL_Rect dstrect;  // destination rectangle
-        double angle;      // angle to rotate the texture
+	SDL_Texture *texture;
+	SDL_Rect srcrect; // source rectangle
+	SDL_Rect dstrect; // destination rectangle
+	double angle;     // angle to rotate the texture
 } Appearance;
 
 // sets the position of the SDL_Rect
-void CPT_setSdlRectPosition(SDL_Rect*, const Position* const);
+void CPT_setSdlRectPosition(SDL_Rect *, const Position *const);
 
 // adds the position to the SDL_Rect
-void CPT_modifySdlRectPosition(SDL_Rect* rect, const Position* const pos);
+void CPT_modifySdlRectPosition(SDL_Rect *rect, const Position *const pos);
+
+// adds like: apperaance + pos
+SDL_Rect CPT_addSdlRectPosition(const SDL_Rect *rect, const struct V2 *vec);
+// subtracts like: apperaance - pos
+SDL_Rect CPT_subtractSdlRectPosition(const SDL_Rect *rect,
+				     const struct V2 *vec);
