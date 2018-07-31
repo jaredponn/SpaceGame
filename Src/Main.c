@@ -34,5 +34,6 @@ int main(void)
 	ECS_destroyRegistry(&resourceRegistry);
 	ECS_quitLibraries();
 
+
 	return 0;
 }

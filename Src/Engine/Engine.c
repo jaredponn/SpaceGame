@@ -7,8 +7,6 @@
 #include "Systems/AabbHitTest.h"
 
 #include "Components/Components.h"
-#include "Components/ComponentsGenerics.h"
-#include "Components/MovementGenerics.h"
 
 #include "Input/GameInputMaps.h"
 #include "Input/InputHandler.h"
@@ -78,8 +76,8 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				  engineExtraState->dt);
 		SYS_updatePositions(CPT_getPositionManager(engineComponents),
 				    CPT_getAppearanceManager(engineComponents),
-				    CPT_getARectAabbManager(engineComponents),
-				    CPT_getBRectAabbManager(engineComponents));
+				    CPT_getRectAabb0Manager(engineComponents),
+				    CPT_getRectAabb1Manager(engineComponents));
 		EXS_applyCameraVelocity(engineExtraState);
 
 		SYS_renderCopy(resourceRegistry->cRenderer,
@@ -95,12 +93,12 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		SYS_renderDebugRectAabb(
 			resourceRegistry->cRenderer,
 			resourceRegistry->cResources.cTextures.aabbDebugTexture,
-			CPT_getBRectAabbManager(engineComponents),
+			CPT_getRectAabb1Manager(engineComponents),
 			&engineExtraState->camera);
 
 
-		SYS_rectAabbHitTest(CPT_getARectAabbManager(engineComponents),
-				    CPT_getBRectAabbManager(engineComponents),
+		SYS_rectAabbHitTest(CPT_getRectAabb0Manager(engineComponents),
+				    CPT_getRectAabb1Manager(engineComponents),
 				    engineEventManager);
 
 		// rendering

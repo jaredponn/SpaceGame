@@ -24,3 +24,6 @@ SDL_Rect CPT_addSdlRectPosition(const SDL_Rect *rect, const struct V2 *vec);
 // subtracts like: apperaance - pos
 SDL_Rect CPT_subtractSdlRectPosition(const SDL_Rect *rect,
 				     const struct V2 *vec);
+
+VECTOR_DECLARE(Appearance, Appearance)
+COMPONENT_MANAGER_DECLARE(Appearance, Appearance, Appearance)

@@ -12,4 +12,5 @@
 // event to the event maanger if it sthe case. Please dont send anything other
 // than a rectangle manager through these or else weird undefined behavour wil
 // occur
-void SYS_rectAabbHitTest(const void *, const void *, struct EventManager *);
+void SYS_rectAabbHitTest(const struct RectAabbManager *,
+			 const struct RectAabbManager *, struct EventManager *);

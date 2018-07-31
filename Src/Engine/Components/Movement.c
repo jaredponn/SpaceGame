@@ -1,9 +1,5 @@
 #include "Movement.h"
 
-#define X_MVT(name) V2_DEFINE(name)
-LIST_OF_MOVEMENTS
-#undef X_MVT
-
 Position CPT_applyVelocityToPosition(const Velocity *vel, const Position *pos,
 				     const Time time)
 {
@@ -18,3 +14,6 @@ Velocity CPT_applyAccelerationToVelocity(const Acceleration *acc,
 	return (Velocity){.x = acc->x * UTI_castTimeToSecs(time) + vel->x,
 			  .y = acc->y * UTI_castTimeToSecs(time) + vel->y};
 }
+
+VECTOR_DEFINE(V2, V2)
+COMPONENT_MANAGER_DEFINE(V2, V2, V2)

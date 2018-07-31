@@ -22,14 +22,14 @@
 // listof components using X macros. Used to generate vectors, and packed
 // vectors of the given type, prefixed by the type.
 #define LIST_OF_COMPONENTS                                                     \
-	/*X_CPT(TYPE, VEC/PKDVEC PREFIX)*/                                     \
-	X_CPT(Entity, Entity)                                                  \
-	X_CPT(Position, Position)                                              \
-	X_CPT(Velocity, Velocity)                                              \
-	X_CPT(Acceleration, Acceleration)                                      \
-	X_CPT(Appearance, Appearance)                                          \
-	X_CPT(ARectAabb, ARectAabb)                                            \
-	X_CPT(BRectAabb, BRectAabb)
+	/*X_CPT(type, managerprefix, name)*/                                   \
+	X_CPT(Entity, Entity, Entity)                                          \
+	X_CPT(struct V2, V2, Position)                                         \
+	X_CPT(struct V2, V2, Velocity)                                         \
+	X_CPT(struct V2, V2, Acceleration)                                     \
+	X_CPT(Appearance, Appearance, Appearance)                              \
+	X_CPT(RectAabb, RectAabb, RectAabb0)                                   \
+	X_CPT(RectAabb, RectAabb, RectAabb1)
 
 // Defines how to name the managers in CPT_Components
 #define MANAGER_NAME(name) m_##name
@@ -50,7 +50,6 @@
 #define X_CPT(type, name)                                                      \
 	VECTOR_DECLARE(type, name)                                             \
 	COMPONENT_MANAGER_DECLARE(type, name, name)
-LIST_OF_COMPONENTS
 #undef X_CPT
 
 // -----------------------------------------
@@ -63,9 +62,9 @@ struct CPT_Components {
 	struct MarkedFreeList free_elements; /**< keepstrack of where to add and
 					   delete things in the sparse arrays */
 
-	// clang-format off
+// clang-format off
         // putting the managers inside of this struct
-        #define X_CPT(type, name) struct name##Manager MANAGER_NAME(name);
+        #define X_CPT(type,prefix, name) struct prefix##Manager MANAGER_NAME(name);
         LIST_OF_COMPONENTS
         #undef X_CPT
 	// clang-format on
@@ -104,8 +103,8 @@ void CPT_freeComponents(struct CPT_Components *);
 #define CPT_managerGet(name) MANAGER_GETTER_NAME(name)
 
 /// CPT_get<name>manager
-#define X_CPT(type, name)                                                      \
-	struct name##Manager *MANAGER_GETTER_NAME(name)(                       \
+#define X_CPT(type, prefix, name)                                              \
+	struct prefix##Manager *MANAGER_GETTER_NAME(name)(                     \
 		struct CPT_Components *);
 LIST_OF_COMPONENTS
 #undef X_CPT
@@ -116,13 +115,13 @@ LIST_OF_COMPONENTS
 // strictly internals are here for the EngineComponentGenerics.h file
 
 // CPT_add<name>At(components, index, val )
-#define X_CPT(type, name)                                                      \
+#define X_CPT(type, prefix, name)                                              \
 	void MANAGER_ADD_AT_NAME(name)(struct CPT_Components *, size_t, type *);
 LIST_OF_COMPONENTS
 #undef X_CPT
 
 // CPT_add<name>(components, index, val )
-#define X_CPT(type, name)                                                      \
+#define X_CPT(type, prefix, name)                                              \
 	void MANAGER_ADD_NAME(name)(struct CPT_Components *, type *);
 LIST_OF_COMPONENTS
 #undef X_CPT

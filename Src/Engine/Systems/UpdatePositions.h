@@ -4,7 +4,7 @@
 #include "Src/Engine/Components/Movement.h"
 
 // copies all Positions to things with an appearance
-void SYS_updatePositions(const struct PositionManager *positionManager_p,
+void SYS_updatePositions(const struct V2Manager *positionManager_p,
 			 struct AppearanceManager *appearanceManager_p,
-			 struct ARectAabbManager *arectManager,
-			 struct BRectAabbManager *brectManager);
+			 struct RectAabbManager *arectManager,
+			 struct RectAabbManager *brectManager);

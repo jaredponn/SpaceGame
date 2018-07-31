@@ -38,10 +38,10 @@ static void SYS_updateVelocityWithAcceleration(Velocity *, const Acceleration *,
 				transformdata##Data);                                   \
                                                                                         \
 		/** temporary vars*/                                                    \
-		void *transformdata_prefix##Tmp, *constdata_prefix##Tmp;                \
+		void *transformdata_prefix##Tmp0, *constdata_prefix##Tmp;               \
                                                                                         \
 		for (size_t i = 0; i < transformdata##VecLength; ++i) {                 \
-			transformdata_prefix##Tmp =                                     \
+			transformdata_prefix##Tmp0 =                                    \
 				transformdata_prefix##Vector_get_p(                     \
 					transformdata##Data, i);                        \
 			constdata_prefix##Tmp = constdata_prefix##Manager_get_p_at(     \
@@ -50,9 +50,9 @@ static void SYS_updateVelocityWithAcceleration(Velocity *, const Acceleration *,
 					transformdata, i));                             \
 			/** checking if that data exists before applying the            \
 			 * transform*/                                                  \
-			if (transformdata_prefix##Tmp != NULL                           \
+			if (transformdata_prefix##Tmp0 != NULL                          \
 			    && constdata_prefix##Tmp != NULL)                           \
-				func(transformdata_prefix##Tmp,                         \
+				func(transformdata_prefix##Tmp0,                        \
 				     constdata_prefix##Tmp, arg);                       \
 		}                                                                       \
 	}
@@ -60,23 +60,22 @@ static void SYS_updateVelocityWithAcceleration(Velocity *, const Acceleration *,
 //    Public function implementations
 // -----------------------------------------
 
-void SYS_applyVelocity(const struct VelocityManager *const velocityManager,
-		       struct PositionManager *const positionManager,
-		       const Time dt)
+void SYS_applyVelocity(const struct V2Manager *const velocityManager,
+		       struct V2Manager *const positionManager, const Time dt)
 {
-	TRANSFORM_MANAGER_WITH_EXTRA_ARG(positionManager, Position,
+	TRANSFORM_MANAGER_WITH_EXTRA_ARG(positionManager, V2,
 					 SYS_updatePositionWithVelocity, dt,
-					 velocityManager, Velocity)
+					 velocityManager, V2)
 }
 
-void SYS_applyAcceleration(
-	const struct AccelerationManager *const accelerationManager,
-	struct VelocityManager *const velocityManager, const Time dt)
+void SYS_applyAcceleration(const struct V2Manager *const accelerationManager,
+			   struct V2Manager *const velocityManager,
+			   const Time dt)
 {
 
-	TRANSFORM_MANAGER_WITH_EXTRA_ARG(velocityManager, Velocity,
+	TRANSFORM_MANAGER_WITH_EXTRA_ARG(velocityManager, V2,
 					 SYS_updateVelocityWithAcceleration, dt,
-					 accelerationManager, Acceleration)
+					 accelerationManager, V2)
 }
 
 // -----------------------------------------

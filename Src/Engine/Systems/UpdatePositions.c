@@ -49,19 +49,19 @@ static void SYS_moveRectAabbTo(void *, const Position *);
 		}                                                                   \
 	}
 
-void SYS_updatePositions(const struct PositionManager *positionManager,
+void SYS_updatePositions(const struct V2Manager *positionManager,
 			 struct AppearanceManager *appearanceManager,
-			 struct ARectAabbManager *arectManager,
-			 struct BRectAabbManager *brectManager)
+			 struct RectAabbManager *arectManager,
+			 struct RectAabbManager *brectManager)
 {
 	TRANSFORM_MANAGER_WITH(appearanceManager, Appearance,
-			       SYS_moveAppearanceTo, positionManager, Position)
+			       SYS_moveAppearanceTo, positionManager, V2)
 
-	TRANSFORM_MANAGER_WITH(arectManager, ARectAabb, SYS_moveRectAabbTo,
-			       positionManager, Position)
+	TRANSFORM_MANAGER_WITH(arectManager, RectAabb, SYS_moveRectAabbTo,
+			       positionManager, V2)
 
-	TRANSFORM_MANAGER_WITH(brectManager, BRectAabb, SYS_moveRectAabbTo,
-			       positionManager, Position)
+	TRANSFORM_MANAGER_WITH(brectManager, RectAabb, SYS_moveRectAabbTo,
+			       positionManager, V2)
 }
 
 // -----------------------------------------

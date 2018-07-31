@@ -1,6 +1,7 @@
 #include "AabbHitTest.h"
 
-void SYS_rectAabbHitTest(const void *arectmanager, const void *brectmanager,
+void SYS_rectAabbHitTest(const struct RectAabbManager *arectmanager,
+			 const struct RectAabbManager *brectmanager,
 			 struct EventManager *eventmanager)
 {
 	const struct RectAabbVector *arectvec =

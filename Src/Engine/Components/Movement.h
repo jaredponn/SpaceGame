@@ -1,26 +1,16 @@
 #pragma once
-#include "Lib/Macros.h"
-#include "Lib/V2Macros.h"
+#include "Lib/V2.h"
+#include "Lib/GenericComponentManager.h"
+#include "Lib/GenericVector.h"
 #include "Lib/Time.h"
 // -----------------------------------------
 //    Macros
 // -----------------------------------------
 
-// X macro of the types of V2s we will have
-#define LIST_OF_MOVEMENTS                                                      \
-	X_MVT(Acceleration)                                                    \
-	X_MVT(Velocity)                                                        \
-	X_MVT(Position)
+typedef struct V2 Velocity;
+typedef struct V2 Position;
+typedef struct V2 Acceleration;
 
-// Declaring the acceleration, velocity and position as each of their own V2s
-#define X_MVT(name) V2_DECLARE(name)
-LIST_OF_MOVEMENTS
-#undef X_MVT
-
-// typedefing the V2s to Acceleration, Velocity, Position
-#define X_MVT(name) typedef struct name name;
-LIST_OF_MOVEMENTS
-#undef X_MVT
 
 // applies the velocity to the position
 Position CPT_applyVelocityToPosition(const Velocity *, const Position *,
@@ -29,3 +19,7 @@ Position CPT_applyVelocityToPosition(const Velocity *, const Position *,
 // applies the velocity to the position
 Velocity CPT_applyAccelerationToVelocity(const Acceleration *, const Velocity *,
 					 const Time);
+
+
+VECTOR_DECLARE(struct V2, V2)
+COMPONENT_MANAGER_DECLARE(struct V2, V2, V2)

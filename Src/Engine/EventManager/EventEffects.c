@@ -1,7 +1,5 @@
 #include "EventEffects.h"
 #include "../Input/InputHandler.h"
-#include "../Components/ComponentsGenerics.h"
-#include "../Components/MovementGenerics.h"
 
 // -----------------------------------------
 //    private
@@ -13,17 +11,17 @@
 // -----------------------------------------
 
 #define TEST_RECT_ATTR                                                         \
-	CPT_addComponent(components, &(Acceleration){.x = 0, .y = -2});        \
+	CPT_addAcceleration(components, &(Acceleration){.x = 0, .y = -2});     \
                                                                                \
-	CPT_addComponent(components, &(Velocity){.x = 0, .y = -2});            \
+	CPT_addVelocity(components, &(Velocity){.x = 0, .y = -2});             \
                                                                                \
 	Position transform = (Position){.x = 50, .y = 50};                     \
 	struct V2 tmppp = INP_getScreenMousePosition(                          \
 		&extrastate->camera.camera_position);                          \
-	Position tmppos = MVT_sub((const Position *)&tmppp, &transform);       \
-	CPT_addComponent(components, &tmppos);                                 \
+	Position tmppos = V2_sub((const Position *)&tmppp, &transform);        \
+	CPT_addPosition(components, &tmppos);                                  \
                                                                                \
-	CPT_addComponent(                                                      \
+	CPT_addAppearance(                                                     \
 		components,                                                    \
 		&(Appearance){                                                 \
 			.texture =                                             \
@@ -46,11 +44,11 @@ void EVT_spawnTestARect(struct CPT_Components *components,
 
 	TEST_RECT_ATTR
 
-	CPT_addComponent(
+	CPT_addRectAabb0(
 		components,
-		&(ARectAabb){.pMin = *(struct V2 *)&tmppos,
-			     .pMax = V2_add((struct V2 *)&tmppos,
-					    &(struct V2){.x = 100, .y = 100})});
+		&(RectAabb){.pMin = *(struct V2 *)&tmppos,
+			    .pMax = V2_add((struct V2 *)&tmppos,
+					   &(struct V2){.x = 100, .y = 100})});
 }
 
 void EVT_spawnTestBRect(struct CPT_Components *components,
@@ -58,17 +56,16 @@ void EVT_spawnTestBRect(struct CPT_Components *components,
 			const struct EXS_ExtraState *extrastate)
 {
 
-	printf("\n BRECT: \n");
 	CPT_updateCurFreeIndex(components);
 
 	TEST_RECT_ATTR
 
 	// adding brectaabb
-	CPT_addComponent(
+	CPT_addRectAabb1(
 		components,
-		&(BRectAabb){.pMin = *(struct V2 *)&tmppos,
-			     .pMax = V2_add((struct V2 *)&tmppos,
-					    &(struct V2){.x = 100, .y = 100})});
+		&(RectAabb){.pMin = *(struct V2 *)&tmppos,
+			    .pMax = V2_add((struct V2 *)&tmppos,
+					   &(struct V2){.x = 100, .y = 100})});
 }
 
 void EVT_updateCameraVelocity(struct EXS_ExtraState *extraState,

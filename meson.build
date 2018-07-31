@@ -59,8 +59,15 @@ testsrcs = [ 'Lib/Util.c'
            , 'Lib/sizet_Vector.c'
            , 'Lib/E_FreeList.c'
            , 'Lib/MarkedFreeList.c' 
+
            , 'Src/Engine/Components/Components.c'
+           , 'Src/Engine/Components/Movement.c'
            , 'Src/Engine/Components/Appearance.c'
+           , 'Src/Engine/Components/Entity.c'
+           , 'Src/Engine/Components/Aabb.c'
+
+           , 'Src/Engine/Components/Appearance.c'
+           , 'Lib/Time.c'
            ]
 unittests = executable('unittests', testsrcs, c_args : ['-Wall', '-Wextra', '-O2'],link_args :'-lcheck')
         

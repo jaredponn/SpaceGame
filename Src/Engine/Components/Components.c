@@ -1,5 +1,5 @@
 #include "Components.h"
-#include "stdint.h"
+#include <stdint.h>
 
 void CPT_initComponents(struct CPT_Components *engineComponents,
 			size_t capacity)
@@ -8,8 +8,8 @@ void CPT_initComponents(struct CPT_Components *engineComponents,
 	MarkedFreeList_reserve(&engineComponents->free_elements, capacity);
 
 	// initilizes all the components with capacity
-#define X_CPT(type, name)                                                      \
-	name##Manager_init(&engineComponents->MANAGER_NAME(name), capacity);
+#define X_CPT(type, prefix, name)                                              \
+	prefix##Manager_init(&engineComponents->MANAGER_NAME(name), capacity);
 	LIST_OF_COMPONENTS
 #undef X_CPT
 }
@@ -48,24 +48,18 @@ void CPT_deleteEntityAt(struct CPT_Components *engineComponents, size_t index)
 		MarkedFreeList_mark_index_as_free(freeElements, index);
 
 		// deleting the components each of the managers
-#define X_CPT(type, name)                                                      \
-	name##Manager_remove_at(&engineComponents->MANAGER_NAME(name), index);
+#define X_CPT(type, prefix, name)                                              \
+	prefix##Manager_remove_at(&engineComponents->MANAGER_NAME(name), index);
 		LIST_OF_COMPONENTS
 #undef X_CPT
 	}
 }
 
-// defining the componenet managers
-#define X_CPT(type, name)                                                      \
-	VECTOR_DEFINE(type, name)                                              \
-	COMPONENT_MANAGER_DEFINE(type, name, name)
-LIST_OF_COMPONENTS
-#undef X_CPT
 
 // defining the component manager getters
-#define X_CPT(type, name)                                                      \
-	struct name##Manager *MANAGER_GETTER_NAME(name)(struct CPT_Components  \
-							* engineComponents)    \
+#define X_CPT(type, prefix, name)                                              \
+	struct prefix##Manager *MANAGER_GETTER_NAME(name)(                     \
+		struct CPT_Components * engineComponents)                      \
 	{                                                                      \
 		return &engineComponents->MANAGER_NAME(name);                  \
 	}
@@ -73,14 +67,14 @@ LIST_OF_COMPONENTS
 #undef X_CPT
 
 // CPT_add<name>At(components, index, val )
-#define X_CPT(type, name)                                                      \
+#define X_CPT(type, prefix, name)                                              \
 	void MANAGER_ADD_AT_NAME(name)(struct CPT_Components                   \
 					       * engineComponents,             \
 				       size_t index, type * val)               \
 	{                                                                      \
 		MarkedFreeList_mark_index_as_used(                             \
 			&engineComponents->free_elements, index);              \
-		name##Manager_add_at(                                          \
+		prefix##Manager_add_at(                                        \
 			MANAGER_GETTER_NAME(name)(engineComponents), index,    \
 			val);                                                  \
 	}
@@ -88,7 +82,7 @@ LIST_OF_COMPONENTS
 #undef X_CPT
 
 // CPT_add<name>(components, index, val )
-#define X_CPT(type, name)                                                      \
+#define X_CPT(type, prefix, name)                                              \
 	void MANAGER_ADD_NAME(name)(struct CPT_Components * components,        \
 				    type * val)                                \
 	{                                                                      \
@@ -104,8 +98,8 @@ void CPT_freeComponents(struct CPT_Components *engineComponents)
 	MarkedFreeList_free(&engineComponents->free_elements);
 
 	// initilizes all the components with capacity
-#define X_CPT(type, name)                                                      \
-	name##Manager_free(&engineComponents->MANAGER_NAME(name));
+#define X_CPT(type, prefix, name)                                              \
+	prefix##Manager_free(&engineComponents->MANAGER_NAME(name));
 	LIST_OF_COMPONENTS
 #undef X_CPT
 }
