@@ -21,7 +21,7 @@
 	Position tmppos = V2_sub((const Position *)&tmppp, &transform);        \
 	CPT_addPosition(components, &tmppos);                                  \
                                                                                \
-	CPT_addAppearance(                                                     \
+	CPT_addAppearance0(                                                    \
 		components,                                                    \
 		&(struct Appearance){                                          \
 			.texture =                                             \
@@ -29,10 +29,8 @@
 			.srcrect =                                             \
 				(SDL_Rect){                                    \
 					.x = 0, .y = 0, .w = 100, .h = 100},   \
-			.dstrect =                                             \
-				(SDL_Rect){                                    \
-					.x = 0, .y = 0, .w = 100, .h = 100},   \
-			.angle = 0});
+			.dstrect = (SDL_Rect){                                 \
+				.x = 0, .y = 0, .w = 100, .h = 100}});
 
 
 void EVT_spawnTestARect(struct CPT_Components *components,

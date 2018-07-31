@@ -75,13 +75,13 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				  CPT_getPositionManager(engineComponents),
 				  engineExtraState->dt);
 		SYS_updatePositions(CPT_getPositionManager(engineComponents),
-				    CPT_getAppearanceManager(engineComponents),
+				    CPT_getAppearance0Manager(engineComponents),
 				    CPT_getRectAabb0Manager(engineComponents),
 				    CPT_getRectAabb1Manager(engineComponents));
 		EXS_applyCameraVelocity(engineExtraState);
 
 		SYS_renderCopy(resourceRegistry->cRenderer,
-			       CPT_getAppearanceManager(engineComponents),
+			       CPT_getAppearance0Manager(engineComponents),
 			       &engineExtraState->camera);
 
 		/** SYS_renderDebugRectAabb( */

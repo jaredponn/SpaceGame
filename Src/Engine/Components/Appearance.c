@@ -56,3 +56,7 @@ static Position position_round(const Position *const val)
 
 VECTOR_DEFINE(struct Appearance, Appearance)
 COMPONENT_MANAGER_DEFINE(struct Appearance, Appearance, Appearance)
+
+VECTOR_DEFINE(struct RotatedAppearance, RotatedAppearance)
+COMPONENT_MANAGER_DEFINE(struct RotatedAppearance, RotatedAppearance,
+			 RotatedAppearance)

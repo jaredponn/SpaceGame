@@ -71,9 +71,8 @@ static void renderCopyAppearance(SDL_Renderer *renderer,
 	SDL_Rect screenSdlRect =
 		convertSdlRectToScreenRect(&appearance->dstrect, gameCamera);
 
-	SDL_RenderCopyEx(renderer, appearance->texture, &appearance->srcrect,
-			 &screenSdlRect, appearance->angle, NULL,
-			 SDL_FLIP_NONE);
+	SDL_RenderCopy(renderer, appearance->texture, &appearance->srcrect,
+		       &screenSdlRect);
 }
 
 static SDL_Rect

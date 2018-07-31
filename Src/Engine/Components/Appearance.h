@@ -10,8 +10,14 @@ struct Appearance {
 	SDL_Texture *texture;
 	SDL_Rect srcrect; // source rectangle
 	SDL_Rect dstrect; // destination rectangle
-	double angle;     // angle to rotate the texture
 } Appearance;
+
+struct RotatedAppearance {
+	SDL_Texture *texture;
+	SDL_Rect srcrect; // source rectangle
+	SDL_Rect dstrect; // destination rectangle
+	double angle;     // angle to rotate the texture
+} RotatedAppearance;
 
 // sets the position of the SDL_Rect
 void CPT_setSdlRectPosition(SDL_Rect *, const Position *const);
@@ -27,3 +33,7 @@ SDL_Rect CPT_subtractSdlRectPosition(const SDL_Rect *rect,
 
 VECTOR_DECLARE(struct Appearance, Appearance)
 COMPONENT_MANAGER_DECLARE(struct Appearance, Appearance, Appearance)
+
+VECTOR_DECLARE(struct RotatedAppearance, RotatedAppearance)
+COMPONENT_MANAGER_DECLARE(struct RotatedAppearance, RotatedAppearance,
+			  RotatedAppearance)

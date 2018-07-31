@@ -27,7 +27,8 @@
 	X_CPT(struct V2, V2, Position)                                         \
 	X_CPT(struct V2, V2, Velocity)                                         \
 	X_CPT(struct V2, V2, Acceleration)                                     \
-	X_CPT(struct Appearance, Appearance, Appearance)                       \
+	X_CPT(struct Appearance, Appearance, Appearance0)                      \
+	X_CPT(struct Appearance, Appearance, Appearance1)                      \
 	X_CPT(struct RectAabb, RectAabb, RectAabb0)                            \
 	X_CPT(struct RectAabb, RectAabb, RectAabb1)
 
