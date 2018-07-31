@@ -15,5 +15,5 @@ Velocity CPT_applyAccelerationToVelocity(const Acceleration *acc,
 			  .y = acc->y * UTI_castTimeToSecs(time) + vel->y};
 }
 
-VECTOR_DEFINE(V2, V2)
-COMPONENT_MANAGER_DEFINE(V2, V2, V2)
+VECTOR_DEFINE(struct V2, V2)
+COMPONENT_MANAGER_DEFINE(struct V2, V2, V2)
