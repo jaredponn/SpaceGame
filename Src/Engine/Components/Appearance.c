@@ -54,5 +54,5 @@ static Position position_round(const Position *const val)
 	return (Position){.x = (int)val->x, .y = (int)val->y};
 }
 
-VECTOR_DEFINE(Appearance, Appearance)
-COMPONENT_MANAGER_DEFINE(Appearance, Appearance, Appearance)
+VECTOR_DEFINE(struct Appearance, Appearance)
+COMPONENT_MANAGER_DEFINE(struct Appearance, Appearance, Appearance)

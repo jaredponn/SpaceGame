@@ -4,8 +4,8 @@
 // -----------------------------------------
 
 // moves an appearance on the screen to a given position
-static void SYS_moveAppearanceTo(Appearance *, const Position *);
-static void SYS_moveRectAabbTo(void *, const Position *);
+static void SYS_moveAppearanceTo(struct Appearance *, const Position *);
+static void SYS_moveRectAabbTo(struct RectAabb *, const Position *);
 
 // -----------------------------------------
 //    Public function implementations
@@ -67,18 +67,18 @@ void SYS_updatePositions(const struct V2Manager *positionManager,
 // -----------------------------------------
 //    Private function implementations
 // -----------------------------------------
-static void SYS_moveAppearanceTo(Appearance *appearance,
+static void SYS_moveAppearanceTo(struct Appearance *appearance,
 				 const Position *position)
 {
 	CPT_setSdlRectPosition(&appearance->dstrect, position);
 }
 
-static void SYS_moveRectAabbTo(void *aabb, const Position *position)
+static void SYS_moveRectAabbTo(struct RectAabb *aabb, const Position *position)
 {
-	RectAabb tmpaabb = *(RectAabb *)aabb;
+	struct RectAabb tmpaabb = *aabb;
 	struct V2 lengths = V2_sub(&tmpaabb.pMax, &tmpaabb.pMin);
 	struct V2 nMin = *(struct V2 *)position;
 
-	*(RectAabb *)aabb =
-		(RectAabb){.pMin = nMin, .pMax = V2_add(&lengths, &nMin)};
+	*aabb = (struct RectAabb){.pMin = nMin,
+				  .pMax = V2_add(&lengths, &nMin)};
 }

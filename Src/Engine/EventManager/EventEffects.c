@@ -23,7 +23,7 @@
                                                                                \
 	CPT_addAppearance(                                                     \
 		components,                                                    \
-		&(Appearance){                                                 \
+		&(struct Appearance){                                          \
 			.texture =                                             \
 				resources->cResources.cTextures.testTexture,   \
 			.srcrect =                                             \
@@ -46,9 +46,10 @@ void EVT_spawnTestARect(struct CPT_Components *components,
 
 	CPT_addRectAabb0(
 		components,
-		&(RectAabb){.pMin = *(struct V2 *)&tmppos,
-			    .pMax = V2_add((struct V2 *)&tmppos,
-					   &(struct V2){.x = 100, .y = 100})});
+		&(struct RectAabb){
+			.pMin = *(struct V2 *)&tmppos,
+			.pMax = V2_add((struct V2 *)&tmppos,
+				       &(struct V2){.x = 100, .y = 100})});
 }
 
 void EVT_spawnTestBRect(struct CPT_Components *components,
@@ -63,9 +64,10 @@ void EVT_spawnTestBRect(struct CPT_Components *components,
 	// adding brectaabb
 	CPT_addRectAabb1(
 		components,
-		&(RectAabb){.pMin = *(struct V2 *)&tmppos,
-			    .pMax = V2_add((struct V2 *)&tmppos,
-					   &(struct V2){.x = 100, .y = 100})});
+		&(struct RectAabb){
+			.pMin = *(struct V2 *)&tmppos,
+			.pMax = V2_add((struct V2 *)&tmppos,
+				       &(struct V2){.x = 100, .y = 100})});
 }
 
 void EVT_updateCameraVelocity(struct EXS_ExtraState *extraState,

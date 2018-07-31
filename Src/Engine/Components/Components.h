@@ -27,9 +27,9 @@
 	X_CPT(struct V2, V2, Position)                                         \
 	X_CPT(struct V2, V2, Velocity)                                         \
 	X_CPT(struct V2, V2, Acceleration)                                     \
-	X_CPT(Appearance, Appearance, Appearance)                              \
-	X_CPT(RectAabb, RectAabb, RectAabb0)                                   \
-	X_CPT(RectAabb, RectAabb, RectAabb1)
+	X_CPT(struct Appearance, Appearance, Appearance)                       \
+	X_CPT(struct RectAabb, RectAabb, RectAabb0)                            \
+	X_CPT(struct RectAabb, RectAabb, RectAabb1)
 
 // Defines how to name the managers in CPT_Components
 #define MANAGER_NAME(name) m_##name
@@ -62,7 +62,7 @@ struct CPT_Components {
 	struct MarkedFreeList free_elements; /**< keepstrack of where to add and
 					   delete things in the sparse arrays */
 
-// clang-format off
+	// clang-format off
         // putting the managers inside of this struct
         #define X_CPT(type,prefix, name) struct prefix##Manager MANAGER_NAME(name);
         LIST_OF_COMPONENTS

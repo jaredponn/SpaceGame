@@ -7,7 +7,7 @@
 // renders an appearance. Essentially a wrapper for SDL_RenderCopyEx, but
 // assumes that we do not wish to flip to change the center of the object, nor
 // flip it.
-static void renderCopyAppearance(SDL_Renderer *, const Appearance *,
+static void renderCopyAppearance(SDL_Renderer *, const struct Appearance *,
 				 const struct EXS_GameCamera *);
 
 static SDL_Rect convertSdlRectToScreenRect(const SDL_Rect *,
@@ -42,7 +42,7 @@ void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
 
 	size_t size = RectAabbVector_size(rectAabbVec);
 
-	RectAabb tmp;
+	struct RectAabb tmp;
 	SDL_Rect tmpsdlrect;
 	struct V2 lengths;
 
@@ -64,7 +64,7 @@ void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
 // -----------------------------------------
 
 static void renderCopyAppearance(SDL_Renderer *renderer,
-				 const Appearance *appearance,
+				 const struct Appearance *appearance,
 				 const struct EXS_GameCamera *gameCamera)
 {
 	// converting it from world corridantes to screen coordiantes

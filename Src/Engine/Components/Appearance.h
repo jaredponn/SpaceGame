@@ -6,7 +6,7 @@
 #include "Movement.h"
 #include "Lib/V2.h"
 
-typedef struct Appearance {
+struct Appearance {
 	SDL_Texture *texture;
 	SDL_Rect srcrect; // source rectangle
 	SDL_Rect dstrect; // destination rectangle
@@ -25,5 +25,5 @@ SDL_Rect CPT_addSdlRectPosition(const SDL_Rect *rect, const struct V2 *vec);
 SDL_Rect CPT_subtractSdlRectPosition(const SDL_Rect *rect,
 				     const struct V2 *vec);
 
-VECTOR_DECLARE(Appearance, Appearance)
-COMPONENT_MANAGER_DECLARE(Appearance, Appearance, Appearance)
+VECTOR_DECLARE(struct Appearance, Appearance)
+COMPONENT_MANAGER_DECLARE(struct Appearance, Appearance, Appearance)
