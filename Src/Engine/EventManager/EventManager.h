@@ -20,9 +20,12 @@ typedef enum EVT_Type {
 
 	EVT_Collision, /**< basic collision signal */
 
-	EVT_CameraVelocity,   /**< changes camera velocity and sets acceleration
-				 to 0 */
-	EVT_CameraDecelerate, /**< decelerates the camera */
+	EVT_CameraXVelocity, /**< changes camera velocity and sets acceleration
+			       to 0. Also, will not   */
+	EVT_CameraYVelocity, /**< hangescamera y velocity */
+
+	EVT_CameraXDecelerate, /**< decelerates the camera */
+	EVT_CameraYDecelerate, /**< decelerates the camera */
 } EVT_Type;
 
 // the global_index of the entities that have collided
@@ -31,8 +34,11 @@ typedef struct EVT_CollisionSignal {
 	size_t b; /**< id of the second entity */
 } EVT_CollisionSignal;
 
-typedef struct V2 EVT_CameraVelocitySignal;
-typedef struct V2 EVT_CameraDecelerateSignal;
+
+typedef float EVT_CameraXVelocitySignal;
+typedef float EVT_CameraYVelocitySignal;
+typedef float EVT_CameraXDecelerateSignal;
+typedef float EVT_CameraYDecelerateSignal;
 
 // -----------------------------------------
 //    Higher order event types
@@ -44,8 +50,11 @@ typedef struct Event {
 	/** signals of possible events */
 	union {
 		EVT_CollisionSignal collision;
-		EVT_CameraVelocitySignal camera_velocity;
-		EVT_CameraDecelerateSignal camera_decelerate;
+
+		EVT_CameraXVelocitySignal camera_x_velocity;
+		EVT_CameraYVelocitySignal camera_y_velocity;
+		EVT_CameraXDecelerateSignal camera_x_decelerate;
+		EVT_CameraYDecelerateSignal camera_y_decelerate;
 	};
 
 } Event;

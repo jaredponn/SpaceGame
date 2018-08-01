@@ -47,70 +47,61 @@ static inline void INP_addCameraMovements(struct INP_InputMap *inputMap)
 		inputMap,
 		((struct INP_KeyBind){
 			.sdlKey = SDL_SCANCODE_UP, /**< pressing up */
-			.gameEvent = (Event){
-				.type = EVT_CameraVelocity,
-				.camera_velocity = {.x = 0,
-						    .y = -CAMERA_VELOCITY}}}));
+			.gameEvent = (Event){.type = EVT_CameraYVelocity,
+					     .camera_y_velocity =
+						     -CAMERA_VELOCITY}}));
 	INP_addKeyPressBinding(
 		inputMap,
 		((struct INP_KeyBind){
 			.sdlKey = SDL_SCANCODE_DOWN,
-			.gameEvent = (Event){
-				.type = EVT_CameraVelocity,
-				.camera_velocity = {.x = 0,
-						    .y = CAMERA_VELOCITY}}}));
+			.gameEvent = (Event){.type = EVT_CameraYVelocity,
+					     .camera_y_velocity =
+						     CAMERA_VELOCITY}}));
 	INP_addKeyPressBinding(
 		inputMap,
 		((struct INP_KeyBind){
 			.sdlKey = SDL_SCANCODE_LEFT,
-			.gameEvent = (Event){
-				.type = EVT_CameraVelocity,
-				.camera_velocity = {.x = -CAMERA_VELOCITY,
-						    .y = 0}}}));
+			.gameEvent = (Event){.type = EVT_CameraXVelocity,
+					     .camera_x_velocity =
+						     -CAMERA_VELOCITY}}));
 	INP_addKeyPressBinding(
-		inputMap,
-		((struct INP_KeyBind){
-			.sdlKey = SDL_SCANCODE_RIGHT,
-			.gameEvent = (Event){
-				.type = EVT_CameraVelocity,
-				.camera_velocity = {.x = CAMERA_VELOCITY,
-						    .y = 0}}}));
+		inputMap, ((struct INP_KeyBind){
+				  .sdlKey = SDL_SCANCODE_RIGHT,
+				  .gameEvent = (Event){
+					  .type = EVT_CameraXVelocity,
+					  .camera_x_velocity = CAMERA_VELOCITY,
+				  }}));
 
 	INP_addKeyReleaseBinding(
-		inputMap,
-		((struct INP_KeyBind){
-			.sdlKey = SDL_SCANCODE_UP,
-			.gameEvent = (Event){
-				.type = EVT_CameraDecelerate,
-				.camera_velocity = {
-					.x = 0,
-					.y = CAMERA_ACCELERATION_DECAY}}}));
+		inputMap, ((struct INP_KeyBind){
+				  .sdlKey = SDL_SCANCODE_UP,
+				  .gameEvent = (Event){
+					  .type = EVT_CameraYDecelerate,
+					  .camera_y_velocity =
+						  CAMERA_ACCELERATION_DECAY}}));
 
 	INP_addKeyReleaseBinding(
 		inputMap,
 		((struct INP_KeyBind){
 			.sdlKey = SDL_SCANCODE_DOWN, /**< releasing down */
-			.gameEvent = (Event){
-				.type = EVT_CameraDecelerate,
-				.camera_velocity = {
-					.x = 0,
-					.y = -CAMERA_ACCELERATION_DECAY}}}));
+			.gameEvent =
+				(Event){.type = EVT_CameraYDecelerate,
+					.camera_y_velocity =
+						-CAMERA_ACCELERATION_DECAY}}));
 	INP_addKeyReleaseBinding(
 		inputMap,
 		((struct INP_KeyBind){
 			.sdlKey = SDL_SCANCODE_LEFT, /**< releasing left */
-			.gameEvent =
-				(Event){.type = EVT_CameraDecelerate,
-					.camera_velocity = {
-						.x = CAMERA_ACCELERATION_DECAY,
-						.y = 0}}}));
+			.gameEvent = (Event){
+				.type = EVT_CameraXDecelerate,
+				.camera_x_velocity = CAMERA_ACCELERATION_DECAY,
+			}}));
 	INP_addKeyReleaseBinding(
 		inputMap,
 		((struct INP_KeyBind){
 			.sdlKey = SDL_SCANCODE_RIGHT, /**< releasing right */
-			.gameEvent =
-				(Event){.type = EVT_CameraDecelerate,
-					.camera_velocity = {
-						.x = -CAMERA_ACCELERATION_DECAY,
-						.y = 0}}}));
+			.gameEvent = (Event){
+				.type = EVT_CameraXDecelerate,
+				.camera_x_velocity = -CAMERA_ACCELERATION_DECAY,
+			}}));
 }

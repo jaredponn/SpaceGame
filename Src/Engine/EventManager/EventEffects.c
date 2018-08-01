@@ -1,6 +1,9 @@
 #include "EventEffects.h"
 #include "../Input/InputHandler.h"
 
+// returns the sign of a value
+#define SIGN(x) ((x > 0) - (x < 0))
+
 // -----------------------------------------
 //    private
 // -----------------------------------------
@@ -68,27 +71,46 @@ void EVT_spawnTestBRect(struct CPT_Components *components,
 				       &(struct V2){.x = 100, .y = 100})});
 }
 
-void EVT_moveCamera(struct EXS_ExtraState *extraState,
-		    const EVT_CameraVelocitySignal *cameraMovementSignal)
+void EVT_changeCameraXVelocity(
+	struct EXS_ExtraState *extraState,
+	const EVT_CameraXVelocitySignal cameraMovementSignal)
 {
-	extraState->camera.camera_velocity = V2_add(
-		&extraState->camera.camera_velocity, cameraMovementSignal);
+	extraState->camera.camera_velocity.x = cameraMovementSignal;
 	extraState->camera.camera_acceleration.x = 0;
-	extraState->camera.camera_acceleration.y = 0;
-
-	/** const struct V2 halvedV2 = V2_smul(cameraMovementSignal, 0.5); */
-	/** extraState->camera.camera_acceleration = */
-	/**         V2_add(&extraState->camera.camera_acceleration, &halvedV2);
-	 */
 }
 
-void EVT_decelerateCamera(
+void EVT_changeCameraYVelocity(
 	struct EXS_ExtraState *extraState,
-	const EVT_CameraDecelerateSignal *cameraDecelerateSignal)
+	const EVT_CameraYVelocitySignal cameraMovementSignal)
 {
-	extraState->camera.camera_acceleration =
-		V2_add(&extraState->camera.camera_acceleration,
-		       cameraDecelerateSignal);
+	extraState->camera.camera_velocity.y = cameraMovementSignal;
+	extraState->camera.camera_acceleration.y = 0;
+}
+
+void EVT_decelerateCameraX(
+	struct EXS_ExtraState *extraState,
+	const EVT_CameraXDecelerateSignal cameraDecelerateSignal)
+{
+	// predicate to ensuure that the player cant go hyper speeds
+	if (SIGN(extraState->camera.camera_velocity.x)
+		    + SIGN(cameraDecelerateSignal)
+	    == 0) {
+		extraState->camera.camera_acceleration.x =
+			cameraDecelerateSignal;
+	}
+}
+
+void EVT_decelerateCameraY(
+	struct EXS_ExtraState *extraState,
+	const EVT_CameraYDecelerateSignal cameraDecelerateSignal)
+{
+	if (SIGN(extraState->camera.camera_velocity.y)
+		    + SIGN(cameraDecelerateSignal)
+	    == 0) {
+
+		extraState->camera.camera_acceleration.y =
+			cameraDecelerateSignal;
+	}
 }
 // -----------------------------------------
 //    private

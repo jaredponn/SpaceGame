@@ -81,7 +81,6 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				    CPT_getRectAabb0Manager(engineComponents),
 				    CPT_getRectAabb1Manager(engineComponents));
 
-		EXS_applyCameraMovement(engineExtraState);
 
 		SYS_renderCopy(resourceRegistry->cRenderer,
 			       CPT_getAppearance0Manager(engineComponents),
@@ -145,17 +144,25 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 						gameEvent.collision.b);
 				} break;
 
-				case EVT_CameraVelocity: {
-
-					EVT_moveCamera(
+				case EVT_CameraXVelocity: {
+					EVT_changeCameraXVelocity(
 						engineExtraState,
-						&gameEvent.camera_velocity);
+						gameEvent.camera_x_velocity);
 				} break;
-				case EVT_CameraDecelerate: {
-
-					EVT_decelerateCamera(
+				case EVT_CameraYVelocity: {
+					EVT_changeCameraYVelocity(
 						engineExtraState,
-						&gameEvent.camera_decelerate);
+						gameEvent.camera_y_velocity);
+				} break;
+				case EVT_CameraXDecelerate: {
+					EVT_decelerateCameraX(
+						engineExtraState,
+						gameEvent.camera_x_decelerate);
+				} break;
+				case EVT_CameraYDecelerate: {
+					EVT_decelerateCameraY(
+						engineExtraState,
+						gameEvent.camera_y_decelerate);
 				} break;
 				default:
 					break;
@@ -164,6 +171,8 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 
 			EventManager_lazy_clear(engineEventManager);
 		}
+
+		EXS_applyCameraMovement(engineExtraState);
 
 		// sleeping to limit CPU usage
 		ECS_sleep(FPS, engineExtraState->dt);

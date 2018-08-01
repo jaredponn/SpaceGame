@@ -18,7 +18,19 @@ void EVT_spawnTestBRect(struct CPT_Components *components,
 			const struct ECS_ResourceRegistry *resources,
 			const struct EXS_ExtraState *);
 
-void EVT_moveCamera(struct EXS_ExtraState *, const EVT_CameraVelocitySignal *);
 
-void EVT_decelerateCamera(struct EXS_ExtraState *,
-			  const EVT_CameraDecelerateSignal *);
+void EVT_changeCameraXVelocity(
+	struct EXS_ExtraState *extraState,
+	const EVT_CameraXVelocitySignal cameraMovementSignal);
+
+void EVT_changeCameraYVelocity(
+	struct EXS_ExtraState *extraState,
+	const EVT_CameraYVelocitySignal cameraMovementSignal);
+
+void EVT_decelerateCameraX(
+	struct EXS_ExtraState *extraState,
+	const EVT_CameraXDecelerateSignal cameraDecelerateSignal);
+
+void EVT_decelerateCameraY(
+	struct EXS_ExtraState *extraState,
+	const EVT_CameraYDecelerateSignal cameraDecelerateSignal);
