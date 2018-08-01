@@ -10,8 +10,6 @@ struct EXS_GameCamera {
 	struct V2 camera_zoom_acceleration;
 	struct V2 camera_zoom_velocity;
 	struct V2 camera_zoom_position;
-
-	float camera_movement_decay;
 };
 
 

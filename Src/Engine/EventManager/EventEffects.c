@@ -86,7 +86,9 @@ void EVT_decelerateCamera(
 	struct EXS_ExtraState *extraState,
 	const EVT_CameraDecelerateSignal *cameraDecelerateSignal)
 {
-	extraState->camera.camera_acceleration.x += cameraDecelerateSignal->x;
+	extraState->camera.camera_acceleration =
+		V2_add(&extraState->camera.camera_acceleration,
+		       cameraDecelerateSignal);
 }
 // -----------------------------------------
 //    private
