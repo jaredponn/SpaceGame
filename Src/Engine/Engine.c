@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "GameConfig.h"
 #include "Lib/Time.h"
 
 #include "Systems/ApplyMovementTransforms.h"
@@ -18,18 +19,11 @@
 #include <stdio.h>
 
 // -----------------------------------------
-//    Constants
-// -----------------------------------------
-const float FPS = 1.f / 64;
-const float GAME_WIDTH = 2000;
-const float GAME_HEIGHT = 2000;
-
-// -----------------------------------------
 //    Private declartaions
 // -----------------------------------------
 
 // sleeps the engine to not overuse cpu
-static void ECS_sleep(float FPS, Time dt);
+static void ECS_sleep(float fps, Time dt);
 
 // -----------------------------------------
 //    Procedures
@@ -81,6 +75,7 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				    CPT_getRectAabb0Manager(engineComponents),
 				    CPT_getRectAabb1Manager(engineComponents));
 
+		EXS_applyCameraMovement(engineExtraState);
 
 		SYS_renderCopy(resourceRegistry->cRenderer,
 			       CPT_getAppearance0Manager(engineComponents),
@@ -144,6 +139,7 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 						gameEvent.collision.b);
 				} break;
 
+					/** camera movement events */
 				case EVT_CameraXVelocity: {
 					EVT_changeCameraXVelocity(
 						engineExtraState,
@@ -164,6 +160,7 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 						engineExtraState,
 						gameEvent.camera_y_decelerate);
 				} break;
+
 				default:
 					break;
 				}
@@ -172,19 +169,12 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 			EventManager_lazy_clear(engineEventManager);
 		}
 
-		EXS_applyCameraMovement(engineExtraState);
 
 		// sleeping to limit CPU usage
 		ECS_sleep(FPS, engineExtraState->dt);
 
 		// setting the time
 		t_f = UTI_getCurTime();
-
-		// testing
-		// struct V2 test = *INP_getScroll();
-		// printf("\n x/w: %.6f\n ", test.x);
-		// printf("\n y/h: %.6f\n ", test.y);
-
 
 		engineExtraState->dt = UTI_timeDiff(t_f, t_i);
 	}
@@ -199,9 +189,9 @@ void ECS_quitLibraries()
 //    Private function implementations
 // -----------------------------------------
 
-static void ECS_sleep(float FPS, Time dt)
+static void ECS_sleep(float fps, Time dt)
 {
 	UTI_sleep(FPS > UTI_castTimeToSecs(dt)
-			  ? UTI_timeDiff(UTI_castSecsToTime(FPS), dt)
+			  ? UTI_timeDiff(UTI_castSecsToTime(fps), dt)
 			  : UTI_zeroTime());
 }

@@ -1,8 +1,7 @@
 #include "GameInputMaps.h"
 #include "../EventManager/EventManager.h"
+#include "../GameConfig.h"
 
-#define CAMERA_VELOCITY 1000
-#define CAMERA_ACCELERATION_DECAY 3000
 
 // -----------------------------------------
 //    private
