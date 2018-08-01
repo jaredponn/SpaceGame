@@ -21,6 +21,8 @@
 //    Constants
 // -----------------------------------------
 const float FPS = 1.f / 64;
+const float GAME_WIDTH = 2000;
+const float GAME_HEIGHT = 2000;
 
 // -----------------------------------------
 //    Private declartaions
@@ -78,7 +80,8 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				    CPT_getAppearance0Manager(engineComponents),
 				    CPT_getRectAabb0Manager(engineComponents),
 				    CPT_getRectAabb1Manager(engineComponents));
-		EXS_applyCameraVelocity(engineExtraState);
+
+		EXS_applyCameraMovement(engineExtraState);
 
 		SYS_renderCopy(resourceRegistry->cRenderer,
 			       CPT_getAppearance0Manager(engineComponents),
@@ -142,11 +145,17 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 						gameEvent.collision.b);
 				} break;
 
-				case EVT_CameraMovement: {
+				case EVT_CameraVelocity: {
 
-					EVT_updateCameraVelocity(
+					EVT_moveCamera(
 						engineExtraState,
 						&gameEvent.camera_velocity);
+				} break;
+				case EVT_CameraDecelerate: {
+
+					EVT_decelerateCamera(
+						engineExtraState,
+						&gameEvent.camera_decelerate);
 				} break;
 				default:
 					break;
@@ -161,6 +170,12 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 
 		// setting the time
 		t_f = UTI_getCurTime();
+
+		// testing
+		// struct V2 test = *INP_getScroll();
+		// printf("\n x/w: %.6f\n ", test.x);
+		// printf("\n y/h: %.6f\n ", test.y);
+
 
 		engineExtraState->dt = UTI_timeDiff(t_f, t_i);
 	}

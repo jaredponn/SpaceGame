@@ -14,11 +14,15 @@
 
 // enum to keep track of the different types an event could be
 typedef enum EVT_Type {
-	EVT_Empty,     /**< no event*/
-	EVT_SpawnA,    /**< basic spawn signal */
-	EVT_SpawnB,    /**< basic spawn signal */
+	EVT_Empty,  /**< no event*/
+	EVT_SpawnA, /**< basic spawn signal */
+	EVT_SpawnB, /**< basic spawn signal */
+
 	EVT_Collision, /**< basic collision signal */
-	EVT_CameraMovement,
+
+	EVT_CameraVelocity,   /**< changes camera velocity and sets acceleration
+				 to 0 */
+	EVT_CameraDecelerate, /**< decelerates the camera */
 } EVT_Type;
 
 // the global_index of the entities that have collided
@@ -27,7 +31,8 @@ typedef struct EVT_CollisionSignal {
 	size_t b; /**< id of the second entity */
 } EVT_CollisionSignal;
 
-typedef struct V2 EVT_CameraMovementSignal;
+typedef struct V2 EVT_CameraVelocitySignal;
+typedef struct V2 EVT_CameraDecelerateSignal;
 
 // -----------------------------------------
 //    Higher order event types
@@ -39,7 +44,8 @@ typedef struct Event {
 	/** signals of possible events */
 	union {
 		EVT_CollisionSignal collision;
-		EVT_CameraMovementSignal camera_velocity;
+		EVT_CameraVelocitySignal camera_velocity;
+		EVT_CameraDecelerateSignal camera_decelerate;
 	};
 
 } Event;

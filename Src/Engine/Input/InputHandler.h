@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+
 #include "InputMap.h"
 #include "Lib/V2.h"
 #include "../ExtraState/EngineExtraState.h"
@@ -7,7 +8,7 @@
 /**
  * Input handler -- contains functionality to parse an InputMap into game
  * events. Also includes the mouse's position and scroll direction with const
- * methods to get it.
+ * methods to get it, and methods for getting the window size
  */
 
 // -----------------------------------------
@@ -38,3 +39,6 @@ struct V2 INP_getScreenMousePosition(const struct V2 *);
 
 // get scroll direction
 const struct V2 *INP_getScroll();
+
+// gets the window dimensions
+struct V2 INP_getScreenSize();

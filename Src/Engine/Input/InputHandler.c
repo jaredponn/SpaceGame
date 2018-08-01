@@ -1,6 +1,7 @@
 #include "InputHandler.h"
 
-// static read only global variable of the mouse's position and scroll direction
+// stattic read only global variable of the mouse's position and scroll
+// direction
 static struct INP_MouseState globalMouseState;
 
 // -----------------------------------------
@@ -17,6 +18,7 @@ void INP_initMouseState()
 void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 		     struct EventManager *eventManager)
 {
+	// getting the vectors' lengths
 	size_t keyReleaseVecLength =
 		KeyBindVector_size(&inputMap->keyReleaseMappings);
 	size_t keyPressVecLength =
@@ -26,6 +28,10 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 		MouseKeyBindVector_size(&inputMap->mouseButtonPressMappings);
 	size_t mouseKeyReleaseVecLength =
 		MouseKeyBindVector_size(&inputMap->mouseButtonReleaseMappings);
+
+	// resetting the global mouse scrolling state
+	globalMouseState.scroll_direction.x = 0;
+	globalMouseState.scroll_direction.y = 0;
 
 	while (SDL_PollEvent(sdlEvent)) {
 		// changes the button states (mouse and keyboard)
@@ -140,4 +146,16 @@ struct V2 INP_getScreenMousePosition(const struct V2 *cameraPos)
 const struct V2 *INP_getScroll()
 {
 	return &globalMouseState.scroll_direction;
+}
+
+struct V2 INP_getScreenSize()
+{
+	SDL_DisplayMode mode;
+	if (SDL_GetCurrentDisplayMode(0, &mode) == 0) {
+		return (struct V2){.x = mode.w, .y = mode.h};
+	} else {
+		// maybe addsome proper error handling
+		printf("\nerror getting screen size in " __FILE__ "\n");
+		return (struct V2){.x = mode.w, .y = mode.h};
+	}
 }

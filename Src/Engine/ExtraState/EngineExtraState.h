@@ -3,8 +3,15 @@
 #include "Lib/V2.h"
 
 struct EXS_GameCamera {
-	struct V2 camera_velocity; // camera velocity
-	struct V2 camera_position; // camera position
+	struct V2 camera_acceleration; // camera acceleration
+	struct V2 camera_velocity;     // camera velocity
+	struct V2 camera_position;     // camera position
+
+	struct V2 camera_zoom_acceleration;
+	struct V2 camera_zoom_velocity;
+	struct V2 camera_zoom_position;
+
+	float camera_movement_decay;
 };
 
 
@@ -19,4 +26,4 @@ struct EXS_ExtraState {
 void ECS_initExtraState(struct EXS_ExtraState *);
 
 //
-void EXS_applyCameraVelocity(struct EXS_ExtraState *);
+void EXS_applyCameraMovement(struct EXS_ExtraState *);
