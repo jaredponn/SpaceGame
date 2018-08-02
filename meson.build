@@ -32,6 +32,8 @@ srcs = ['Src/Main.c'
        ,'Src/Engine/ExtraState/EngineExtraState.c'
 
         # inputs
+       , 'Src/Engine/Input/Mouse.c'
+       , 'Src/Engine/Input/Window.c'
        , 'Src/Engine/Input/InputHandler.c'
        , 'Src/Engine/Input/GameInputMaps.c'
        , 'Src/Engine/Input/InputMap.c'
@@ -41,6 +43,7 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/EventManager/EventEffects.c'
 
         # Lib
+       , 'Lib/GUI.c'
        , 'Lib/Util.c' 
        , 'Lib/MarkedFreeList.c' 
        , 'Lib/sizet_Vector.c' 
