@@ -36,7 +36,16 @@ void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry)
 	SDL_Texture *testTexture =
 		RSC_loadImage(renderer, EXTRAS_PATH "/Images/bg.png");
 
-	// PROPERLY DEALLOCATE THIS STUFF
+	SDL_Texture *planet1 = RSC_loadImage(renderer, EXTRAS_PATH
+					     "/Images/500x500circ-01.png");
+	SDL_Texture *planet2 = RSC_loadImage(renderer, EXTRAS_PATH
+					     "/Images/500x500circ-02.png");
+	SDL_Texture *planet3 = RSC_loadImage(renderer, EXTRAS_PATH
+					     "/Images/500x500circ-03.png");
+	SDL_Texture *planet4 = RSC_loadImage(renderer, EXTRAS_PATH
+					     "/Images/500x500circ-04.png");
+
+	// TODO PROPERLY DEALLOCATE THIS STUFF
 	SDL_Surface *_aabbdebugsurface =
 		SDL_CreateRGBSurface(0, 1, 1, 32, 0, 0, 0, 0);
 	SDL_FillRect(_aabbdebugsurface, NULL,
@@ -50,4 +59,8 @@ void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry)
 	resourceRegistry->cResources.cTextures.testTexture = testTexture;
 	resourceRegistry->cResources.cTextures.aabbDebugTexture =
 		aabbDebugTexture;
+	resourceRegistry->cResources.cTextures.planet1 = planet1;
+	resourceRegistry->cResources.cTextures.planet2 = planet2;
+	resourceRegistry->cResources.cTextures.planet3 = planet3;
+	resourceRegistry->cResources.cTextures.planet4 = planet4;
 }

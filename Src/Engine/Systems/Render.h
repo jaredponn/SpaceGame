@@ -15,5 +15,10 @@ void SYS_renderCopy(SDL_Renderer *renderer,
 
 // for rendering any RectAabb manager
 void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
-			     const void *rectAabbManager,
+			     const struct RectAabbManager *rectAabbManager,
+			     struct EXS_GameCamera *);
+
+// for rendering the hitbox of any circ aabb
+void SYS_renderDebugCircAabb(SDL_Renderer *renderer,
+			     const struct CircAabbManager *rectAabbManager,
 			     struct EXS_GameCamera *);

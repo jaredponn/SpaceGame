@@ -14,3 +14,6 @@
 // occur
 void SYS_rectAabbHitTest(const struct RectAabbManager *,
 			 const struct RectAabbManager *, struct EventManager *);
+
+void SYS_circAabbHitTest(const struct CircAabbManager *,
+			 const struct CircAabbManager *, struct EventManager *);

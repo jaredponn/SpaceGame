@@ -5,11 +5,6 @@
 #define SIGN(x) ((x > 0) - (x < 0))
 
 // -----------------------------------------
-//    private
-// -----------------------------------------
-
-
-// -----------------------------------------
 //    public
 // -----------------------------------------
 
@@ -27,7 +22,8 @@
 	CPT_addAppearance0(                                                    \
 		components,                                                    \
 		&(struct Appearance){                                          \
-			.texture = resources->cResources.cTextures.planet1,    \
+			.texture =                                             \
+				resources->cResources.cTextures.testTexture,   \
 			.srcrect =                                             \
 				(SDL_Rect){                                    \
 					.x = 0, .y = 0, .w = 1042, .h = 1042}, \
@@ -37,15 +33,36 @@
 
 void EVT_spawnTestARect(struct CPT_Components *components,
 			const struct ECS_ResourceRegistry *resources,
-			const struct EXS_ExtraState *extrastate)
+			const struct EXS_ExtraState *extraState)
 {
 
 	CPT_updateCurFreeIndex(components);
 
-	TEST_RECT_ATTR
+	// CPT_addAcceleration(components, &(Acceleration){.x = 0, .y = -2});
+	CPT_addVelocity(components, &(Velocity){.x = 0, .y = -2});
 
-	CPT_addCircAabb0(components,
-			 &(struct CircAabb){.center = tmppos, .radius = 50});
+
+	struct V2 mousePosition =
+		INP_getScreenMousePosition(&extraState->camera.camera_position);
+	struct V2 adjustedMousePosition =
+		V2_sub(&mousePosition, &(struct V2){50, 50});
+
+	CPT_addPosition(components, &adjustedMousePosition);
+
+	CPT_addAppearance0(
+		components,
+		&(struct Appearance){
+			.texture = resources->cResources.cTextures.testTexture,
+			.srcrect =
+				(SDL_Rect){
+					.x = 0, .y = 0, .w = 1042, .h = 1042},
+			.dstrect = (SDL_Rect){.x = adjustedMousePosition.x,
+					      .y = adjustedMousePosition.y,
+					      .w = 100,
+					      .h = 100}});
+
+	CPT_addCircAabb0(components, &(struct CircAabb){.center = mousePosition,
+							.radius = 50});
 }
 
 void EVT_spawnTestBRect(struct CPT_Components *components,
@@ -58,16 +75,16 @@ void EVT_spawnTestBRect(struct CPT_Components *components,
 	TEST_RECT_ATTR
 
 	// adding brectaabb
-	/** CPT_addRectAabb1( */
-	/**         components, */
-	/**         &(struct RectAabb){ */
-	/**                 .pMin = *(struct V2 *)&tmppos, */
-	/**                 .pMax = V2_add((struct V2 *)&tmppos, */
-	/**                                &(struct V2){.x = 100, .y = 100})});
-	 */
+	CPT_addRectAabb1(
+		components,
+		&(struct RectAabb){
+			.pMin = *(struct V2 *)&tmppos,
+			.pMax = V2_add((struct V2 *)&tmppos,
+				       &(struct V2){.x = 100, .y = 100})});
 
-	CPT_addCircAabb1(components,
-			 &(struct CircAabb){.center = tmppos, .radius = 50});
+	/** CPT_addCircAabb1(components, */
+	/**                  &(struct CircAabb){.center = tmppos, .radius =
+	 * 50}); */
 }
 
 void EVT_changeCameraXVelocity(
@@ -111,6 +128,3 @@ void EVT_decelerateCameraY(
 			cameraDecelerateSignal;
 	}
 }
-// -----------------------------------------
-//    private
-// -----------------------------------------

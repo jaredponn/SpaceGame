@@ -1,5 +1,9 @@
 #include "Render.h"
 #include "Src/Engine/Components/Appearance.h"
+
+#include <math.h>
+
+#define PI 3.14159265358979323
 // -----------------------------------------
 //    Local functio declarations
 // -----------------------------------------
@@ -34,7 +38,7 @@ void SYS_renderCopy(SDL_Renderer *renderer,
 }
 
 void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
-			     const void *rectAabbManager,
+			     const struct RectAabbManager *rectAabbManager,
 			     struct EXS_GameCamera *gameCamera)
 {
 	const struct RectAabbVector *rectAabbVec =
@@ -59,6 +63,41 @@ void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
 	}
 }
 
+void SYS_renderDebugCircAabb(SDL_Renderer *renderer,
+			     const struct CircAabbManager *circAabbManager,
+			     struct EXS_GameCamera *gameCamera)
+{
+	const struct CircAabbVector *circAabbVec =
+		CircAabbManager_get_packed_data(circAabbManager);
+
+	size_t vecLength = CircAabbVector_size(circAabbVec);
+
+	// setting the dot color to red
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+
+	// radius
+	float radius;
+	struct V2 tmp;
+
+	// perimeter x/y coord
+	struct V2 ptmp;
+
+	for (size_t i = 0; i < vecLength; ++i) {
+		radius = CircAabbVector_get(circAabbVec, i).radius;
+		tmp.x = CircAabbVector_get(circAabbVec, i).center.x;
+		tmp.y = CircAabbVector_get(circAabbVec, i).center.y;
+
+		// rendering dots on the perimeter
+		for (float j = 0; j < 2 * PI; j += 0.01) {
+			ptmp.x = cosf(j) * radius + tmp.x
+				 - gameCamera->camera_position.x;
+			ptmp.y = sinf(j) * radius + tmp.y
+				 - gameCamera->camera_position.y;
+
+			SDL_RenderDrawPoint(renderer, ptmp.x, ptmp.y);
+		}
+	}
+};
 // -----------------------------------------
 //    Local function implementations
 // -----------------------------------------

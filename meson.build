@@ -51,7 +51,7 @@ srcs = ['Src/Main.c'
 executable('spacegame'
         , srcs
         , c_args : ['-Wall', '-Wextra', '-O2', '-g']
-        , link_args : ['-lSDL2', '-lSDL2_image'] )
+        , link_args : ['-lSDL2', '-lSDL2_image', '-lm'] )
 
 testsrcs = [ 'Lib/Util.c'  
            , 'UnitTesting/Run_Tests.c'

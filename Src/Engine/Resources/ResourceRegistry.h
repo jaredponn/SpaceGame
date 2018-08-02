@@ -16,6 +16,11 @@
 struct ECS_Textures {
 	SDL_Texture *testTexture;
 	SDL_Texture *aabbDebugTexture;
+
+	SDL_Texture *planet1;
+	SDL_Texture *planet2;
+	SDL_Texture *planet3;
+	SDL_Texture *planet4;
 };
 
 // Resources

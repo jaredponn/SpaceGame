@@ -6,6 +6,7 @@
 // moves an appearance on the screen to a given position
 static void SYS_moveAppearanceTo(struct Appearance *, const Position *);
 static void SYS_moveRectAabbTo(struct RectAabb *, const Position *);
+static void SYS_moveCircAabbTo(struct CircAabb *, const Position *);
 
 // -----------------------------------------
 //    Public function implementations
@@ -52,7 +53,9 @@ static void SYS_moveRectAabbTo(struct RectAabb *, const Position *);
 void SYS_updatePositions(const struct V2Manager *positionManager,
 			 struct AppearanceManager *appearanceManager,
 			 struct RectAabbManager *arectManager,
-			 struct RectAabbManager *brectManager)
+			 struct RectAabbManager *brectManager,
+			 struct CircAabbManager *aCircManager,
+			 struct CircAabbManager *bCircManager)
 {
 	TRANSFORM_MANAGER_WITH(appearanceManager, Appearance,
 			       SYS_moveAppearanceTo, positionManager, V2)
@@ -61,6 +64,12 @@ void SYS_updatePositions(const struct V2Manager *positionManager,
 			       positionManager, V2)
 
 	TRANSFORM_MANAGER_WITH(brectManager, RectAabb, SYS_moveRectAabbTo,
+			       positionManager, V2)
+
+	TRANSFORM_MANAGER_WITH(aCircManager, CircAabb, SYS_moveCircAabbTo,
+			       positionManager, V2)
+
+	TRANSFORM_MANAGER_WITH(bCircManager, CircAabb, SYS_moveCircAabbTo,
 			       positionManager, V2)
 }
 
@@ -81,4 +90,12 @@ static void SYS_moveRectAabbTo(struct RectAabb *aabb, const Position *position)
 
 	*aabb = (struct RectAabb){.pMin = nMin,
 				  .pMax = V2_add(&lengths, &nMin)};
+}
+
+static void SYS_moveCircAabbTo(struct CircAabb *aabb, const Position *position)
+{
+	float radius = aabb->radius;
+
+	aabb->center.x = position->x + radius;
+	aabb->center.y = position->y + radius;
 }

@@ -22,13 +22,22 @@
 // listof components using X macros. Used to generate vectors, and packed
 // vectors of the given type, prefixed by the type.
 #define LIST_OF_COMPONENTS                                                     \
-	/*X_CPT(type, managerprefix, name)*/                                   \
+	/** X macros take arguments as follows:                                \
+	 * X_CPT(type, managerprefix, name)*/                                  \
+                                                                               \
+	/** physics*/                                                          \
 	X_CPT(Entity, Entity, Entity)                                          \
 	X_CPT(struct V2, V2, Position)                                         \
 	X_CPT(struct V2, V2, Velocity)                                         \
 	X_CPT(struct V2, V2, Acceleration)                                     \
+                                                                               \
+	/** appearance layers*/                                                \
 	X_CPT(struct Appearance, Appearance, Appearance0)                      \
 	X_CPT(struct Appearance, Appearance, Appearance1)                      \
+                                                                               \
+	/** collision layers*/                                                 \
+	X_CPT(struct CircAabb, CircAabb, CircAabb0)                            \
+	X_CPT(struct CircAabb, CircAabb, CircAabb1)                            \
 	X_CPT(struct RectAabb, RectAabb, RectAabb0)                            \
 	X_CPT(struct RectAabb, RectAabb, RectAabb1)
 

@@ -32,6 +32,8 @@ static void ECS_sleep(float fps, Time dt);
 void ECS_initLibraries()
 {
 	RSC_initSDL(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,
+		    "2"); // mainly useless TODO remove
 	RSC_initSDLImage(IMG_INIT_PNG);
 }
 
@@ -58,7 +60,8 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		t_i = UTI_getCurTime();
 
 		// clears the background to black
-		SDL_SetRenderDrawColor(resourceRegistry->cRenderer, 0, 0, 0, 0);
+		SDL_SetRenderDrawColor(resourceRegistry->cRenderer, 31, 47, 50,
+				       0);
 		SDL_RenderClear(resourceRegistry->cRenderer);
 
 		// running the systems / sending events to the event manager
@@ -73,7 +76,9 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		SYS_updatePositions(CPT_getPositionManager(engineComponents),
 				    CPT_getAppearance0Manager(engineComponents),
 				    CPT_getRectAabb0Manager(engineComponents),
-				    CPT_getRectAabb1Manager(engineComponents));
+				    CPT_getRectAabb1Manager(engineComponents),
+				    CPT_getCircAabb0Manager(engineComponents),
+				    CPT_getCircAabb1Manager(engineComponents));
 
 		EXS_applyCameraMovement(engineExtraState);
 
@@ -81,21 +86,32 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 			       CPT_getAppearance0Manager(engineComponents),
 			       &engineExtraState->camera);
 
+		SYS_renderDebugRectAabb(
+			resourceRegistry->cRenderer,
+			resourceRegistry->cResources.cTextures.aabbDebugTexture,
+			CPT_getRectAabb0Manager(engineComponents),
+			&engineExtraState->camera);
+
+		SYS_renderDebugCircAabb(
+			resourceRegistry->cRenderer,
+			CPT_getCircAabb0Manager(engineComponents),
+			&engineExtraState->camera);
+
+		SYS_renderDebugCircAabb(
+			resourceRegistry->cRenderer,
+			CPT_getCircAabb1Manager(engineComponents),
+			&engineExtraState->camera);
+
 		/** SYS_renderDebugRectAabb( */
 		/**         resourceRegistry->cRenderer, */
 		/** resourceRegistry->cResources.cTextures.aabbDebugTexture,
 		 */
-		/**         CPT_managerGet(ARectAabb)(engineComponents)); */
-
-		SYS_renderDebugRectAabb(
-			resourceRegistry->cRenderer,
-			resourceRegistry->cResources.cTextures.aabbDebugTexture,
-			CPT_getRectAabb1Manager(engineComponents),
-			&engineExtraState->camera);
+		/**         CPT_getRectAabb1Manager(engineComponents), */
+		/**         &engineExtraState->camera); */
 
 
-		SYS_rectAabbHitTest(CPT_getRectAabb0Manager(engineComponents),
-				    CPT_getRectAabb1Manager(engineComponents),
+		SYS_circAabbHitTest(CPT_getCircAabb0Manager(engineComponents),
+				    CPT_getCircAabb1Manager(engineComponents),
 				    engineEventManager);
 
 		// rendering
