@@ -1,5 +1,6 @@
 #include "EventEffects.h"
 #include "../Input/InputHandler.h"
+#include "../Input/Mouse.h"
 
 // returns the sign of a value
 #define SIGN(x) ((x > 0) - (x < 0))
@@ -14,7 +15,7 @@
 	CPT_addVelocity(components, &(Velocity){.x = 0, .y = -2});             \
                                                                                \
 	Position transform = (Position){.x = 50, .y = 50};                     \
-	struct V2 tmppp = INP_getScreenMousePosition(                          \
+	struct V2 tmppp = INP_getWorldMousePosition(                           \
 		&extrastate->camera.camera_position);                          \
 	Position tmppos = V2_sub((const Position *)&tmppp, &transform);        \
 	CPT_addPosition(components, &tmppos);                                  \
@@ -42,7 +43,7 @@ void EVT_spawnTestARect(struct CPT_Components *components,
 
 
 	struct V2 mousePosition =
-		INP_getScreenMousePosition(&extraState->camera.camera_position);
+		INP_getWorldMousePosition(&extraState->camera.camera_position);
 	struct V2 adjustedMousePosition =
 		V2_sub(&mousePosition, &(struct V2){50, 50});
 
