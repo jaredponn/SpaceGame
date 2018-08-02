@@ -6,6 +6,8 @@
 
 // macro to make squaring a number a little easier
 #define SQUARE(x) (((x)) * ((x)))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
 // -----------------------------------------
 //    function implementations
@@ -40,6 +42,19 @@ bool CPT_hitTestCircAabb(const struct CircAabb *a, const struct CircAabb *b)
 	float radii = a->radius + b->radius;
 
 	return (SQUARE(dx) + SQUARE(dy)) < SQUARE(radii);
+}
+
+// https://yal.cc/rectangle-circle-intersection-test/
+bool CPT_hitTestCircRectAabb(const struct CircAabb *circ,
+			     const struct RectAabb *rect)
+{
+	float radius = circ->radius;
+	float dx = circ->center.x
+		   - MAX(rect->pMin.x, MIN(circ->center.x, rect->pMax.x));
+	float dy = circ->center.y
+		   - MAX(rect->pMin.y, MIN(circ->center.y, rect->pMax.y));
+
+	return (SQUARE(dx) + SQUARE(dy)) < SQUARE(radius);
 }
 
 // -----------------------------------------

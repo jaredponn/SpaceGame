@@ -17,3 +17,7 @@ void SYS_rectAabbHitTest(const struct RectAabbManager *,
 
 void SYS_circAabbHitTest(const struct CircAabbManager *,
 			 const struct CircAabbManager *, struct EventManager *);
+
+void SYS_circRectAabbHitTest(const struct CircAabbManager *,
+			     const struct RectAabbManager *,
+			     struct EventManager *);

@@ -86,33 +86,22 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 			       CPT_getAppearance0Manager(engineComponents),
 			       &engineExtraState->camera);
 
+		// debug renderers
 		SYS_renderDebugRectAabb(
 			resourceRegistry->cRenderer,
-			resourceRegistry->cResources.cTextures.aabbDebugTexture,
-			CPT_getRectAabb0Manager(engineComponents),
-			&engineExtraState->camera);
+			CPT_getRectAabb1Manager(engineComponents),
+			&engineExtraState->camera, 255, 0, 0, 255);
 
 		SYS_renderDebugCircAabb(
 			resourceRegistry->cRenderer,
 			CPT_getCircAabb0Manager(engineComponents),
-			&engineExtraState->camera);
-
-		SYS_renderDebugCircAabb(
-			resourceRegistry->cRenderer,
-			CPT_getCircAabb1Manager(engineComponents),
-			&engineExtraState->camera);
-
-		/** SYS_renderDebugRectAabb( */
-		/**         resourceRegistry->cRenderer, */
-		/** resourceRegistry->cResources.cTextures.aabbDebugTexture,
-		 */
-		/**         CPT_getRectAabb1Manager(engineComponents), */
-		/**         &engineExtraState->camera); */
+			&engineExtraState->camera, 0, 255, 0, 255);
 
 
-		SYS_circAabbHitTest(CPT_getCircAabb0Manager(engineComponents),
-				    CPT_getCircAabb1Manager(engineComponents),
-				    engineEventManager);
+		SYS_circRectAabbHitTest(
+			CPT_getCircAabb0Manager(engineComponents),
+			CPT_getRectAabb1Manager(engineComponents),
+			engineEventManager);
 
 		// rendering
 		SDL_RenderPresent(resourceRegistry->cRenderer);

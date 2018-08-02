@@ -70,3 +70,38 @@ void SYS_circAabbHitTest(const struct CircAabbManager *aCircManager,
 		}
 	}
 }
+
+void SYS_circRectAabbHitTest(const struct CircAabbManager *circAabbManager,
+			     const struct RectAabbManager *rectAabbManager,
+			     struct EventManager *eventManager)
+{
+
+	const struct CircAabbVector *circVec =
+		CircAabbManager_get_packed_data(circAabbManager);
+	size_t circVecSize = CircAabbVector_size(circVec);
+
+	const struct RectAabbVector *rectVec =
+		RectAabbManager_get_packed_data(rectAabbManager);
+	size_t rectVecSize = RectAabbVector_size(rectVec);
+
+	for (size_t i = 0; i < circVecSize; ++i) {
+		for (size_t j = 0; j < rectVecSize; ++j) {
+			if (CPT_hitTestCircRectAabb(
+				    CircAabbVector_get_p(circVec, i),
+				    RectAabbVector_get_p(rectVec, j)))
+
+			{
+				EventManager_push_back(
+					eventManager,
+					(Event){.type = EVT_Collision,
+						.collision = (EVT_CollisionSignal){
+							.a = CircAabbManager_get_index_from(
+								circAabbManager,
+								i),
+							.b = RectAabbManager_get_index_from(
+								rectAabbManager,
+								j)}});
+			}
+		}
+	}
+}
