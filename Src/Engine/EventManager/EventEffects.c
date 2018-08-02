@@ -27,11 +27,10 @@
 	CPT_addAppearance0(                                                    \
 		components,                                                    \
 		&(struct Appearance){                                          \
-			.texture =                                             \
-				resources->cResources.cTextures.testTexture,   \
+			.texture = resources->cResources.cTextures.planet1,    \
 			.srcrect =                                             \
 				(SDL_Rect){                                    \
-					.x = 0, .y = 0, .w = 100, .h = 100},   \
+					.x = 0, .y = 0, .w = 1042, .h = 1042}, \
 			.dstrect = (SDL_Rect){                                 \
 				.x = 0, .y = 0, .w = 100, .h = 100}});
 
@@ -45,12 +44,8 @@ void EVT_spawnTestARect(struct CPT_Components *components,
 
 	TEST_RECT_ATTR
 
-	CPT_addRectAabb0(
-		components,
-		&(struct RectAabb){
-			.pMin = *(struct V2 *)&tmppos,
-			.pMax = V2_add((struct V2 *)&tmppos,
-				       &(struct V2){.x = 100, .y = 100})});
+	CPT_addCircAabb0(components,
+			 &(struct CircAabb){.center = tmppos, .radius = 50});
 }
 
 void EVT_spawnTestBRect(struct CPT_Components *components,
@@ -63,12 +58,16 @@ void EVT_spawnTestBRect(struct CPT_Components *components,
 	TEST_RECT_ATTR
 
 	// adding brectaabb
-	CPT_addRectAabb1(
-		components,
-		&(struct RectAabb){
-			.pMin = *(struct V2 *)&tmppos,
-			.pMax = V2_add((struct V2 *)&tmppos,
-				       &(struct V2){.x = 100, .y = 100})});
+	/** CPT_addRectAabb1( */
+	/**         components, */
+	/**         &(struct RectAabb){ */
+	/**                 .pMin = *(struct V2 *)&tmppos, */
+	/**                 .pMax = V2_add((struct V2 *)&tmppos, */
+	/**                                &(struct V2){.x = 100, .y = 100})});
+	 */
+
+	CPT_addCircAabb1(components,
+			 &(struct CircAabb){.center = tmppos, .radius = 50});
 }
 
 void EVT_changeCameraXVelocity(
