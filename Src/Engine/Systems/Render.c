@@ -37,9 +37,10 @@ void SYS_renderCopy(SDL_Renderer *renderer,
 	}
 }
 
-void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
+void SYS_renderDebugRectAabb(SDL_Renderer *renderer,
 			     const struct RectAabbManager *rectAabbManager,
-			     struct EXS_GameCamera *gameCamera)
+			     struct EXS_GameCamera *gameCamera, Uint8 r,
+			     Uint8 g, Uint8 b, Uint8 a)
 {
 	const struct RectAabbVector *rectAabbVec =
 		RectAabbManager_get_packed_data(rectAabbManager);
@@ -50,6 +51,8 @@ void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
 	SDL_Rect tmpsdlrect;
 	struct V2 lengths;
 
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
 	for (size_t i = 0; i < size; ++i) {
 		tmp = RectAabbVector_get(rectAabbVec, i);
 		lengths = V2_sub(&tmp.pMax, &tmp.pMin);
@@ -59,21 +62,22 @@ void SYS_renderDebugRectAabb(SDL_Renderer *renderer, SDL_Texture *debugTexture,
 							       .w = lengths.x,
 							       .h = lengths.y},
 						   gameCamera);
-		SDL_RenderCopy(renderer, debugTexture, NULL, &tmpsdlrect);
+		// TODO - add error handling
+		SDL_RenderDrawRect(renderer, &tmpsdlrect);
 	}
 }
 
 void SYS_renderDebugCircAabb(SDL_Renderer *renderer,
 			     const struct CircAabbManager *circAabbManager,
-			     struct EXS_GameCamera *gameCamera)
+			     struct EXS_GameCamera *gameCamera, Uint8 r,
+			     Uint8 g, Uint8 b, Uint8 a)
 {
 	const struct CircAabbVector *circAabbVec =
 		CircAabbManager_get_packed_data(circAabbManager);
 
 	size_t vecLength = CircAabbVector_size(circAabbVec);
 
-	// setting the dot color to red
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	// radius
 	float radius;
@@ -94,6 +98,7 @@ void SYS_renderDebugCircAabb(SDL_Renderer *renderer,
 			ptmp.y = sinf(j) * radius + tmp.y
 				 - gameCamera->camera_position.y;
 
+			// TODO - add error handling
 			SDL_RenderDrawPoint(renderer, ptmp.x, ptmp.y);
 		}
 	}
