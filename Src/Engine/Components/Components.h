@@ -7,13 +7,14 @@
 
 #include "Aabb.h"
 #include "Appearance.h"
+#include "Attribute.h"
 #include "Entity.h"
 #include "Movement.h"
 
 /**
  * Components.h -> an aggregration of all the components in a single file.
- * Declares the CPT_Components struct -> a super struct that contains all the
- * compoents in it and associated getters, setters, and adders
+ * Declares the CPT_Components struct -> a super struct (god object) that
+ * contains all the compoents in it and associated getters, setters, and adders
  */
 // -----------------------------------------
 //    Macros
@@ -30,6 +31,9 @@
 	X_CPT(struct V2, V2, Position)                                         \
 	X_CPT(struct V2, V2, Velocity)                                         \
 	X_CPT(struct V2, V2, Acceleration)                                     \
+                                                                               \
+	/** attributes*/                                                       \
+	X_CPT(bool, Bool, Selectable)                                          \
                                                                                \
 	/** appearance layers*/                                                \
 	X_CPT(struct Appearance, Appearance, Appearance0)                      \

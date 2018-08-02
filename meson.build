@@ -21,6 +21,7 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Components/Appearance.c'
        , 'Src/Engine/Components/Entity.c'
        , 'Src/Engine/Components/Aabb.c'
+       , 'Src/Engine/Components/Attribute.c'
 
        #/ Systems
        , 'Src/Engine/Systems/Render.c'

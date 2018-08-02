@@ -4,7 +4,7 @@
 //    macros
 // -----------------------------------------
 
-// macro to make squaring a number a little easier
+// macros to make the computations a bit easier
 #define SQUARE(x) (((x)) * ((x)))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
@@ -66,3 +66,7 @@ COMPONENT_MANAGER_DEFINE(struct RectAabb, RectAabb, RectAabb)
 
 VECTOR_DEFINE(struct CircAabb, CircAabb)
 COMPONENT_MANAGER_DEFINE(struct CircAabb, CircAabb, CircAabb)
+
+#undef SQUARE
+#undef MAX
+#undef MIN

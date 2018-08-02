@@ -1,5 +1,8 @@
 #include "EngineExtraState.h"
 #include "../GameConfig.h"
+#include <string.h>
+
+#define INIT_FOCUSED_BUFFER_SIZE 100
 
 // -----------------------------------------
 //    private funcs
@@ -14,14 +17,12 @@ static inline void EXS_applyCameraVelocity(struct EXS_ExtraState *);
 // -----------------------------------------
 
 
-void ECS_initExtraState(struct EXS_ExtraState *engineExtraState)
+void ECS_initExtraState(struct EXS_ExtraState *extraState)
 {
-	engineExtraState->camera.camera_acceleration =
-		(struct V2){.x = 0, .y = 0};
-	engineExtraState->camera.camera_position = (struct V2){.x = 0, .y = 0};
-	engineExtraState->camera.camera_velocity = (struct V2){.x = 0, .y = 0};
-
-	engineExtraState->dt = UTI_zeroTime();
+	memset(extraState, 0, sizeof(struct EXS_ExtraState));
+	SizetVector_init(&extraState->focused_entities);
+	SizetVector_reserve(&extraState->focused_entities,
+			    INIT_FOCUSED_BUFFER_SIZE);
 }
 
 

@@ -53,5 +53,4 @@ bool CPT_hitTestCircAabb(const struct CircAabb *, const struct CircAabb *);
 bool CPT_hitTestPointCircAabb(const struct V2 *, const struct CircAabb *);
 
 // returns true if the a circle Aabb and Rect aabb areoverlapping
-// TODO actually not entirely sure how to go about writinh this
 bool CPT_hitTestCircRectAabb(const struct CircAabb *, const struct RectAabb *);
