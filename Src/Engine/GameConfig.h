@@ -5,5 +5,6 @@
 
 #define GAME_WIDTH 2000
 #define GAME_HEIGHT 2000
+#define DECELERATE_RANGE 40
 
 #define FPS (1.f / 64)

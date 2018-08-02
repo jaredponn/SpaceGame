@@ -5,6 +5,7 @@ static struct INP_MouseState globalMouseState;
 
 void INP_initMouseState()
 {
+	// setting all values to 0
 	memset(&globalMouseState, 0, sizeof globalMouseState);
 }
 
@@ -59,6 +60,18 @@ struct V2 INP_getChangeInWorldMousePosition(const struct V2 *cameraPosition)
 	return V2_sub(&curWorldMousePosition, &oldWorldMousePosition);
 }
 
+bool INP_isMouseButtonPressed(const Uint8 btn)
+{
+	return globalMouseState.mouse_button_state[btn];
+}
+
+bool INP_isLeftMouseButtonPressed()
+{
+	return globalMouseState.mouse_button_state[SDL_BUTTON_LEFT];
+}
+
+
+// Uint8 mouse_button_state[X2_MOUSE]; /**< mouse's button state */
 // -----------------------------------------
 //    internal usage functions
 // -----------------------------------------
@@ -71,5 +84,12 @@ void INP_setMousePosition(float x, float y)
 
 void INP_setScrollDirection(float x, float y)
 {
+	globalMouseState.old_scroll_direction =
+		globalMouseState.scroll_direction;
 	globalMouseState.scroll_direction = (struct V2){.x = x, .y = y};
+}
+
+void INP_setMouseButtonState(Uint8 btn, bool val)
+{
+	globalMouseState.mouse_button_state[btn] = val;
 }

@@ -28,9 +28,10 @@ void INP_setDefaultMap(struct INP_InputMap *inputMap)
 				  .gameEvent = (Event){.type = EVT_SpawnB}}));
 
 	INP_addMouseKeyPressBinding(
-		inputMap, ((struct INP_MouseKeyBind){
-				  .sdlButton = SDL_BUTTON_LEFT,
-				  .gameEvent = (Event){.type = EVT_SpawnB}}));
+		inputMap,
+		((struct INP_MouseKeyBind){
+			.sdlButton = SDL_BUTTON_LEFT,
+			.gameEvent = (Event){.type = EVT_LeftMousePress}}));
 
 	INP_addCameraMovements(inputMap);
 }

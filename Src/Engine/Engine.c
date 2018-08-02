@@ -11,6 +11,7 @@
 
 #include "Input/GameInputMaps.h"
 #include "Input/InputHandler.h"
+#include "Input/Mouse.h"
 
 #include "EventManager/EventEffects.h"
 
@@ -131,10 +132,15 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 					EVT_spawnTestBRect(engineComponents,
 							   resourceRegistry,
 							   engineExtraState);
-
 					break;
-				case EVT_Collision: {
 
+				case EVT_LeftMousePress:
+					EVT_leftMousePressHandler(
+						engineComponents,
+						engineExtraState);
+					break;
+
+				case EVT_Collision: {
 					CPT_deleteEntityAt(
 						engineComponents,
 						gameEvent.collision.a);

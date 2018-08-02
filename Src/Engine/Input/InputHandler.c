@@ -76,6 +76,9 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 							&inputMap->mouseButtonPressMappings,
 							i)
 							.gameEvent);
+
+				INP_setMouseButtonState(sdlEvent->button.button,
+							true);
 			}
 			break;
 
@@ -92,6 +95,8 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 							&inputMap->mouseButtonReleaseMappings,
 							i)
 							.gameEvent);
+				INP_setMouseButtonState(sdlEvent->button.button,
+							false);
 			}
 			break;
 

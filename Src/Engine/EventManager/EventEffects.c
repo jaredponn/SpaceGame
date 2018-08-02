@@ -128,3 +128,9 @@ void EVT_decelerateCameraY(
 			cameraDecelerateSignal;
 	}
 }
+
+void EVT_leftMousePressHandler(const struct CPT_Components *components,
+			       const struct EXS_ExtraState *extraState)
+{
+	printf("this is gonna b efun");
+}

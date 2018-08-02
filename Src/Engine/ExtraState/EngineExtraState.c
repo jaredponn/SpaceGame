@@ -1,5 +1,5 @@
-#include "stdio.h"
 #include "EngineExtraState.h"
+#include "../GameConfig.h"
 
 // -----------------------------------------
 //    private funcs
@@ -27,11 +27,6 @@ void ECS_initExtraState(struct EXS_ExtraState *engineExtraState)
 
 void EXS_applyCameraMovement(struct EXS_ExtraState *extraState)
 {
-	printf("\nx acceleration: %.f\n",
-	       extraState->camera.camera_acceleration.x);
-	printf("x vel: %.f\n", extraState->camera.camera_velocity.x);
-	printf("x pos: %.f\n", extraState->camera.camera_position.x);
-
 	EXS_applyCameraAcceleration(extraState);
 	EXS_applyCameraVelocity(extraState);
 
@@ -41,7 +36,6 @@ void EXS_applyCameraMovement(struct EXS_ExtraState *extraState)
 //    private funcs
 // -----------------------------------------
 
-#define DECELERATE_RANGE 40
 static inline void EXS_stopDeceleration(struct EXS_ExtraState *extraState)
 {
 	struct V2 cameraVelocity = extraState->camera.camera_velocity;

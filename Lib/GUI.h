@@ -36,6 +36,7 @@ struct GUIObject {
 
 	void (*mouse_release_event)(void *);
 	void (*mouse_press_event)(void *);
+
 	void (*mouse_over_event)(void *);
 };
 

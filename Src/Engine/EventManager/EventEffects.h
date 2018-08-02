@@ -34,3 +34,8 @@ void EVT_decelerateCameraX(
 void EVT_decelerateCameraY(
 	struct EXS_ExtraState *extraState,
 	const EVT_CameraYDecelerateSignal cameraDecelerateSignal);
+
+
+// TODO this is gonna be a god func
+void EVT_leftMousePressHandler(const struct CPT_Components *components,
+			       const struct EXS_ExtraState *);

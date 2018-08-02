@@ -20,10 +20,13 @@ typedef enum EVT_Type {
 
 	EVT_Collision, /**< basic collision signal */
 
+	/** internals*/
+	EVT_LeftMousePress, /**< mouse handling is hard */
+
+	/** camera movement events*/
 	EVT_CameraXVelocity, /**< changes camera velocity and sets acceleration
 			       to 0. Also, will not   */
 	EVT_CameraYVelocity, /**< hangescamera y velocity */
-
 	EVT_CameraXDecelerate, /**< decelerates the camera */
 	EVT_CameraYDecelerate, /**< decelerates the camera */
 } EVT_Type;
