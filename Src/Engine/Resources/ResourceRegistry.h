@@ -25,15 +25,15 @@ struct ECS_Textures {
 
 // Resources
 struct ECS_Resources {
-	struct ECS_Textures cTextures;
+	struct ECS_Textures textures;
 };
 
 // accumalation of where to find all the various game resources. Sort of like
 // Haskell lenses to focus on specific parts
 struct ECS_ResourceRegistry {
-	SDL_Window *cWindow;
-	SDL_Renderer *cRenderer;
-	struct ECS_Resources cResources;
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+	struct ECS_Resources resources;
 };
 
 // -----------------------------------------

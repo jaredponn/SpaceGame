@@ -60,9 +60,9 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		t_i = UTI_getCurTime();
 
 		// clears the background to black
-		SDL_SetRenderDrawColor(resourceRegistry->cRenderer, 31, 47, 50,
+		SDL_SetRenderDrawColor(resourceRegistry->renderer, 31, 47, 50,
 				       0);
-		SDL_RenderClear(resourceRegistry->cRenderer);
+		SDL_RenderClear(resourceRegistry->renderer);
 
 		// running the systems / sending events to the event manager
 		SYS_applyAcceleration(
@@ -82,18 +82,18 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 
 		EXS_applyCameraMovement(engineExtraState);
 
-		SYS_renderCopy(resourceRegistry->cRenderer,
+		SYS_renderCopy(resourceRegistry->renderer,
 			       CPT_getAppearance0Manager(engineComponents),
 			       &engineExtraState->camera);
 
 		// debug renderers
 		SYS_renderDebugRectAabb(
-			resourceRegistry->cRenderer,
+			resourceRegistry->renderer,
 			CPT_getRectAabb1Manager(engineComponents),
 			&engineExtraState->camera, 255, 0, 0, 255);
 
 		SYS_renderDebugCircAabb(
-			resourceRegistry->cRenderer,
+			resourceRegistry->renderer,
 			CPT_getCircAabb0Manager(engineComponents),
 			&engineExtraState->camera, 0, 255, 0, 255);
 
@@ -104,7 +104,7 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 			engineEventManager);
 
 		// rendering
-		SDL_RenderPresent(resourceRegistry->cRenderer);
+		SDL_RenderPresent(resourceRegistry->renderer);
 
 		// input handling / sending events ot the event mangager
 		INP_parseInputs(&sdlEvent, inputMap, engineEventManager);

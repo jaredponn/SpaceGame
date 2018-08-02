@@ -22,8 +22,7 @@
 	CPT_addAppearance0(                                                    \
 		components,                                                    \
 		&(struct Appearance){                                          \
-			.texture =                                             \
-				resources->cResources.cTextures.testTexture,   \
+			.texture = resources->resources.textures.testTexture,  \
 			.srcrect =                                             \
 				(SDL_Rect){                                    \
 					.x = 0, .y = 0, .w = 1042, .h = 1042}, \
@@ -52,7 +51,7 @@ void EVT_spawnTestARect(struct CPT_Components *components,
 	CPT_addAppearance0(
 		components,
 		&(struct Appearance){
-			.texture = resources->cResources.cTextures.testTexture,
+			.texture = resources->resources.textures.testTexture,
 			.srcrect =
 				(SDL_Rect){
 					.x = 0, .y = 0, .w = 1042, .h = 1042},

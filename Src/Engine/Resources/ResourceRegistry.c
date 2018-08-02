@@ -11,16 +11,16 @@ const int SCREEN_HEIGHT = 720;
 
 void ECS_destroyRegistry(struct ECS_ResourceRegistry *registry)
 {
-	SDL_DestroyRenderer(registry->cRenderer);
-	registry->cRenderer = NULL;
-	SDL_DestroyWindow(registry->cWindow);
-	registry->cWindow = NULL;
+	SDL_DestroyRenderer(registry->renderer);
+	registry->renderer = NULL;
+	SDL_DestroyWindow(registry->window);
+	registry->window = NULL;
 
 	// destroying the textures
-	SDL_DestroyTexture(registry->cResources.cTextures.aabbDebugTexture);
-	registry->cResources.cTextures.aabbDebugTexture = NULL;
-	SDL_DestroyTexture(registry->cResources.cTextures.testTexture);
-	registry->cResources.cTextures.testTexture = NULL;
+	SDL_DestroyTexture(registry->resources.textures.aabbDebugTexture);
+	registry->resources.textures.aabbDebugTexture = NULL;
+	SDL_DestroyTexture(registry->resources.textures.testTexture);
+	registry->resources.textures.testTexture = NULL;
 }
 
 void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry)
@@ -54,13 +54,13 @@ void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry)
 		SDL_CreateTextureFromSurface(renderer, _aabbdebugsurface);
 
 
-	resourceRegistry->cWindow = window;
-	resourceRegistry->cRenderer = renderer;
-	resourceRegistry->cResources.cTextures.testTexture = testTexture;
-	resourceRegistry->cResources.cTextures.aabbDebugTexture =
+	resourceRegistry->window = window;
+	resourceRegistry->renderer = renderer;
+	resourceRegistry->resources.textures.testTexture = testTexture;
+	resourceRegistry->resources.textures.aabbDebugTexture =
 		aabbDebugTexture;
-	resourceRegistry->cResources.cTextures.planet1 = planet1;
-	resourceRegistry->cResources.cTextures.planet2 = planet2;
-	resourceRegistry->cResources.cTextures.planet3 = planet3;
-	resourceRegistry->cResources.cTextures.planet4 = planet4;
+	resourceRegistry->resources.textures.planet1 = planet1;
+	resourceRegistry->resources.textures.planet2 = planet2;
+	resourceRegistry->resources.textures.planet3 = planet3;
+	resourceRegistry->resources.textures.planet4 = planet4;
 }

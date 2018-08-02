@@ -23,7 +23,7 @@
 // vectors of the given type, prefixed by the type.
 #define LIST_OF_COMPONENTS                                                     \
 	/** X macros take arguments as follows:                                \
-	 * X_CPT(type, managerprefix, name)*/                                  \
+	 * X_CPT(type, manager's prefix, desired name)*/                       \
                                                                                \
 	/** physics*/                                                          \
 	X_CPT(Entity, Entity, Entity)                                          \
