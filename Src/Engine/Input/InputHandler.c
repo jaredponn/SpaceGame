@@ -7,7 +7,9 @@
 
 
 void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
-		     struct EventManager *eventManager)
+		     struct CPT_Components *components,
+		     struct RSC_ResourceRegistry *resources,
+		     struct EXS_ExtraState *extraState)
 {
 	// getting the vectors' lengths
 	size_t keyReleaseVecLength =
@@ -34,13 +36,15 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 					    == KeyBindVector_get(
 						       &inputMap->keyReleaseMappings,
 						       i)
-						       .sdlKey)
-						EventManager_push_back(
-							eventManager,
-							KeyBindVector_get(
-								&inputMap->keyReleaseMappings,
-								i)
-								.gameEvent);
+						       .sdlKey) {
+						KeyBindVector_get(
+							&inputMap->keyReleaseMappings,
+							i)
+							.game_event_func(
+								components,
+								resources,
+								extraState);
+					}
 				}
 			}
 			break;
@@ -53,12 +57,13 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 						       &inputMap->keyPressMappings,
 						       i)
 						       .sdlKey)
-						EventManager_push_back(
-							eventManager,
-							KeyBindVector_get(
-								&inputMap->keyPressMappings,
-								i)
-								.gameEvent);
+						KeyBindVector_get(
+							&inputMap->keyPressMappings,
+							i)
+							.game_event_func(
+								components,
+								resources,
+								extraState);
 				}
 			}
 			break;
@@ -70,12 +75,12 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 					       &inputMap->mouseButtonPressMappings,
 					       i)
 					       .sdlButton)
-					EventManager_push_back(
-						eventManager,
-						MouseKeyBindVector_get(
-							&inputMap->mouseButtonPressMappings,
-							i)
-							.gameEvent);
+					MouseKeyBindVector_get(
+						&inputMap->mouseButtonPressMappings,
+						i)
+						.game_event_func(components,
+								 resources,
+								 extraState);
 
 				INP_setMouseButtonState(sdlEvent->button.button,
 							true);
@@ -89,12 +94,12 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 					       &inputMap->mouseButtonReleaseMappings,
 					       i)
 					       .sdlButton)
-					EventManager_push_back(
-						eventManager,
-						MouseKeyBindVector_get(
-							&inputMap->mouseButtonReleaseMappings,
-							i)
-							.gameEvent);
+					MouseKeyBindVector_get(
+						&inputMap->mouseButtonReleaseMappings,
+						i)
+						.game_event_func(components,
+								 resources,
+								 extraState);
 				INP_setMouseButtonState(sdlEvent->button.button,
 							false);
 			}
@@ -103,16 +108,16 @@ void INP_parseInputs(SDL_Event *sdlEvent, struct INP_InputMap *inputMap,
 		case SDL_MOUSEWHEEL:
 			INP_setScrollDirection((float)sdlEvent->wheel.x,
 					       (float)sdlEvent->wheel.y);
-
-			EventManager_push_back(eventManager,
-					       inputMap->mouseScrollEvent);
+			inputMap->mouseScrollEvent(components, resources,
+						   extraState);
 			break;
 
 		case SDL_MOUSEMOTION:
 			INP_setMousePosition((float)sdlEvent->button.x,
 					     (float)sdlEvent->button.y);
-			EventManager_push_back(eventManager,
-					       inputMap->mouseMovementEvent);
+
+			inputMap->mouseMovementEvent(components, resources,
+						     extraState);
 			break;
 		case SDL_QUIT: {
 			exit(1);

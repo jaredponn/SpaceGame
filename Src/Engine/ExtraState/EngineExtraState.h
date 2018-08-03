@@ -4,16 +4,21 @@
 #include "Lib/sizet_Vector.h"
 #include <stdbool.h>
 
+// play resources
 struct EXS_GameCamera {
 	struct V2 camera_acceleration; // camera acceleration
 	struct V2 camera_velocity;     // camera velocity
 	struct V2 camera_position;     // camera position
+
+	float camera_movement_velocity;
+	float camera_movement_deceleration;
 
 	struct V2 camera_zoom_acceleration;
 	struct V2 camera_zoom_velocity;
 	struct V2 camera_zoom_position;
 };
 
+// player resources
 struct EXS_PlayerResources {
 	unsigned int gold;
 	unsigned int energy;
@@ -29,15 +34,14 @@ struct EXS_ExtraState;
 struct EXS_ExtraState {
 	Time dt; /**< time taken to render the frame */
 
+	struct EXS_PlayerResources
+		player_resources; /**< player resources (gold /energy) */
+
 
 	enum EXS_PlayerActionState
 		player_action_state; /**< TODO maybe use for a giant state
 					machine later */
 
-	struct EXS_PlayerResources
-		player_resources; /**< player resources (gold /energy) */
-	struct SizetVector focused_entities; /**< global indicies of entities
-						currently focused  */
 	struct EXS_GameCamera camera; /**< things relating to the game camera */
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Src/Engine/Components/Components.h"
-#include "Src/Engine/EventManager/EventManager.h"
+#include "../Events/SystemEvents.h"
 
 // -----------------------------------------
 //    Tests if the rectangles from the component mangers are colliding. if they
@@ -13,11 +13,13 @@
 // than a rectangle manager through these or else weird undefined behavour wil
 // occur
 void SYS_rectAabbHitTest(const struct RectAabbManager *,
-			 const struct RectAabbManager *, struct EventManager *);
+			 const struct RectAabbManager *,
+			 struct EVT_SystemEventManager *);
 
 void SYS_circAabbHitTest(const struct CircAabbManager *,
-			 const struct CircAabbManager *, struct EventManager *);
+			 const struct CircAabbManager *,
+			 struct EVT_SystemEventManager *);
 
 void SYS_circRectAabbHitTest(const struct CircAabbManager *,
 			     const struct RectAabbManager *,
-			     struct EventManager *);
+			     struct EVT_SystemEventManager *);

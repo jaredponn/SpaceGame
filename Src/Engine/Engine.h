@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Components/Components.h"
-#include "EventManager/EventManager.h"
 #include "ExtraState/EngineExtraState.h"
 #include "Input/InputMap.h"
 #include "Resources/LoadResources.h"
@@ -21,8 +20,7 @@ void ECS_initInput(struct INP_InputMap *);
 
 // runs the engine with the resources
 void ECS_runEngine(struct CPT_Components *, struct RSC_ResourceRegistry *,
-		   struct INP_InputMap *, struct EventManager *,
-		   struct EXS_ExtraState *);
+		   struct INP_InputMap *, struct EXS_ExtraState *);
 
 // -----------------------------------------
 //    Destructors
