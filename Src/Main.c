@@ -22,13 +22,9 @@ int main(void)
 	struct EXS_ExtraState engineExtraState;
 	ECS_initExtraState(&engineExtraState);
 
-	struct EventManager engineEventManager;
-	EventManager_init(&engineEventManager);
-	EventManager_reserve(&engineEventManager, INITCAPACITY);
-
 	// running the game
 	ECS_runEngine(&engineComponents, &resourceRegistry, &inputMap,
-		      &engineEventManager, &engineExtraState);
+		      &engineExtraState);
 
 	// closing resources
 	RSC_destroyRegistry(&resourceRegistry);

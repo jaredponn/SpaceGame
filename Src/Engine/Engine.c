@@ -13,7 +13,6 @@
 #include "Input/InputHandler.h"
 #include "Input/Mouse.h"
 
-#include "EventManager/EventEffects.h"
 
 #include <SDL2/SDL.h>
 #include <stdbool.h>
@@ -47,7 +46,6 @@ void ECS_initInput(struct INP_InputMap *inputMap)
 void ECS_runEngine(struct CPT_Components *engineComponents,
 		   struct RSC_ResourceRegistry *resourceRegistry,
 		   struct INP_InputMap *inputMap,
-		   struct EventManager *engineEventManager,
 		   struct EXS_ExtraState *engineExtraState)
 {
 	// declarations
@@ -78,79 +76,17 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 
 		EXS_applyCameraMovement(engineExtraState);
 
-		// SYS_renderCopy(resourceRegistry->renderer,
-		//	       CPT_getAppearance0Manager(engineComponents),
-		//	       &engineExtraState->camera);
+		SYS_renderCopy(
+			resourceRegistry->renderer,
+			CPT_getStationAppearancesManager(engineComponents),
+			&engineExtraState->camera);
 
 		// rendering
 		SDL_RenderPresent(resourceRegistry->renderer);
 
 		// input handling / sending events ot the event mangager
-		INP_parseInputs(&sdlEvent, inputMap, engineEventManager);
-
-		// parsing the events
-		{
-			size_t eventVectorLength =
-				EventManager_size(engineEventManager);
-
-			Event gameEvent;
-
-			for (size_t i = 0; i < eventVectorLength; ++i) {
-				gameEvent =
-					EventManager_get(engineEventManager, i);
-				switch (gameEvent.type) {
-
-				case EVT_Build:
-					EVT_leftMousePressHandler(
-						engineComponents,
-						engineExtraState);
-					break;
-
-				case EVT_LeftMousePress:
-					EVT_leftMousePressHandler(
-						engineComponents,
-						engineExtraState);
-					break;
-
-				case EVT_Collision: {
-					CPT_deleteEntityAt(
-						engineComponents,
-						gameEvent.collision.a);
-
-					CPT_deleteEntityAt(
-						engineComponents,
-						gameEvent.collision.b);
-				} break;
-
-					/** camera movement events */
-				case EVT_CameraXVelocity: {
-					EVT_changeCameraXVelocity(
-						engineExtraState,
-						gameEvent.camera_x_velocity);
-				} break;
-				case EVT_CameraYVelocity: {
-					EVT_changeCameraYVelocity(
-						engineExtraState,
-						gameEvent.camera_y_velocity);
-				} break;
-				case EVT_CameraXDecelerate: {
-					EVT_decelerateCameraX(
-						engineExtraState,
-						gameEvent.camera_x_decelerate);
-				} break;
-				case EVT_CameraYDecelerate: {
-					EVT_decelerateCameraY(
-						engineExtraState,
-						gameEvent.camera_y_decelerate);
-				} break;
-
-				default:
-					break;
-				}
-			}
-
-			EventManager_lazy_clear(engineEventManager);
-		}
+		INP_parseInputs(&sdlEvent, inputMap, engineComponents,
+				resourceRegistry, engineExtraState);
 
 
 		// sleeping to limit CPU usage

@@ -20,9 +20,10 @@ static inline void EXS_applyCameraVelocity(struct EXS_ExtraState *);
 void ECS_initExtraState(struct EXS_ExtraState *extraState)
 {
 	memset(extraState, 0, sizeof(struct EXS_ExtraState));
-	SizetVector_init(&extraState->focused_entities);
-	SizetVector_reserve(&extraState->focused_entities,
-			    INIT_FOCUSED_BUFFER_SIZE);
+
+	extraState->camera.camera_movement_velocity = CAMERA_VELOCITY;
+	extraState->camera.camera_movement_deceleration =
+		CAMERA_ACCELERATION_DECAY;
 }
 
 

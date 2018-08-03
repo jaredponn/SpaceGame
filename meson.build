@@ -40,8 +40,8 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Input/InputMap.c'
 
         # Evenet manager
-       , 'Src/Engine/EventManager/EventManager.c'
-       , 'Src/Engine/EventManager/EventEffects.c'
+       , 'Src/Engine/Events/GameEvents.c'
+       , 'Src/Engine/Events/SystemEvents.c'
 
         # Lib
        , 'Lib/GUI.c'

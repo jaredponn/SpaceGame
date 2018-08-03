@@ -3,9 +3,11 @@
 // TODO find a way to make this stuff more generic so we don't literally copy
 // and paste the same thing....
 
+// TODO evreything is broken about this
+
 void SYS_rectAabbHitTest(const struct RectAabbManager *arectmanager,
 			 const struct RectAabbManager *brectmanager,
-			 struct EventManager *eventmanager)
+			 struct EVT_SystemEventManager *eventmanager)
 {
 	const struct RectAabbVector *arectvec =
 		RectAabbManager_get_packed_data(arectmanager);
@@ -22,16 +24,19 @@ void SYS_rectAabbHitTest(const struct RectAabbManager *arectmanager,
 				    RectAabbVector_get_p(brectvec, j)))
 
 			{
-				EventManager_push_back(
-					eventmanager,
-					(Event){.type = EVT_Collision,
-						.collision = (EVT_CollisionSignal){
-							.a = RectAabbManager_get_index_from(
-								arectmanager,
-								i),
-							.b = RectAabbManager_get_index_from(
-								brectmanager,
-								j)}});
+				/** EventManager_push_back( */
+				/**         eventmanager, */
+				/**         (Event){.type = EVT_Collision, */
+				/**                 .collision =
+				 * (EVT_CollisionSignal){ */
+				/**                         .a =
+				 * RectAabbManager_get_index_from( */
+				/** arectmanager, */
+				/**                                 i), */
+				/**                         .b =
+				 * RectAabbManager_get_index_from( */
+				/** brectmanager, */
+				/**                                 j)}}); */
 			}
 		}
 	}
@@ -39,7 +44,7 @@ void SYS_rectAabbHitTest(const struct RectAabbManager *arectmanager,
 
 void SYS_circAabbHitTest(const struct CircAabbManager *aCircManager,
 			 const struct CircAabbManager *bCircManager,
-			 struct EventManager *eventManager)
+			 struct EVT_SystemEventManager *eventManager)
 {
 	const struct CircAabbVector *arectvec =
 		CircAabbManager_get_packed_data(aCircManager);
@@ -56,16 +61,19 @@ void SYS_circAabbHitTest(const struct CircAabbManager *aCircManager,
 				    CircAabbVector_get_p(brectvec, j)))
 
 			{
-				EventManager_push_back(
-					eventManager,
-					(Event){.type = EVT_Collision,
-						.collision = (EVT_CollisionSignal){
-							.a = CircAabbManager_get_index_from(
-								aCircManager,
-								i),
-							.b = CircAabbManager_get_index_from(
-								bCircManager,
-								j)}});
+				/** EventManager_push_back( */
+				/**         eventManager, */
+				/**         (Event){.type = EVT_Collision, */
+				/**                 .collision =
+				 * (EVT_CollisionSignal){ */
+				/**                         .a =
+				 * CircAabbManager_get_index_from( */
+				/** aCircManager, */
+				/**                                 i), */
+				/**                         .b =
+				 * CircAabbManager_get_index_from( */
+				/** bCircManager, */
+				/**                                 j)}}); */
 			}
 		}
 	}
@@ -73,7 +81,7 @@ void SYS_circAabbHitTest(const struct CircAabbManager *aCircManager,
 
 void SYS_circRectAabbHitTest(const struct CircAabbManager *circAabbManager,
 			     const struct RectAabbManager *rectAabbManager,
-			     struct EventManager *eventManager)
+			     struct EVT_SystemEventManager *eventManager)
 {
 
 	const struct CircAabbVector *circVec =
@@ -91,16 +99,19 @@ void SYS_circRectAabbHitTest(const struct CircAabbManager *circAabbManager,
 				    RectAabbVector_get_p(rectVec, j)))
 
 			{
-				EventManager_push_back(
-					eventManager,
-					(Event){.type = EVT_Collision,
-						.collision = (EVT_CollisionSignal){
-							.a = CircAabbManager_get_index_from(
-								circAabbManager,
-								i),
-							.b = RectAabbManager_get_index_from(
-								rectAabbManager,
-								j)}});
+				/** EventManager_push_back( */
+				/**         eventManager, */
+				/**         (Event){.type = EVT_Collision, */
+				/**                 .collision =
+				 * (EVT_CollisionSignal){ */
+				/**                         .a =
+				 * CircAabbManager_get_index_from( */
+				/** circAabbManager, */
+				/**                                 i), */
+				/**                         .b =
+				 * RectAabbManager_get_index_from( */
+				/** rectAabbManager, */
+				/**                                 j)}}); */
 			}
 		}
 	}

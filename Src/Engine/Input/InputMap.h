@@ -1,9 +1,8 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include "../EventManager/EventManager.h"
-
 #include "Lib/GenericVector.h"
+#include "../Events/GameEvents.h"
 /**
  * Input map -- structs, types, procedures for an input map.
  */
@@ -14,9 +13,11 @@
 // bindings from an SDL_Key keyboard event to a game event
 struct INP_KeyBind;
 struct INP_KeyBind {
-	Uint32 sdlKey;   /**< the key event in SDL:
-			    https://wiki.libsdl.org/SDL_Scancode  */
-	Event gameEvent; /**< the game event that corrosponds to the SDL event*/
+	Uint32 sdlKey; /**< the key event in SDL:
+			  https://wiki.libsdl.org/SDL_Scancode  */
+	EVT_GameEventEffect
+		game_event_func; /**< the game event that
+					    corrosponds to the SDL event*/
 };
 VECTOR_DECLARE(struct INP_KeyBind, KeyBind)
 
@@ -26,23 +27,17 @@ struct INP_MouseKeyBind {
 	Uint8 sdlButton; /**< the SDL mousebutton that was pressed:
 			 SDL_BUTTON_LEFT, SDL_BUTTON_MIDDLE, SDL_BUTTON_RIGHT,
 			 SDL_BUTTONX1, SDL_BUTTON_X2 */
-	Event gameEvent; /**< the game event that corrosponds to the SDL event*/
+	EVT_GameEventEffect
+		game_event_func; /**< the game event that
+					    corrosponds to the SDL event*/
 };
 VECTOR_DECLARE(struct INP_MouseKeyBind, MouseKeyBind)
 
 // game event to execute when the mouse is moved
-// struct INP_MouseMovement;
-// struct INP_MouseMovement {
-//         Event gameEvent; [>*< the game event <]
-// };
-typedef Event INP_MouseMovement;
+typedef EVT_GameEventEffect INP_MouseMovement;
 
 // game event to execute when the mouse wheel is moved
-// struct INP_MouseScroll;
-// struct INP_MouseScroll {
-//         Event gameEvent; [>*< the game event <]
-// };
-typedef Event INP_MouseScroll;
+typedef EVT_GameEventEffect INP_MouseScroll;
 
 // -----------------------------------------
 //    Input map
@@ -96,5 +91,5 @@ void INP_addMouseKeyReleaseBinding(struct INP_InputMap *,
 void INP_addMouseKeyPressBinding(struct INP_InputMap *,
 				 const struct INP_MouseKeyBind);
 
-void INP_setMouseMovementEvent(struct INP_InputMap *, const Event);
-void INP_setMouseScrollEvent(struct INP_InputMap *, const Event);
+void INP_setMouseMovementEvent(struct INP_InputMap *, EVT_GameEventEffect);
+void INP_setMouseScrollEvent(struct INP_InputMap *, EVT_GameEventEffect);
