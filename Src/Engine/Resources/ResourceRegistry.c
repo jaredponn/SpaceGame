@@ -9,7 +9,7 @@
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
-void ECS_destroyRegistry(struct ECS_ResourceRegistry *registry)
+void RSC_destroyRegistry(struct RSC_ResourceRegistry *registry)
 {
 	SDL_DestroyRenderer(registry->renderer);
 	registry->renderer = NULL;
@@ -23,7 +23,7 @@ void ECS_destroyRegistry(struct ECS_ResourceRegistry *registry)
 	registry->resources.textures.testTexture = NULL;
 }
 
-void ECS_loadInitResources(struct ECS_ResourceRegistry *resourceRegistry)
+void RSC_loadInitResources(struct RSC_ResourceRegistry *resourceRegistry)
 {
 	SDL_Window *window = RSC_createInitWindow(
 		"Space Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

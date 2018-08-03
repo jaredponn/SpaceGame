@@ -6,86 +6,44 @@
 #define SIGN(x) ((x > 0) - (x < 0))
 
 // -----------------------------------------
-//    public
+//    building event handlers
 // -----------------------------------------
 
-#define TEST_RECT_ATTR                                                         \
-	CPT_addAcceleration(components, &(Acceleration){.x = 0, .y = -2});     \
-                                                                               \
-	CPT_addVelocity(components, &(Velocity){.x = 0, .y = -2});             \
-                                                                               \
-	Position transform = (Position){.x = 50, .y = 50};                     \
-	struct V2 tmppp = INP_getWorldMousePosition(                           \
-		&extrastate->camera.camera_position);                          \
-	Position tmppos = V2_sub((const Position *)&tmppp, &transform);        \
-	CPT_addPosition(components, &tmppos);                                  \
-                                                                               \
-	CPT_addAppearance0(                                                    \
-		components,                                                    \
-		&(struct Appearance){                                          \
-			.texture = resources->resources.textures.testTexture,  \
-			.srcrect =                                             \
-				(SDL_Rect){                                    \
-					.x = 0, .y = 0, .w = 1042, .h = 1042}, \
-			.dstrect = (SDL_Rect){                                 \
-				.x = 0, .y = 0, .w = 100, .h = 100}});
+static inline void EVT_buildSolarStation(struct CPT_Components *,
+					 struct RSC_ResourceRegistry *);
 
-
-void EVT_spawnTestARect(struct CPT_Components *components,
-			const struct ECS_ResourceRegistry *resources,
-			const struct EXS_ExtraState *extraState)
+void EVT_buildGameObject(struct CPT_Components *components,
+			 struct RSC_ResourceRegistry *resources,
+			 struct EXS_ExtraState *extraState,
+			 EVT_BuildSignal buildSignal)
 {
+	if (EXS_hasEnoughResources(extraState, buildSignal.gold_price,
+				   buildSignal.energy_price)) {
+		switch (buildSignal.station_type) {
+		case SOLAR_STATION:
+			EVT_buildSolarStation(components, resources);
+			break;
 
-	CPT_updateCurFreeIndex(components);
+		case LASER_STATION:
+			// TODO NO LASER STATION YET
+			break;
 
-	// CPT_addAcceleration(components, &(Acceleration){.x = 0, .y = -2});
-	CPT_addVelocity(components, &(Velocity){.x = 0, .y = -2});
-
-
-	struct V2 mousePosition =
-		INP_getWorldMousePosition(&extraState->camera.camera_position);
-	struct V2 adjustedMousePosition =
-		V2_sub(&mousePosition, &(struct V2){50, 50});
-
-	CPT_addPosition(components, &adjustedMousePosition);
-
-	CPT_addAppearance0(
-		components,
-		&(struct Appearance){
-			.texture = resources->resources.textures.testTexture,
-			.srcrect =
-				(SDL_Rect){
-					.x = 0, .y = 0, .w = 1042, .h = 1042},
-			.dstrect = (SDL_Rect){.x = adjustedMousePosition.x,
-					      .y = adjustedMousePosition.y,
-					      .w = 100,
-					      .h = 100}});
-
-	CPT_addCircAabb0(components, &(struct CircAabb){.center = mousePosition,
-							.radius = 50});
+		case MISSILE_STATION:
+			// TODO No MISSILE STATION YET
+			break;
+		}
+	}
 }
 
-void EVT_spawnTestBRect(struct CPT_Components *components,
-			const struct ECS_ResourceRegistry *resources,
-			const struct EXS_ExtraState *extrastate)
+
+static inline void EVT_buildSolarStation(struct CPT_Components *components,
+					 struct RSC_ResourceRegistry *registry)
 {
-
-	CPT_updateCurFreeIndex(components);
-
-	TEST_RECT_ATTR
-
-	// adding brectaabb
-	CPT_addRectAabb1(
-		components,
-		&(struct RectAabb){
-			.pMin = *(struct V2 *)&tmppos,
-			.pMax = V2_add((struct V2 *)&tmppos,
-				       &(struct V2){.x = 100, .y = 100})});
-
-	/** CPT_addCircAabb1(components, */
-	/**                  &(struct CircAabb){.center = tmppos, .radius =
-	 * 50}); */
 }
+
+// -----------------------------------------
+//    camera event handlers
+// -----------------------------------------
 
 void EVT_changeCameraXVelocity(
 	struct EXS_ExtraState *extraState,
@@ -128,6 +86,10 @@ void EVT_decelerateCameraY(
 			cameraDecelerateSignal;
 	}
 }
+
+// -----------------------------------------
+//    internals
+// -----------------------------------------
 
 void EVT_leftMousePressHandler(const struct CPT_Components *components,
 			       const struct EXS_ExtraState *extraState)

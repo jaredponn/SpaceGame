@@ -10,15 +10,6 @@
  */
 
 
-void EVT_spawnTestARect(struct CPT_Components *components,
-			const struct ECS_ResourceRegistry *resources,
-			const struct EXS_ExtraState *);
-
-void EVT_spawnTestBRect(struct CPT_Components *components,
-			const struct ECS_ResourceRegistry *resources,
-			const struct EXS_ExtraState *);
-
-
 void EVT_changeCameraXVelocity(
 	struct EXS_ExtraState *extraState,
 	const EVT_CameraXVelocitySignal cameraMovementSignal);
@@ -35,6 +26,12 @@ void EVT_decelerateCameraY(
 	struct EXS_ExtraState *extraState,
 	const EVT_CameraYDecelerateSignal cameraDecelerateSignal);
 
+// TODO more on building / spawining stuff as awell. Currently only supports
+// building
+void EVT_buildGameObject(struct CPT_Components *components,
+			 struct RSC_ResourceRegistry *resources,
+			 struct EXS_ExtraState *extraState,
+			 EVT_BuildSignal buildStationSignal);
 
 // TODO this is gonna be a god func
 void EVT_leftMousePressHandler(const struct CPT_Components *components,

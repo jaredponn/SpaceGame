@@ -69,6 +69,7 @@ testsrcs = [ 'Lib/Util.c'
            , 'Src/Engine/Components/Appearance.c'
            , 'Src/Engine/Components/Entity.c'
            , 'Src/Engine/Components/Aabb.c'
+           , 'Src/Engine/Components/Attribute.c'
 
            , 'Src/Engine/Components/Appearance.c'
            , 'Lib/Time.c'

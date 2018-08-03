@@ -17,15 +17,21 @@ void INP_setDefaultMap(struct INP_InputMap *inputMap)
 {
 	INP_clearInputMap(inputMap);
 
-	// testing spawning
+	// binding key 1 to create a solar station
 	INP_addKeyReleaseBinding(
-		inputMap, ((struct INP_KeyBind){
-				  .sdlKey = SDL_SCANCODE_A,
-				  .gameEvent = (Event){.type = EVT_SpawnA}}));
-	INP_addKeyPressBinding(
-		inputMap, ((struct INP_KeyBind){
-				  .sdlKey = SDL_SCANCODE_B,
-				  .gameEvent = (Event){.type = EVT_SpawnB}}));
+		inputMap,
+		((struct INP_KeyBind){
+			.sdlKey = SDL_SCANCODE_1,
+			.gameEvent = (Event){
+				.type = EVT_Build,
+				.build = (EVT_BuildSignal){
+					.station_type = SOLAR_STATION,
+					.gold_price = SPACE_STATION_PRICE}}}));
+	/** INP_addKeyPressBinding( */
+	/**         inputMap, ((struct INP_KeyBind){ */
+	/**                           .sdlKey = SDL_SCANCODE_B, */
+	/**                           .gameEvent = (Event){.type =
+	 * EVT_SpawnB}})); */
 
 	INP_addMouseKeyPressBinding(
 		inputMap,

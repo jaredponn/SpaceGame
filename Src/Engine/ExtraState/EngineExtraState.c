@@ -33,6 +33,27 @@ void EXS_applyCameraMovement(struct EXS_ExtraState *extraState)
 
 	EXS_stopDeceleration(extraState);
 }
+
+// returns true if there are enough resources
+bool EXS_hasEnoughResources(struct EXS_ExtraState *extraState,
+			    unsigned int gold, unsigned int energy)
+{
+	unsigned int curGold = extraState->player_resources.gold;
+	unsigned int curEnergy = extraState->player_resources.energy;
+
+	bool enoughEnergy = energy >= curEnergy;
+	bool enoughGold = gold >= curGold;
+
+	return enoughGold && enoughEnergy;
+}
+
+// subtracts the amount from the resources
+void EXS_subtractResources(struct EXS_ExtraState *extraState, unsigned int gold,
+			   unsigned int energy)
+{
+	extraState->player_resources.gold -= gold;
+	extraState->player_resources.energy -= energy;
+}
 // -----------------------------------------
 //    private funcs
 // -----------------------------------------

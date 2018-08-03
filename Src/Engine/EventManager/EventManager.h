@@ -2,6 +2,9 @@
 
 #include "Lib/GenericVector.h"
 #include "Lib/V2.h"
+#include "../Components/Appearance.h"
+#include "../Components/Aabb.h"
+#include "../GameConfig.h"
 /**
  * Event manager
  * The eventmanager is a vector of Events. The Event is a wrapper around a type
@@ -14,22 +17,31 @@
 
 // enum to keep track of the different types an event could be
 typedef enum EVT_Type {
-	EVT_Empty,  /**< no event*/
-	EVT_SpawnA, /**< basic spawn signal */
-	EVT_SpawnB, /**< basic spawn signal */
-
+	EVT_Empty,     /**< no event*/
 	EVT_Collision, /**< basic collision signal */
+
+	/** building a station signals/ spawning stations */
+	EVT_Build,
+	EVT_SpawnStation,
+
+	/** camera movement events*/
+	EVT_CameraXVelocity,   /**< changes camera velocity and
+				 sets acceleration to 0*/
+	EVT_CameraYVelocity,   /**< hangescamera y velocity */
+	EVT_CameraXDecelerate, /**< decelerates the camera */
+	EVT_CameraYDecelerate, /**< decelerates the camera */
 
 	/** internals*/
 	EVT_LeftMousePress, /**< mouse handling is hard */
-
-	/** camera movement events*/
-	EVT_CameraXVelocity, /**< changes camera velocity and sets acceleration
-			       to 0. Also, will not   */
-	EVT_CameraYVelocity, /**< hangescamera y velocity */
-	EVT_CameraXDecelerate, /**< decelerates the camera */
-	EVT_CameraYDecelerate, /**< decelerates the camera */
 } EVT_Type;
+
+// -----------------------------------------
+//    Collision signal information
+// -----------------------------------------
+typedef float EVT_CameraXVelocitySignal;
+typedef float EVT_CameraYVelocitySignal;
+typedef float EVT_CameraXDecelerateSignal;
+typedef float EVT_CameraYDecelerateSignal;
 
 // the global_index of the entities that have collided
 typedef struct EVT_CollisionSignal {
@@ -37,11 +49,12 @@ typedef struct EVT_CollisionSignal {
 	size_t b; /**< id of the second entity */
 } EVT_CollisionSignal;
 
+typedef struct EVT_BuildSignal {
+	enum STATION_TYPES station_type;
+	unsigned int gold_price;
+	unsigned int energy_price;
+} EVT_BuildSignal;
 
-typedef float EVT_CameraXVelocitySignal;
-typedef float EVT_CameraYVelocitySignal;
-typedef float EVT_CameraXDecelerateSignal;
-typedef float EVT_CameraYDecelerateSignal;
 
 // -----------------------------------------
 //    Higher order event types
@@ -54,6 +67,9 @@ typedef struct Event {
 	union {
 		EVT_CollisionSignal collision;
 
+		EVT_BuildSignal build;
+
+		/** camera movement signals*/
 		EVT_CameraXVelocitySignal camera_x_velocity;
 		EVT_CameraYVelocitySignal camera_y_velocity;
 		EVT_CameraXDecelerateSignal camera_x_decelerate;

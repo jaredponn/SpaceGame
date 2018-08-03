@@ -20,7 +20,7 @@ void ECS_initInput(struct INP_InputMap *);
 // -----------------------------------------
 
 // runs the engine with the resources
-void ECS_runEngine(struct CPT_Components *, struct ECS_ResourceRegistry *,
+void ECS_runEngine(struct CPT_Components *, struct RSC_ResourceRegistry *,
 		   struct INP_InputMap *, struct EventManager *,
 		   struct EXS_ExtraState *);
 
@@ -29,7 +29,7 @@ void ECS_runEngine(struct CPT_Components *, struct ECS_ResourceRegistry *,
 // -----------------------------------------
 
 // TODO
-void ECS_freeResources(struct ECS_ResourceRegistry *);
+void ECS_freeResources(struct RSC_ResourceRegistry *);
 
 // closes SDL
 void ECS_quitLibraries();

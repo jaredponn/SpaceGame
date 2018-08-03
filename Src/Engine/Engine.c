@@ -45,7 +45,7 @@ void ECS_initInput(struct INP_InputMap *inputMap)
 }
 
 void ECS_runEngine(struct CPT_Components *engineComponents,
-		   struct ECS_ResourceRegistry *resourceRegistry,
+		   struct RSC_ResourceRegistry *resourceRegistry,
 		   struct INP_InputMap *inputMap,
 		   struct EventManager *engineEventManager,
 		   struct EXS_ExtraState *engineExtraState)
@@ -74,35 +74,13 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		SYS_applyVelocity(CPT_getVelocityManager(engineComponents),
 				  CPT_getPositionManager(engineComponents),
 				  engineExtraState->dt);
-		SYS_updatePositions(CPT_getPositionManager(engineComponents),
-				    CPT_getAppearance0Manager(engineComponents),
-				    CPT_getRectAabb0Manager(engineComponents),
-				    CPT_getRectAabb1Manager(engineComponents),
-				    CPT_getCircAabb0Manager(engineComponents),
-				    CPT_getCircAabb1Manager(engineComponents));
+		// SYS_updatePositions(CPT_getPositionManager(engineComponents));
 
 		EXS_applyCameraMovement(engineExtraState);
 
-		SYS_renderCopy(resourceRegistry->renderer,
-			       CPT_getAppearance0Manager(engineComponents),
-			       &engineExtraState->camera);
-
-		// debug renderers
-		SYS_renderDebugRectAabb(
-			resourceRegistry->renderer,
-			CPT_getRectAabb1Manager(engineComponents),
-			&engineExtraState->camera, 255, 0, 0, 255);
-
-		SYS_renderDebugCircAabb(
-			resourceRegistry->renderer,
-			CPT_getCircAabb0Manager(engineComponents),
-			&engineExtraState->camera, 0, 255, 0, 255);
-
-
-		SYS_circRectAabbHitTest(
-			CPT_getCircAabb0Manager(engineComponents),
-			CPT_getRectAabb1Manager(engineComponents),
-			engineEventManager);
+		// SYS_renderCopy(resourceRegistry->renderer,
+		//	       CPT_getAppearance0Manager(engineComponents),
+		//	       &engineExtraState->camera);
 
 		// rendering
 		SDL_RenderPresent(resourceRegistry->renderer);
@@ -122,16 +100,10 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 					EventManager_get(engineEventManager, i);
 				switch (gameEvent.type) {
 
-				case EVT_SpawnA:
-					EVT_spawnTestARect(engineComponents,
-							   resourceRegistry,
-							   engineExtraState);
-					break;
-
-				case EVT_SpawnB:
-					EVT_spawnTestBRect(engineComponents,
-							   resourceRegistry,
-							   engineExtraState);
+				case EVT_Build:
+					EVT_leftMousePressHandler(
+						engineComponents,
+						engineExtraState);
 					break;
 
 				case EVT_LeftMousePress:

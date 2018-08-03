@@ -54,3 +54,6 @@ bool CPT_hitTestPointCircAabb(const struct V2 *, const struct CircAabb *);
 
 // returns true if the a circle Aabb and Rect aabb areoverlapping
 bool CPT_hitTestCircRectAabb(const struct CircAabb *, const struct RectAabb *);
+
+// creates a CircAabb at position (0,0) with the given radius
+struct CircAabb CPT_createCircAabb(float r);
