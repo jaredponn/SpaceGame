@@ -56,7 +56,16 @@ bool CPT_hitTestCircRectAabb(const struct CircAabb *circ,
 
 	return (SQUARE(dx) + SQUARE(dy)) < SQUARE(radius);
 }
+struct CircAabb CPT_createCircAabb(float r)
+{
+	return (struct CircAabb){.center = (struct V2){.x = 0, .y = 0},
+				 .radius = r};
+}
 
+struct V2 CPT_getCircOffset(float w, float h)
+{
+	return (struct V2){w / 2, h / 2};
+}
 // -----------------------------------------
 //    Macro definitinos
 // -----------------------------------------

@@ -40,8 +40,8 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Input/InputMap.c'
 
         # Evenet manager
-       , 'Src/Engine/EventManager/EventManager.c'
-       , 'Src/Engine/EventManager/EventEffects.c'
+       , 'Src/Engine/Events/GameEvents.c'
+       , 'Src/Engine/Events/SystemEvents.c'
 
         # Lib
        , 'Lib/GUI.c'
@@ -54,7 +54,7 @@ srcs = ['Src/Main.c'
 
 executable('spacegame'
         , srcs
-        , c_args : ['-Wall', '-Wextra', '-O2', '-g']
+        , c_args : ['-Wall', '-Wextra', '-O2', '-g', '-v', '-da', '-Q']
         , link_args : ['-lSDL2', '-lSDL2_image', '-lm'] )
 
 testsrcs = [ 'Lib/Util.c'  
@@ -69,6 +69,7 @@ testsrcs = [ 'Lib/Util.c'
            , 'Src/Engine/Components/Appearance.c'
            , 'Src/Engine/Components/Entity.c'
            , 'Src/Engine/Components/Aabb.c'
+           , 'Src/Engine/Components/Attribute.c'
 
            , 'Src/Engine/Components/Appearance.c'
            , 'Lib/Time.c'

@@ -10,17 +10,14 @@
 
 // bit shifted integer corrosponding to the enum Componenets that keeps track of
 // which Components the entity contains
-typedef uint64_t Entity;
+typedef enum CPT_Entity Entity;
 
 // how the different components are classified
-typedef enum CPT_ComponentTypes {
+enum CPT_Entity {
 	CPT_NONE = 1 << 0,
-	CPT_POSITION = 1 << 1,
-	CPT_VELOCITY = 1 << 2,
-	CPT_ACCELERATION = 1 << 3,
-	CPT_APPEARANCE = 1 << 4
+	CPT_SOLARSTATION = 1 << 1,
 
-} CPT_ComponentTypes;
+};
 
 VECTOR_DECLARE(Entity, Entity)
 COMPONENT_MANAGER_DECLARE(Entity, Entity, Entity)

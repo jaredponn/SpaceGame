@@ -52,26 +52,23 @@ static void SYS_moveCircAabbTo(struct CircAabb *, const Position *);
 
 void SYS_updatePositions(const struct V2Manager *positionManager,
 			 struct AppearanceManager *appearanceManager,
-			 struct RectAabbManager *arectManager,
-			 struct RectAabbManager *brectManager,
-			 struct CircAabbManager *aCircManager,
 			 struct CircAabbManager *bCircManager)
 {
 	TRANSFORM_MANAGER_WITH(appearanceManager, Appearance,
 			       SYS_moveAppearanceTo, positionManager, V2)
 
-	TRANSFORM_MANAGER_WITH(arectManager, RectAabb, SYS_moveRectAabbTo,
-			       positionManager, V2)
-
-	TRANSFORM_MANAGER_WITH(brectManager, RectAabb, SYS_moveRectAabbTo,
-			       positionManager, V2)
-
-	TRANSFORM_MANAGER_WITH(aCircManager, CircAabb, SYS_moveCircAabbTo,
-			       positionManager, V2)
-
 	TRANSFORM_MANAGER_WITH(bCircManager, CircAabb, SYS_moveCircAabbTo,
 			       positionManager, V2)
 }
+
+void SYS_setElementPosition(struct V2Manager *positionManager,
+			    const size_t globalIndex, const Position *position,
+			    const struct V2 *offset)
+{
+	Position *curPos = V2Manager_get_p_at(positionManager, globalIndex);
+	*curPos = V2_sub(position, offset);
+}
+
 
 // -----------------------------------------
 //    Private function implementations

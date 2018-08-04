@@ -6,7 +6,8 @@
 // copies all Positions to things with an appearance
 void SYS_updatePositions(const struct V2Manager *positionManager_p,
 			 struct AppearanceManager *appearanceManager_p,
-			 struct RectAabbManager *arectManager,
-			 struct RectAabbManager *brectManager,
-			 struct CircAabbManager *aCircManager,
 			 struct CircAabbManager *bCircManager);
+
+void SYS_setElementPosition(struct V2Manager *positionManager,
+			    const size_t globalIndex, const Position *position,
+			    const struct V2 *offset);

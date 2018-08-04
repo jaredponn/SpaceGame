@@ -13,7 +13,6 @@
 #include "Input/InputHandler.h"
 #include "Input/Mouse.h"
 
-#include "EventManager/EventEffects.h"
 
 #include <SDL2/SDL.h>
 #include <stdbool.h>
@@ -45,9 +44,8 @@ void ECS_initInput(struct INP_InputMap *inputMap)
 }
 
 void ECS_runEngine(struct CPT_Components *engineComponents,
-		   struct ECS_ResourceRegistry *resourceRegistry,
+		   struct RSC_ResourceRegistry *resourceRegistry,
 		   struct INP_InputMap *inputMap,
-		   struct EventManager *engineEventManager,
 		   struct EXS_ExtraState *engineExtraState)
 {
 	// declarations
@@ -65,6 +63,7 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				       0);
 		SDL_RenderClear(resourceRegistry->renderer);
 
+
 		// running the systems / sending events to the event manager
 		SYS_applyAcceleration(
 			CPT_getAccelerationManager(engineComponents),
@@ -74,112 +73,47 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		SYS_applyVelocity(CPT_getVelocityManager(engineComponents),
 				  CPT_getPositionManager(engineComponents),
 				  engineExtraState->dt);
-		SYS_updatePositions(CPT_getPositionManager(engineComponents),
-				    CPT_getAppearance0Manager(engineComponents),
-				    CPT_getRectAabb0Manager(engineComponents),
-				    CPT_getRectAabb1Manager(engineComponents),
-				    CPT_getCircAabb0Manager(engineComponents),
-				    CPT_getCircAabb1Manager(engineComponents));
+
+		SYS_updatePositions(
+			CPT_getPositionManager(engineComponents),
+			CPT_getStationAppearancesManager(engineComponents),
+			CPT_getStationCircAabbsManager(engineComponents));
 
 		EXS_applyCameraMovement(engineExtraState);
 
-		SYS_renderCopy(resourceRegistry->renderer,
-			       CPT_getAppearance0Manager(engineComponents),
-			       &engineExtraState->camera);
-
-		// debug renderers
-		SYS_renderDebugRectAabb(
+		SYS_renderCopy(
 			resourceRegistry->renderer,
-			CPT_getRectAabb1Manager(engineComponents),
-			&engineExtraState->camera, 255, 0, 0, 255);
+			CPT_getStationAppearancesManager(engineComponents),
+			&engineExtraState->camera);
 
 		SYS_renderDebugCircAabb(
 			resourceRegistry->renderer,
-			CPT_getCircAabb0Manager(engineComponents),
-			&engineExtraState->camera, 0, 255, 0, 255);
+			CPT_getStationCircAabbsManager(engineComponents),
+			&engineExtraState->camera, 255, 0, 0, 100);
 
-
-		SYS_circRectAabbHitTest(
-			CPT_getCircAabb0Manager(engineComponents),
-			CPT_getRectAabb1Manager(engineComponents),
-			engineEventManager);
 
 		// rendering
 		SDL_RenderPresent(resourceRegistry->renderer);
 
-		// input handling / sending events ot the event mangager
-		INP_parseInputs(&sdlEvent, inputMap, engineEventManager);
+		// input handling / executing game effects
+		INP_parseInputs(&sdlEvent, inputMap, engineComponents,
+				resourceRegistry, engineExtraState);
 
-		// parsing the events
-		{
-			size_t eventVectorLength =
-				EventManager_size(engineEventManager);
+		// extra updates from the player action state TODO: update this
+		// garbage design later
+		if (engineExtraState->player_action_state == EXS_TryBuild) {
+			struct BoolManager *focusManager =
+				CPT_getFocusedManager(engineComponents);
+			size_t tmpindex =
+				BoolManager_get_index_from(focusManager, 0);
 
-			Event gameEvent;
+			struct V2 tmpv2 = INP_getWorldMousePosition(
+				&engineExtraState->camera.camera_position);
 
-			for (size_t i = 0; i < eventVectorLength; ++i) {
-				gameEvent =
-					EventManager_get(engineEventManager, i);
-				switch (gameEvent.type) {
-
-				case EVT_SpawnA:
-					EVT_spawnTestARect(engineComponents,
-							   resourceRegistry,
-							   engineExtraState);
-					break;
-
-				case EVT_SpawnB:
-					EVT_spawnTestBRect(engineComponents,
-							   resourceRegistry,
-							   engineExtraState);
-					break;
-
-				case EVT_LeftMousePress:
-					EVT_leftMousePressHandler(
-						engineComponents,
-						engineExtraState);
-					break;
-
-				case EVT_Collision: {
-					CPT_deleteEntityAt(
-						engineComponents,
-						gameEvent.collision.a);
-
-					CPT_deleteEntityAt(
-						engineComponents,
-						gameEvent.collision.b);
-				} break;
-
-					/** camera movement events */
-				case EVT_CameraXVelocity: {
-					EVT_changeCameraXVelocity(
-						engineExtraState,
-						gameEvent.camera_x_velocity);
-				} break;
-				case EVT_CameraYVelocity: {
-					EVT_changeCameraYVelocity(
-						engineExtraState,
-						gameEvent.camera_y_velocity);
-				} break;
-				case EVT_CameraXDecelerate: {
-					EVT_decelerateCameraX(
-						engineExtraState,
-						gameEvent.camera_x_decelerate);
-				} break;
-				case EVT_CameraYDecelerate: {
-					EVT_decelerateCameraY(
-						engineExtraState,
-						gameEvent.camera_y_decelerate);
-				} break;
-
-				default:
-					break;
-				}
-			}
-
-			EventManager_lazy_clear(engineEventManager);
+			SYS_setElementPosition(
+				CPT_getPositionManager(engineComponents),
+				tmpindex, &tmpv2, &(struct V2){50, 50});
 		}
-
 
 		// sleeping to limit CPU usage
 		ECS_sleep(FPS, engineExtraState->dt);

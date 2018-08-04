@@ -12,8 +12,8 @@ int main(void)
 	CPT_initComponents(&engineComponents, INITCAPACITY);
 
 	// loading the resources
-	struct ECS_ResourceRegistry resourceRegistry;
-	ECS_loadInitResources(&resourceRegistry);
+	struct RSC_ResourceRegistry resourceRegistry;
+	RSC_loadInitResources(&resourceRegistry);
 
 	struct INP_InputMap inputMap;
 	ECS_initInput(&inputMap);
@@ -22,16 +22,12 @@ int main(void)
 	struct EXS_ExtraState engineExtraState;
 	ECS_initExtraState(&engineExtraState);
 
-	struct EventManager engineEventManager;
-	EventManager_init(&engineEventManager);
-	EventManager_reserve(&engineEventManager, INITCAPACITY);
-
 	// running the game
 	ECS_runEngine(&engineComponents, &resourceRegistry, &inputMap,
-		      &engineEventManager, &engineExtraState);
+		      &engineExtraState);
 
 	// closing resources
-	ECS_destroyRegistry(&resourceRegistry);
+	RSC_destroyRegistry(&resourceRegistry);
 	ECS_quitLibraries();
 
 

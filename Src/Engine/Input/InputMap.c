@@ -10,10 +10,11 @@
 //    private func declarations
 // -----------------------------------------
 
-static void INP_addKeyBinding(struct KeyBindVector *,
-			      const struct INP_KeyBind *);
-static void INP_addMouseKeyBinding(struct MouseKeyBindVector *,
-				   const struct INP_MouseKeyBind *);
+static inline void INP_addKeyBinding(struct KeyBindVector *,
+				     const struct INP_KeyBind *);
+static inline void INP_addMouseKeyBinding(struct MouseKeyBindVector *,
+					  const struct INP_MouseKeyBind *);
+
 
 // -----------------------------------------
 //    implementations
@@ -37,8 +38,8 @@ void INP_initInputMap(struct INP_InputMap *inputMap)
 	MouseKeyBindVector_reserve(&inputMap->mouseButtonReleaseMappings,
 				   NUM_OF_MOUSE_BUTTONS);
 
-	inputMap->mouseMovementEvent = (Event){.type = EVT_Empty};
-	inputMap->mouseScrollEvent = (Event){.type = EVT_Empty};
+	inputMap->mouseMovementEvent = &EVT_VOIDFUNC;
+	inputMap->mouseScrollEvent = &EVT_VOIDFUNC;
 }
 
 void INP_clearInputMap(struct INP_InputMap *inputMap)
@@ -88,13 +89,15 @@ void INP_addMouseKeyPressBinding(struct INP_InputMap *inputMap,
 	INP_addMouseKeyBinding(&inputMap->mouseButtonPressMappings, &keyBind);
 }
 
-void INP_setMouseMovementEvent(struct INP_InputMap *inputMap, Event event)
+void INP_setMouseMovementEvent(struct INP_InputMap *inputMap,
+			       EVT_GameEventEffect gameEventFunc)
 {
-	inputMap->mouseMovementEvent = event;
+	inputMap->mouseMovementEvent = gameEventFunc;
 }
-void INP_setMouseScrollEvent(struct INP_InputMap *inputMap, Event event)
+void INP_setMouseScrollEvent(struct INP_InputMap *inputMap,
+			     EVT_GameEventEffect gameEventFunc)
 {
-	inputMap->mouseScrollEvent = event;
+	inputMap->mouseScrollEvent = gameEventFunc;
 }
 
 // -----------------------------------------
@@ -108,8 +111,8 @@ VECTOR_DEFINE(struct INP_MouseKeyBind, MouseKeyBind)
 //    Private function implementaitons
 // -----------------------------------------
 
-static void INP_addKeyBinding(struct KeyBindVector *vec,
-			      const struct INP_KeyBind *keyBind)
+static inline void INP_addKeyBinding(struct KeyBindVector *vec,
+				     const struct INP_KeyBind *keyBind)
 {
 	size_t vecLength = KeyBindVector_size(vec);
 
@@ -128,8 +131,9 @@ static void INP_addKeyBinding(struct KeyBindVector *vec,
 	KeyBindVector_push_back(vec, *keyBind);
 }
 
-static void INP_addMouseKeyBinding(struct MouseKeyBindVector *vec,
-				   const struct INP_MouseKeyBind *keyBind)
+static inline void
+INP_addMouseKeyBinding(struct MouseKeyBindVector *vec,
+		       const struct INP_MouseKeyBind *keyBind)
 {
 	size_t vecLength = MouseKeyBindVector_size(vec);
 

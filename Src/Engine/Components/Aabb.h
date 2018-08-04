@@ -54,3 +54,9 @@ bool CPT_hitTestPointCircAabb(const struct V2 *, const struct CircAabb *);
 
 // returns true if the a circle Aabb and Rect aabb areoverlapping
 bool CPT_hitTestCircRectAabb(const struct CircAabb *, const struct RectAabb *);
+
+// creates a CircAabb at position (0,0) with the given radius
+struct CircAabb CPT_createCircAabb(float r);
+
+// gets the offset for the position, so the center of the circle is on the mouse
+struct V2 CPT_getCircOffset(float w, float h);
