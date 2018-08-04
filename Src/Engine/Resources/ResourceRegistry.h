@@ -17,9 +17,6 @@
 
 // textures
 struct RSC_Textures {
-	SDL_Texture *testTexture;
-	SDL_Texture *aabbDebugTexture;
-
 	SDL_Texture *solar_station;
 	SDL_Texture *solar_station_transparent;
 
@@ -50,6 +47,9 @@ struct RSC_StationConfig {
 // game objects
 struct RSC_GameObjects {
 	struct RSC_StationConfig solar_station;
+	struct RSC_StationConfig laser_station;
+	struct RSC_StationConfig missile_station;
+	struct RSC_StationConfig mine_station;
 };
 
 
