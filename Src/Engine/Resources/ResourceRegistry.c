@@ -36,8 +36,13 @@ void RSC_loadInitResources(struct RSC_ResourceRegistry *resourceRegistry)
 	SDL_Texture *testTexture =
 		RSC_loadImage(renderer, EXTRAS_PATH "/Images/bg.png");
 
-	SDL_Texture *planet1 = RSC_loadImage(renderer, EXTRAS_PATH
-					     "/Images/500x500circ-01.png");
+	SDL_Texture *solar_station = RSC_loadImage(
+		renderer, EXTRAS_PATH "/Images/500x500circ-01.png");
+
+	SDL_Texture *solar_station_transparent = RSC_loadImage(
+		renderer, EXTRAS_PATH "/Images/500x500circ-01.png");
+	SDL_SetTextureAlphaMod(solar_station_transparent, 50);
+
 	SDL_Texture *planet2 = RSC_loadImage(renderer, EXTRAS_PATH
 					     "/Images/500x500circ-02.png");
 	SDL_Texture *planet3 = RSC_loadImage(renderer, EXTRAS_PATH
@@ -56,11 +61,34 @@ void RSC_loadInitResources(struct RSC_ResourceRegistry *resourceRegistry)
 
 	resourceRegistry->window = window;
 	resourceRegistry->renderer = renderer;
+
 	resourceRegistry->resources.textures.testTexture = testTexture;
 	resourceRegistry->resources.textures.aabbDebugTexture =
 		aabbDebugTexture;
-	resourceRegistry->resources.textures.planet1 = planet1;
+
+	resourceRegistry->resources.textures.solar_station = solar_station;
+	resourceRegistry->resources.textures.solar_station_transparent =
+		solar_station_transparent;
+
 	resourceRegistry->resources.textures.planet2 = planet2;
 	resourceRegistry->resources.textures.planet3 = planet3;
 	resourceRegistry->resources.textures.planet4 = planet4;
+
+	// solar station
+	resourceRegistry->game_objects.solar_station.cost = 100;
+	resourceRegistry->game_objects.solar_station.entity = CPT_SOLARSTATION;
+	resourceRegistry->game_objects.solar_station.w = 100;
+	resourceRegistry->game_objects.solar_station.h = 100;
+	resourceRegistry->game_objects.solar_station.circ_aabb =
+		CPT_createCircAabb(50);
+	resourceRegistry->game_objects.solar_station
+		.transparent_appearance = (struct Appearance){
+		.texture = solar_station_transparent,
+		.srcrect = (SDL_Rect){.x = 0, .y = 0, .w = 1042, .h = 1042},
+		.dstrect = (SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100}};
+	resourceRegistry->game_objects.solar_station
+		.appearance = (struct Appearance){
+		.texture = solar_station,
+		.srcrect = (SDL_Rect){.x = 0, .y = 0, .w = 1042, .h = 1042},
+		.dstrect = (SDL_Rect){.x = 0, .y = 0, .w = 100, .h = 100}};
 }

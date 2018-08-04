@@ -12,10 +12,22 @@
 typedef void (*EVT_GameEventEffect)(struct CPT_Components *,
 				    struct RSC_ResourceRegistry *,
 				    struct EXS_ExtraState *);
+// -----------------------------------------
+//    left mouse button
+// -----------------------------------------
+void EVT_leftMousePressButtonHandler(struct CPT_Components *,
+				     struct RSC_ResourceRegistry *,
+				     struct EXS_ExtraState *);
 
 // -----------------------------------------
 //    building functions
 // -----------------------------------------
+// provides the mouse clicky gui to spawn a solar station
+void EVT_trySpawnNewSolarStation(struct CPT_Components *,
+				 struct RSC_ResourceRegistry *,
+				 struct EXS_ExtraState *);
+
+// spawns a solar station at the mouse position
 void EVT_spawnNewSolarStation(struct CPT_Components *,
 			      struct RSC_ResourceRegistry *,
 			      struct EXS_ExtraState *);

@@ -55,6 +55,12 @@ void EXS_subtractResources(struct EXS_ExtraState *extraState, unsigned int gold,
 	extraState->player_resources.gold -= gold;
 	extraState->player_resources.energy -= energy;
 }
+
+void EXS_setPlayerActionState(struct EXS_ExtraState *extraState,
+			      enum EXS_PlayerActionState playerActionState)
+{
+	extraState->player_action_state = playerActionState;
+}
 // -----------------------------------------
 //    private funcs
 // -----------------------------------------

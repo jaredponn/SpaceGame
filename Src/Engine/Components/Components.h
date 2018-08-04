@@ -34,6 +34,7 @@
                                                                                \
 	/** attributes*/                                                       \
 	X_CPT(bool, Bool, Selectable)                                          \
+	X_CPT(bool, Bool, Focused)                                             \
                                                                                \
 	/** appearance layers*/                                                \
 	X_CPT(struct Appearance, Appearance, StationAppearances)               \

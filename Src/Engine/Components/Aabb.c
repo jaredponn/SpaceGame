@@ -62,6 +62,10 @@ struct CircAabb CPT_createCircAabb(float r)
 				 .radius = r};
 }
 
+struct V2 CPT_getCircOffset(float w, float h)
+{
+	return (struct V2){w / 2, h / 2};
+}
 // -----------------------------------------
 //    Macro definitinos
 // -----------------------------------------

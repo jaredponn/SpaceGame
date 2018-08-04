@@ -63,6 +63,7 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 				       0);
 		SDL_RenderClear(resourceRegistry->renderer);
 
+
 		// running the systems / sending events to the event manager
 		SYS_applyAcceleration(
 			CPT_getAccelerationManager(engineComponents),
@@ -72,7 +73,11 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 		SYS_applyVelocity(CPT_getVelocityManager(engineComponents),
 				  CPT_getPositionManager(engineComponents),
 				  engineExtraState->dt);
-		// SYS_updatePositions(CPT_getPositionManager(engineComponents));
+
+		SYS_updatePositions(
+			CPT_getPositionManager(engineComponents),
+			CPT_getStationAppearancesManager(engineComponents),
+			CPT_getStationCircAabbsManager(engineComponents));
 
 		EXS_applyCameraMovement(engineExtraState);
 
@@ -81,13 +86,34 @@ void ECS_runEngine(struct CPT_Components *engineComponents,
 			CPT_getStationAppearancesManager(engineComponents),
 			&engineExtraState->camera);
 
+		SYS_renderDebugCircAabb(
+			resourceRegistry->renderer,
+			CPT_getStationCircAabbsManager(engineComponents),
+			&engineExtraState->camera, 255, 0, 0, 100);
+
+
 		// rendering
 		SDL_RenderPresent(resourceRegistry->renderer);
 
-		// input handling / sending events ot the event mangager
+		// input handling / executing game effects
 		INP_parseInputs(&sdlEvent, inputMap, engineComponents,
 				resourceRegistry, engineExtraState);
 
+		// extra updates from the player action state TODO: update this
+		// garbage design later
+		if (engineExtraState->player_action_state == EXS_TryBuild) {
+			struct BoolManager *focusManager =
+				CPT_getFocusedManager(engineComponents);
+			size_t tmpindex =
+				BoolManager_get_index_from(focusManager, 0);
+
+			struct V2 tmpv2 = INP_getWorldMousePosition(
+				&engineExtraState->camera.camera_position);
+
+			SYS_setElementPosition(
+				CPT_getPositionManager(engineComponents),
+				tmpindex, &tmpv2, &(struct V2){50, 50});
+		}
 
 		// sleeping to limit CPU usage
 		ECS_sleep(FPS, engineExtraState->dt);

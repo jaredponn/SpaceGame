@@ -57,3 +57,6 @@ bool CPT_hitTestCircRectAabb(const struct CircAabb *, const struct RectAabb *);
 
 // creates a CircAabb at position (0,0) with the given radius
 struct CircAabb CPT_createCircAabb(float r);
+
+// gets the offset for the position, so the center of the circle is on the mouse
+struct V2 CPT_getCircOffset(float w, float h);

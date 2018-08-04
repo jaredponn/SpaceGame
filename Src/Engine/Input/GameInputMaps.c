@@ -37,7 +37,7 @@ void INP_setDefaultMap(struct INP_InputMap *inputMap)
 
 	// binding key 1 to create a solar station
 	ADD_KEY_RELEASE_BINDING(inputMap, SDL_SCANCODE_1,
-				EVT_spawnNewSolarStation);
+				EVT_trySpawnNewSolarStation);
 
 	ADD_KEY_RELEASE_BINDING(inputMap, SDL_SCANCODE_A,
 				EVT_spawnNewSolarStation);
@@ -48,12 +48,11 @@ void INP_setDefaultMap(struct INP_InputMap *inputMap)
 	/**                           .gameEvent = (Event){.type =
 	 * EVT_SpawnB}})); */
 
-	/** INP_addMouseKeyPressBinding( */
-	/**         inputMap, */
-	/**         ((struct INP_MouseKeyBind){ */
-	/**                 .sdlButton = SDL_BUTTON_LEFT, */
-	/**                 .gameEvent = (Event){.type = EVT_LeftMousePress}}));
-	 */
+	INP_addMouseKeyPressBinding(
+		inputMap,
+		((struct INP_MouseKeyBind){
+			.sdlButton = SDL_BUTTON_LEFT,
+			.game_event_func = EVT_leftMousePressButtonHandler}));
 
 	INP_addCameraMovements(inputMap);
 }

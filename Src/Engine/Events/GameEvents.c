@@ -17,20 +17,95 @@ static inline void setCameraYAcceleration(struct EXS_ExtraState *extraState,
 // returns the sign of a value
 #define SIGN(x) ((x > 0) - (x < 0))
 #define UNUSED(x) (void)(x)
+// -----------------------------------------
+//    mouse button handelres
+// -----------------------------------------
+
+
+void EVT_leftMousePressButtonHandler(struct CPT_Components *components,
+				     struct RSC_ResourceRegistry *resources,
+				     struct EXS_ExtraState *extraState)
+{
+	switch (extraState->player_action_state) {
+	case EXS_Idle:
+		break;
+
+	case EXS_TryBuild: {
+		struct BoolManager *focused = CPT_getFocusedManager(components);
+		size_t globalIndex = BoolManager_get_index_from(focused, 0);
+
+		struct EntityManager *entityManager =
+			CPT_getEntityManager(components);
+
+		Entity *spaceStationType =
+			EntityManager_get_p_at(entityManager, globalIndex);
+
+
+		switch (*spaceStationType) {
+
+		case CPT_SOLARSTATION:
+			if (EXS_hasEnoughResources(
+				    extraState,
+				    resources->game_objects.solar_station.cost,
+				    0)) {
+
+				EVT_spawnNewSolarStation(components, resources,
+							 extraState);
+
+				CPT_deleteEntityAt(components, globalIndex);
+
+				EXS_setPlayerActionState(extraState, EXS_Idle);
+			} else {
+				printf("\nnot enough money\n");
+			}
+
+			break;
+		default:
+			printf("\n strange error;" __FILE__);
+		}
+
+		break;
+	}
+	}
+}
 
 
 // -----------------------------------------
 //    spawning stations
 // -----------------------------------------
+void EVT_trySpawnNewSolarStation(struct CPT_Components *components,
+				 struct RSC_ResourceRegistry *resources,
+				 struct EXS_ExtraState *extraState)
+{
+	if (extraState->player_action_state == EXS_Idle) {
+
+		struct RSC_StationConfig solarStation =
+			resources->game_objects.solar_station;
+		struct V2 positionOffset =
+			CPT_getCircOffset(solarStation.w, solarStation.h);
+
+		CPT_updateCurFreeIndex(components);
+
+		CPT_addPosition(components, &positionOffset);
+
+		CPT_addFocused(components, &(bool){true});
+
+		CPT_addEntity(components, &solarStation.entity);
+
+		CPT_addStationCircAabbs(components, &solarStation.circ_aabb);
+
+		CPT_addStationAppearances(components,
+					  &solarStation.transparent_appearance);
+
+		EXS_setPlayerActionState(extraState, EXS_TryBuild);
+	}
+}
+
 void EVT_spawnNewSolarStation(struct CPT_Components *components,
 			      struct RSC_ResourceRegistry *resources,
 			      struct EXS_ExtraState *extraState)
 {
 	CPT_updateCurFreeIndex(components);
-
-	// CPT_addAcceleration(components, &(Acceleration){.x = 0, .y = -2});
-	CPT_addVelocity(components, &(Velocity){.x = 0, .y = -2});
-
 
 	struct V2 mousePosition =
 		INP_getWorldMousePosition(&extraState->camera.camera_position);
@@ -42,7 +117,7 @@ void EVT_spawnNewSolarStation(struct CPT_Components *components,
 	CPT_addStationAppearances(
 		components,
 		&(struct Appearance){
-			.texture = resources->resources.textures.testTexture,
+			.texture = resources->resources.textures.solar_station,
 			.srcrect =
 				(SDL_Rect){
 					.x = 0, .y = 0, .w = 1042, .h = 1042},
@@ -188,3 +263,5 @@ static inline void setCameraYAcceleration(struct EXS_ExtraState *extraState,
 		extraState->camera.camera_acceleration.y = newAccleration;
 	}
 }
+#undef SIGN
+#undef UNUSED

@@ -9,7 +9,6 @@ struct EXS_GameCamera {
 	struct V2 camera_acceleration; // camera acceleration
 	struct V2 camera_velocity;     // camera velocity
 	struct V2 camera_position;     // camera position
-
 	float camera_movement_velocity;
 	float camera_movement_deceleration;
 
@@ -25,8 +24,9 @@ struct EXS_PlayerResources {
 };
 
 enum EXS_PlayerActionState {
-	EXS_Nothing,
-	EXS_BuildSolarTower,
+	EXS_Idle,     /**< idle playerstate */
+	EXS_TryBuild, /**< state where the player is trying to build something
+			 and they have the cool semi transparent viser thing */
 };
 
 // The core type that contains "globally" required state
@@ -58,3 +58,7 @@ bool EXS_hasEnoughResources(struct EXS_ExtraState *, unsigned int gold,
 // subtracts the amount from the resources
 void EXS_subtractResources(struct EXS_ExtraState *, unsigned int gold,
 			   unsigned int energy);
+
+// sets the player action state to whatever
+void EXS_setPlayerActionState(struct EXS_ExtraState *,
+			      enum EXS_PlayerActionState);
