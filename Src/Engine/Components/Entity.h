@@ -14,8 +14,11 @@ typedef enum CPT_Entity Entity;
 
 // how the different components are classified
 enum CPT_Entity {
-	CPT_NONE = 1 << 0,
-	CPT_SOLARSTATION = 1 << 1,
+	CPT_NONE,
+	CPT_SOLARSTATION,
+	CPT_LASERSTATION,
+	CPT_MISSILESTATION,
+	CPT_MINESTATION,
 
 };
 
