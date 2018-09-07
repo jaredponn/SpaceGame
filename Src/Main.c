@@ -7,29 +7,31 @@ int main(void)
 	// initializing the libraries
 	ECS_initLibraries();
 
-	// initalizing the compoents sets
-	struct CPT_Components engineComponents;
-	CPT_initComponents(&engineComponents, INITCAPACITY);
+	printf("copiled");
 
-	// loading the resources
-	struct RSC_ResourceRegistry resourceRegistry;
-	RSC_loadInitResources(&resourceRegistry);
-
-	struct INP_InputMap inputMap;
-	ECS_initInput(&inputMap);
-
-	// declaring/ initlizting the extras
-	struct EXS_ExtraState engineExtraState;
-	ECS_initExtraState(&engineExtraState);
-
-	// running the game
-	ECS_runEngine(&engineComponents, &resourceRegistry, &inputMap,
-		      &engineExtraState);
-
-	// closing resources
-	RSC_destroyRegistry(&resourceRegistry);
-	ECS_quitLibraries();
-
+	/** // initalizing the compoents sets */
+	/** struct CPT_Components engineComponents; */
+	/** CPT_initComponents(&engineComponents, INITCAPACITY); */
+	/**  */
+	/** // loading the resources */
+	/** struct RSC_ResourceRegistry resourceRegistry; */
+	/** RSC_loadInitResources(&resourceRegistry); */
+	/**  */
+	/** struct INP_InputMap inputMap; */
+	/** ECS_initInput(&inputMap); */
+	/**  */
+	/** // declaring/ initlizting the extras */
+	/** struct EXS_ExtraState engineExtraState; */
+	/** ECS_initExtraState(&engineExtraState); */
+	/**  */
+	/** // running the game */
+	/** ECS_runEngine(&engineComponents, &resourceRegistry, &inputMap, */
+	/**               &engineExtraState); */
+	/**  */
+	/** // closing resources */
+	/** RSC_destroyRegistry(&resourceRegistry); */
+	/** ECS_quitLibraries(); */
+	/**  */
 
 	return 0;
 }

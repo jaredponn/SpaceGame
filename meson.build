@@ -29,6 +29,13 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Systems/ApplyMovementTransforms.c'
        , 'Src/Engine/Systems/AabbHitTest.c'
 
+       #/ Low level systems
+       , 'Src/Engine/LLSystems/Time.c'
+       , 'Src/Engine/LLSystems/Input.c'
+       , 'Src/Engine/LLSystems/Window.c'
+       , 'Src/Engine/LLSystems/Render.c'
+       , 'Src/Engine/LLSystems/LLSystemManager.c'
+
        # extras
        ,'Src/Engine/ExtraState/EngineExtraState.c'
 
@@ -55,7 +62,7 @@ srcs = ['Src/Main.c'
 executable('spacegame'
         , srcs
         , c_args : ['-Wall', '-Wextra', '-O2', '-g', '-v', '-da', '-Q']
-        , link_args : ['-lSDL2', '-lSDL2_image', '-lm'] )
+        , link_args : ['-lSDL2', '-lSDL2_image', '-lm', '-lglfw', '-lGL'] )
 
 testsrcs = [ 'Lib/Util.c'  
            , 'UnitTesting/Run_Tests.c'

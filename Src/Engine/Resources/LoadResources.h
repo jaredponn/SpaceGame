@@ -18,21 +18,21 @@ void RSC_initSDL(const Uint32 flags);
 
 // wrapper for SDL_CreateWindow. If create window fails, it will return null and
 // print out an error message.
-SDL_Window* RSC_createNewWindow(const char* title, int x, int y, int w, int h,
-                                Uint32 flags);
+SDL_Window *RSC_createNewWindow(const char *title, int x, int y, int w, int h,
+				Uint32 flags);
 
 // Simliar to RSC_createNewWindow. Intended to be used to create hte initial
 // window, as it will call exit(1) if it fails
-SDL_Window* RSC_createInitWindow(const char* title, int x, int y, int w, int h,
-                                 Uint32 flags);
+SDL_Window *RSC_createInitWindow(const char *title, int x, int y, int w, int h,
+				 Uint32 flags);
 
 // wrapper for SDL_CreateRenderer, but assumes that we want the first driver
 // that supports the flags provided.
-SDL_Renderer* RSC_createNewRenderer(SDL_Window* window, Uint32 flags);
+SDL_Renderer *RSC_createNewRenderer(SDL_Window *window, Uint32 flags);
 
 // Simliar to RSC_createNewRenderer. Intended to be used to create hte initial
 // window, as it will call exit(1) if it fails
-SDL_Renderer* RSC_createInitRenderer(SDL_Window* window, Uint32 flags);
+SDL_Renderer *RSC_createInitRenderer(SDL_Window *window, Uint32 flags);
 
 // -----------------------------------------
 //    Procedures for SDL_image
@@ -52,4 +52,4 @@ void RSC_quitSDLImage();
 
 // loads the image and returns the pointer to the SDL_Texture.
 // If it loads unsuccesffully, it will print an error message and return NULL
-SDL_Texture* RSC_loadImage(SDL_Renderer* renderer, const char* path);
+SDL_Texture *RSC_loadImage(SDL_Renderer *renderer, const char *path);
