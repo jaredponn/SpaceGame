@@ -1,15 +1,24 @@
 #include "Input.h"
+#include "stdio.h"
+
+#define UNUSED(var) (void)var
 
 
-void LLS_setKeyCallback(GLFWwindow *window,
-			void (*key_callback)(GLFWwindow *window, int key,
-					     int scancode, int action,
-					     int mods))
+static unsigned int KEYBOARD_KEY_BUFFER[MAX_KEYBOARD_KEY_NUMBER] = {0};
+
+void INP_defaultKeyCallback(GLFWwindow *window, int key, int scancode,
+			    int action, int mods)
 {
-	glfwSetKeyCallback(window, key_callback);
-}
+	// does does not modify the keyboard buffer if the key is unknown
+	if (key == GLFW_KEY_UNKNOWN)
+		return;
 
-void LLS_pollEvents()
-{
-	glfwPollEvents();
+	UNUSED(window);
+	UNUSED(scancode);
+	UNUSED(mods);
+
+	if (action == GLFW_PRESS) {
+		printf("KEYIS PRESED\n");
+		KEYBOARD_KEY_BUFFER[key] |= 1;
+	}
 }

@@ -1,28 +1,26 @@
-#pragma once
-
-#include <GLFW/glfw3.h>
+#include "LLSInput.h"
 
 /** Input.h
- * wrappers for input
+ * Higher level wrapper for GLFW's input stuff
  */
 
+// -----------------------------------------
+//    Macros
+// -----------------------------------------
 
-// sets the key callback function
-void LLS_setKeyCallback(GLFWwindow *window,
-			void (*key_callback)(GLFWwindow *window, int key,
-					     int scancode, int action,
-					     int mods));
+#define MAX_KEYBOARD_KEY_NUMBER GLFW_KEY_MENU
 
-void LLS_pollEvents();
+// don't forget about hemouse
+#define MAX_KEYBOARD_KEY_NUMBER GLFW_KEY_MENU
 
+// -----------------------------------------
+//    Procedures
+// -----------------------------------------
 
-// basic example call back func:
-/*
- static void key_callback(GLFWwindow *window, int key, int scancode, int
-action,
-			 int mods)
-{
-	 if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		 glfwSetWindowShouldClose(window, GLFW_TRUE);
- }
- */
+// shifts the bits of the input buffers left one. Must be called once every
+// frame
+void INP_updateInputBuffers();
+
+// default key callback that uses the KEYBOARD_KEY_BUFFER
+void INP_defaultKeyCallback(GLFWwindow *window, int key, int scancode,
+			    int action, int mods);

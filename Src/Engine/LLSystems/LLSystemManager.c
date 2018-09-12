@@ -22,16 +22,13 @@ void LLS_setDefaultErrorCallback()
 	glfwSetErrorCallback(defaultErrorCallback);
 }
 
-// sets the default error callback to simply print stderr
-void LLS_setDefaultErrorCallback();
 
-bool LLS_initWindowLib()
+bool LLS_initGraphicsLibFrameWork()
 {
-	glfwSwapInterval(1);
 	return glfwInit();
 }
 
-void LLS_terminateWindowLib()
+void LLS_terminateGraphicsLibFrameWork()
 {
 	glfwTerminate();
 }

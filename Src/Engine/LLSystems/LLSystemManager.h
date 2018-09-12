@@ -20,7 +20,7 @@ void LLS_setDefaultErrorCallback();
 
 // initlizes the graphics lib framework library (GLFW)
 // also sets the swap interval to 1 for glfwSwapBuffers
-bool LLS_initGraphicsLib();
+bool LLS_initGraphicsLibFrameWork();
 
 // terminates GLFW
-void LLS_terminateGraphicsLib();
+void LLS_terminateGraphicsLibFrameWork();

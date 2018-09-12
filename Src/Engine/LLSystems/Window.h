@@ -18,7 +18,10 @@ GLFWwindow *LLS_createWindow(const int width, const int height,
 			     const char *title);
 
 // makes the selected window have a OpenGL context
+// ALSO sets the swap interval to 1
 void LLS_makeContextCurrent(GLFWwindow *);
+
+void LLS_setSwapInterval(unsigned int);
 
 // returns true if user wants to close the window
 bool LLS_shouldWindowClose(GLFWwindow *);
