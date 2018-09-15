@@ -26,10 +26,23 @@ int main(void)
 	LLS_makeContextCurrent(window);
 	LLS_setSwapInterval(1);
 
-	LLS_setKeyboardCallback(window, INP_defaultKeyCallback);
+	LLS_setKeyboardCallback(window, INP_defaultKeyboardCallback);
 
 	while (!LLS_shouldWindowClose(window)) {
-		LLS_pollEvents();
+		INP_pollAndUpdateInputBuffer();
+
+		unsigned int tst = getKeyboardKeyState(GLFW_KEY_A);
+
+		if (tst == INP_PRESS) {
+			printf("ifpress\n");
+		}
+
+		if (tst == INP_RELEASE) {
+			printf("ifrelease\n");
+		}
+
+		/** INP_printKeyboardKeyState(getKeyboardKeyState(GLFW_KEY_A));
+		 */
 	}
 
 	LLS_terminateGraphicsLibFrameWork();
