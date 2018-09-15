@@ -1,3 +1,5 @@
+#include "Extern/glad/include/glad/glad.h" // this must be the first include to work with GLFW / OpenGL
+
 #include "Engine/Engine.h"
 #include "Engine/LLSystems/LLSystems.h"
 
@@ -17,22 +19,33 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	GLFWwindow *window = LLS_createWindow(100, 100, "fuckall");
+	GLFWwindow *window = LLS_createWindow(500, 500, "fuckall");
 	if (!window) {
 		printf("\nFAILED;\n");
 		exit(EXIT_FAILURE);
 	}
 
 	LLS_makeContextCurrent(window);
+
+	LLS_loadGLLoader(); // must b called after make contextcurrent
+
 	LLS_setSwapInterval(1);
 
 	LLS_setKeyboardCallback(window, INP_defaultKeyboardCallback);
 
+	// setting th edefault clear color to black
+	LLS_clearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	GLuint vbo;
+
 	while (!LLS_shouldWindowClose(window)) {
 		INP_pollAndUpdateInputBuffer();
+		LLS_clear(GL_COLOR_BUFFER_BIT);
+
+		LLS_genBuffers(1, &vbo);
+
 
 		unsigned int tst = getKeyboardKeyState(GLFW_KEY_A);
-
 		if (tst == INP_PRESS) {
 			printf("ifpress\n");
 		}
@@ -41,8 +54,8 @@ int main(void)
 			printf("ifrelease\n");
 		}
 
-		/** INP_printKeyboardKeyState(getKeyboardKeyState(GLFW_KEY_A));
-		 */
+
+		LLS_swapBuffers(window);
 	}
 
 	LLS_terminateGraphicsLibFrameWork();

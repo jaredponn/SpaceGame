@@ -6,6 +6,7 @@ project('SpaceGame', 'c',
 
 inc = include_directories('Extras')
 inc = include_directories('Lib')
+inc = include_directories('Extern/glad/include')
 inc = include_directories('Src')
 
 srcs = ['Src/Main.c'
@@ -36,6 +37,7 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/LLSystems/Input.c'
        , 'Src/Engine/LLSystems/Window.c'
        , 'Src/Engine/LLSystems/Render.c'
+       , 'Src/Engine/LLSystems/LLSRender.c'
 
        # extras
        ,'Src/Engine/ExtraState/EngineExtraState.c'
@@ -58,13 +60,16 @@ srcs = ['Src/Main.c'
        , 'Lib/sizet_Vector.c' 
        , 'Lib/V2.c' 
        , 'Lib/Time.c'
+
+       # Extern
+       , 'Extern/glad/src/glad.c'
        ]
 
 executable('spacegame'
         , srcs
         , c_args : ['-Wall', '-Wextra', '-O2', '-g']
         # , c_args : ['-Wall', '-Wextra', '-O2', '-g', '-v', '-da', '-Q']
-        , link_args : ['-lSDL2', '-lSDL2_image', '-lm', '-lglfw', '-lGL'] )
+        , link_args : ['-lSDL2', '-lSDL2_image', '-lm', '-lglfw', '-lGL', '-ldl'] )
 
 testsrcs = [ 'Lib/Util.c'  
            , 'UnitTesting/Run_Tests.c'

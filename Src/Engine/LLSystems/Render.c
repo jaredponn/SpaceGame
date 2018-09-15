@@ -1,14 +1,7 @@
 #include "Render.h"
 
-
-void LLS_updateViewport(GLFWwindow *window)
-{
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
-}
-
-void LLS_swapBuffers(GLFWwindow *window)
-{
-	glfwSwapBuffers(window);
-}
+float testTriangle[] = {
+	0.0f,  0.5f,  // Vertex 1 (X, Y)
+	0.5f,  -0.5f, // Vertex 2 (X, Y)
+	-0.5f, -0.5f  // Vertex 3 (X, Y)
+};

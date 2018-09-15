@@ -1,6 +1,7 @@
 #include "Input.h"
 #include "LLSInput.h"
 #include "LLSystemManager.h"
+#include "LLSRender.h"
 #include "Render.h"
 #include "Time.h"
 #include "Window.h"
