@@ -60,6 +60,7 @@ srcs = ['Src/Main.c'
        , 'Lib/sizet_Vector.c' 
        , 'Lib/V2.c' 
        , 'Lib/Time.c'
+       , 'Lib/Logger.c'
 
        # Extern
        , 'Extern/glad/src/glad.c'
