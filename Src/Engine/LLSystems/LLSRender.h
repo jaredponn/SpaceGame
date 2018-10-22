@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Extern/glad/include/glad/glad.h"
 #include <GLFW/glfw3.h>
 /** Render.h
@@ -10,75 +11,172 @@
  * (1,1) -> upper right corner
  * viewport describes the transform from NDC to window coordinates
  */
-
-// -----------------------------------------
-//    Globals
-// -----------------------------------------
-
-static const char ID_VERTEX_SHADER[] =
-	"#version 150 core\
-	in vec2 position;\
-	void main()\
-	{\
-	        gl_Position = vec4(position, 0.0, 1.0);\
-        }";
-
-static const char WHITE_FRAGMENT_SHADER[] =
-	"#version 150 core\
-        out vec4 outColor;\
-        void main()\
-        {\
-                outColor = vec4(1.0, 1.0, 1.0, 1.0);\
-        }";
-
 // -----------------------------------------
 //    functions
 // -----------------------------------------
 
-// MUST be called AFTER makeContextcurrent in Window.h
-// error handling is tested with if (! {..})) { ERROR HANDLING}
-int LLS_loadGLLoader();
-
-// TODO: automatically set the viewport to the framebuffer size with callbacks
-// https://www.glfw.org/docs/latest/group__window.html#ga3203461a5303bf289f2e05f854b2f7cf
-// updates the view port with th eframebuffersize
-void LLS_updateViewport(GLFWwindow *window);
-
-
-void LLS_swapBuffers(GLFWwindow *window);
-
-// wrapper for glClearColor - fillsthe backgrond color, r, g, b, opacity
-void LLS_clearColor(float, float, float, float);
-
-// wrapper for glClear
-void LLS_clear(GLbitfield mask);
-
-// wrapper for glGenBuffers
-void LLS_genBuffers(GLsizei n, GLuint *buffers);
-
-// wrapper for glBindBuffer
-void LLS_bindBuffer(GLenum target, GLuint buffer);
-
-// wrapper for glBufferData
-void LLS_bufferData(GLenum target, GLsizeiptr size, const GLvoid *data,
-		    GLenum usage);
 
 // -----------------------------------------
 //    shader stuff
 // -----------------------------------------
-
-// wrapper for glCreateShader
-unsigned int LLS_createShader(GLenum shaderType);
-
-// wrapper for glShaderSource
-void LLS_shaderSource(GLuint shader, GLsizei count, const GLchar **string,
-		      const GLint *length);
-
-// wrapper for glCompileShader
-void LLS_compileShader(GLuint shader);
-
 // convenience function for creating, and compilinga vertex shader, with error
 // input if it fails creating the shader
-void LLS_safeCreateAndCompileVertexShader(const GLchar *shaderSource);
+unsigned int LLS_safeCreateAndCompileVertexShader(const GLchar *shaderSource);
+unsigned int LLS_safeCreateAndCompileFragmentShader(const GLchar *shaderSource);
 
-void LLS_safeCreateAndCompileFragementShader(const GLchar *shaderSource);
+// links the program together
+unsigned int LLS_safeLinkVertexAndFragmentShader(unsigned int vertexShader,
+						 unsigned int fragmentShader);
+
+// -----------------------------------------
+//    Wrappers
+// -----------------------------------------
+// MUST be called AFTER makeContextcurrent in Window.h
+// error handling is tested with if (! {..})) { ERROR HANDLING}
+static inline int LLS_gladLoadGLLoader()
+{
+	return gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+}
+
+// glfwSwapBuffers
+static inline void LLS_glSwapBuffers(GLFWwindow *window)
+{
+
+	glfwSwapBuffers(window);
+}
+
+// wrapper for glClearColor - fillsthe backgrond color, r, g, b, opacity
+static inline void LLS_glClearColor(float r, float g, float b, float alpha)
+{
+	glClearColor(r, g, b, alpha);
+}
+
+// wrapper for glClear
+static inline void LLS_glClear(GLbitfield mask)
+{
+	glClear(mask);
+}
+
+// wrapper for glGenBuffers
+static inline void LLS_glGenBuffers(GLsizei n, GLuint *buffers)
+{
+	glGenBuffers(n, buffers);
+}
+
+// wrapper for glBindBuffer
+static inline void LLS_glBindBuffer(GLenum target, GLuint buffer)
+{
+	glBindBuffer(target, buffer);
+}
+
+// wrapper for glBufferData
+static inline void LLS_glBufferData(GLenum target, GLsizeiptr size,
+				    const GLvoid *data, GLenum usage)
+{
+	glBufferData(target, size, data, usage);
+}
+
+// wrapper for glCreateShader
+static inline unsigned int LLS_glCreateShader(GLenum shaderType)
+{
+	return glCreateShader(shaderType);
+}
+
+// wrapper for glShaderSource
+static inline void LLS_glShaderSource(GLuint shader, GLsizei count,
+				      const GLchar **string,
+				      const GLint *length)
+{
+	glShaderSource(shader, count, string, length);
+}
+
+// wrapper for glCompileShader
+static inline void LLS_glCompileShader(GLuint shader)
+{
+	glCompileShader(shader);
+}
+
+
+// wrapper for glCreateProgram()
+static inline unsigned int LLS_glCreateProgram()
+{
+	return glCreateProgram();
+}
+
+// wrapper for glAttachShader()
+static inline void LLS_glAttachShader(GLuint program, GLuint shader)
+{
+	glAttachShader(program, shader);
+}
+
+// wrapper for glBindFragDataLocation()
+static inline void
+LLS_glBindFragDataLocation(GLuint program, GLuint colorNumber, const char *name)
+{
+	glBindFragDataLocation(program, colorNumber, name);
+}
+
+// wrapper for glLinkProgram()
+static inline void LLS_glLinkProgram(GLuint program)
+{
+	glLinkProgram(program);
+}
+
+// wrapper for glUseProgram()
+static inline void LLS_glUseProgram(GLuint program)
+{
+	glUseProgram(program);
+}
+
+// wrapper for glGetAttribLocation()
+static inline int LLS_glGetAttribLocation(GLuint program, const GLchar *name)
+{
+	return glGetAttribLocation(program, name);
+}
+
+// wrapper for glVertexAttribPointer
+static inline void LLS_glVertexAttribPointer(GLuint index, GLint size,
+					     GLenum type, GLboolean normalized,
+					     GLsizei stride,
+					     const GLvoid *pointer)
+{
+	glVertexAttribPointer(index, size, type, normalized, stride, pointer);
+}
+
+// wrapper for glEnableVertexAttribArray
+static inline void LLS_glEnableVertexAttribArray(GLuint index)
+{
+	glEnableVertexAttribArray(index);
+}
+
+// wrapper for glGenVertexArrays
+static inline void LLS_glGenVertexArrays(GLsizei n, GLuint *arrays)
+{
+	glGenVertexArrays(n, arrays);
+}
+
+// wrapper for glBindVertexArray
+static inline void LLS_glBindVertexArray(GLuint vao)
+{
+	glBindVertexArray(vao);
+}
+
+static inline void LLS_glDrawArrays(GLenum mode, GLint first, GLsizei count)
+{
+	glDrawArrays(mode, first, count);
+}
+
+static inline void LLS_glDeleteBuffers(GLsizei n, const GLuint *ids)
+{
+	glDeleteBuffers(n, ids);
+}
+
+static inline void LLS_glDisableVertexAttribArray(GLuint index)
+{
+	glDisableVertexAttribArray(index);
+}
+
+static inline void LLS_glDeleteShader(unsigned int shader)
+{
+	glDeleteShader(shader);
+}

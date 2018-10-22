@@ -2,6 +2,10 @@
 
 #include "Engine/Engine.h"
 #include "Engine/LLSystems/LLSystems.h"
+#include "Engine/LLSystems/Render.h"
+
+// shouldn't be be in the godly main file
+#include "Lib/Logger.h"
 
 #define INITCAPACITY 10000
 
@@ -10,7 +14,7 @@ int main(void)
 	// initializing the libraries
 	/** ECS_initLibraries(); */
 
-	printf("copiled");
+	printf("copiled\n\n");
 
 	LLS_setDefaultErrorCallback();
 
@@ -25,24 +29,33 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	LLS_makeContextCurrent(window);
+	LLS_glfwMakeContextCurrent(window);
+	LLS_setDefaultFramebufferSizeCallback(window);
 
-	LLS_loadGLLoader(); // must b called after make contextcurrent
+	if (!LLS_gladLoadGLLoader()) // must b called after make contextcurrent
+	{
+		LOG_TEXT(0, "ERROR LOADING GLAD");
+	}
 
-	LLS_setSwapInterval(1);
+	LLS_glfwSetSwapInterval(1); // rendering plumbing
 
-	LLS_setKeyboardCallback(window, INP_defaultKeyboardCallback);
+	LLS_setKeyboardCallback(
+		window, INP_defaultKeyboardCallback); // keyboard plumbing
 
-	// setting th edefault clear color to black
-	LLS_clearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	GLuint vbo;
+	// RDR_drawTriangle();
+	/** RDR_test(); */
+	/** unsigned int triangleBuffer = RDR_createTestTrekant(); */
 
-	while (!LLS_shouldWindowClose(window)) {
+	while (!LLS_glfwShouldWindowClose(window)) {
 		INP_pollAndUpdateInputBuffer();
-		LLS_clear(GL_COLOR_BUFFER_BIT);
 
-		LLS_genBuffers(1, &vbo);
+		// setting th edefault clear color to black
+		LLS_glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+		LLS_glClear(GL_COLOR_BUFFER_BIT);
+
+		// meh
+		// meh
 
 
 		unsigned int tst = getKeyboardKeyState(GLFW_KEY_A);
@@ -55,7 +68,7 @@ int main(void)
 		}
 
 
-		LLS_swapBuffers(window);
+		LLS_glSwapBuffers(window);
 	}
 
 	LLS_terminateGraphicsLibFrameWork();

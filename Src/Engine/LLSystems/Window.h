@@ -13,18 +13,53 @@
 //    Procedures
 // -----------------------------------------
 
-// creates a window. May return NULL
+// creates a window and setes the glfw window hints. May return NULL
 GLFWwindow *LLS_createWindow(const int width, const int height,
 			     const char *title);
 
-// makes the selected window have a OpenGL context
-// ALSO sets the swap interval to 1
-void LLS_makeContextCurrent(GLFWwindow *);
+// sets a sefault framebuffer size callback
+void LLS_setDefaultFramebufferSizeCallback(GLFWwindow *window);
 
-void LLS_setSwapInterval(unsigned int);
+
+// -----------------------------------------
+//    Wrappers
+// -----------------------------------------
+
+// makes the selected window have a OpenGL context
+static inline void LLS_glfwMakeContextCurrent(GLFWwindow *window)
+{
+	glfwMakeContextCurrent(window);
+}
+
+static inline void LLS_glfwSetSwapInterval(unsigned int n)
+{
+
+	glfwSwapInterval(n);
+}
 
 // returns true if user wants to close the window
-bool LLS_shouldWindowClose(GLFWwindow *);
+static inline bool LLS_glfwShouldWindowClose(GLFWwindow *window)
+{
+
+	return glfwWindowShouldClose(window);
+}
 
 // destroys window
-void LLS_destroyWindow(GLFWwindow *);
+static inline void LLS_glfwDestroyWindow(GLFWwindow *window)
+{
+	glfwDestroyWindow(window);
+}
+
+static inline void
+LLS_glfwSetFramebufferSizeCallback(GLFWwindow *window,
+				   GLFWframebuffersizefun cbfun)
+{
+	glfwSetFramebufferSizeCallback(window, cbfun);
+}
+
+static inline GLFWwindow *
+LLS_glfwCreateWindow(const int width, const int height, const char *title)
+{
+
+	return glfwCreateWindow(width, height, title, NULL, NULL);
+}

@@ -40,6 +40,15 @@ static char ERROR_LOG_BUFFER[ERROR_LOG_BUFFER_SIZE] = {0};
 		LOG_TEXT(0, ERROR_LOG_BUFFER)                                  \
 	} while (0);
 
+#define LOG_OPENGL_SHADER_LINK_STATUS(shader)                                  \
+	do {                                                                   \
+		GLint status;                                                  \
+		glGetProgramiv(shader, GL_LINK_STATUS, &status);               \
+		glGetShaderInfoLog(shader, ERROR_LOG_BUFFER_SIZE, NULL,        \
+				   ERROR_LOG_BUFFER);                          \
+		LOG_TEXT(0, ERROR_LOG_BUFFER)                                  \
+	} while (0);
+
 
 #endif
 

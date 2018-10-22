@@ -1,12 +1,17 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "LLSRender.h"
 /** Render.h
  * functions for rendering / dealing with the viewport
  */
 
-extern float testTriangle[];
-
 // -----------------------------------------
 //    functions
 // -----------------------------------------
+
+unsigned int RDR_drawTriangle();
+
+
+void RDR_oldtest();
+
+void RDR_genAndinitTrekantVertexBuffer(unsigned int *vbo);

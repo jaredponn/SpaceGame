@@ -24,6 +24,8 @@ srcs = ['Src/Main.c'
        , 'Src/Engine/Components/Aabb.c'
        , 'Src/Engine/Components/Attribute.c'
 
+       , 'Src/Engine/Components/PathFindingNode.c'
+
        #/ Systems
        , 'Src/Engine/Systems/Render.c'
        , 'Src/Engine/Systems/UpdatePositions.c'

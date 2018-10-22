@@ -1,33 +1,47 @@
 #include "Window.h"
 
+// -----------------------------------------
+//    Macros
+// -----------------------------------------
+#define UNUSED(val) (void)val
+
+// -----------------------------------------
+//    private
+// -----------------------------------------
+static inline void defaultFramebufferSizeCallback(GLFWwindow *window, int width,
+						  int height);
+
+// -----------------------------------------
+//    functions
+// -----------------------------------------
+
 GLFWwindow *LLS_createWindow(const int width, const int height,
 			     const char *title)
 {
-	/** glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); */
-	/** glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2); */
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow *window = glfwCreateWindow(width, height, title, NULL, NULL);
+	GLFWwindow *window = LLS_glfwCreateWindow(width, height, title);
 
 	return window;
 }
 
-void LLS_setSwapInterval(unsigned int val)
+void LLS_setDefaultFramebufferSizeCallback(GLFWwindow *window)
 {
-
-	glfwSwapInterval(val);
+	glfwSetFramebufferSizeCallback(window, defaultFramebufferSizeCallback);
 }
 
-void LLS_makeContextCurrent(GLFWwindow *window)
+// -----------------------------------------
+//    private implementations
+// -----------------------------------------
+
+static inline void defaultFramebufferSizeCallback(GLFWwindow *window, int width,
+						  int height)
 {
-	glfwMakeContextCurrent(window);
+	// changes the viewport to match the windows dimensions
+	UNUSED(window);
+	glViewport(0, 0, width, height);
 }
 
-bool LLS_shouldWindowClose(GLFWwindow *window)
-{
-	return glfwWindowShouldClose(window);
-}
-
-void LLS_destroyWindow(GLFWwindow *window)
-{
-	glfwDestroyWindow(window);
-}
+#undef UNUSED

@@ -5,95 +5,50 @@
 // -----------------------------------------
 //    private
 // -----------------------------------------
-static inline void LLS_safeCreateAndCompileShader(const GLchar *shaderSource,
-						  GLenum shaderType);
+
+static inline unsigned int
+LLS_safeCreateAndCompileShader(const GLchar *shaderSource, GLenum shaderType);
 
 // -----------------------------------------
 //    public functions
 // -----------------------------------------
-
-void LLS_updateViewport(GLFWwindow *window)
+unsigned int LLS_safeCreateAndCompileVertexShader(const GLchar *shaderSource)
 {
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	/** printf("width: %i\n", width); */
-	/** printf("height: %i\n", height); */
-	glViewport(0, 0, width, height);
+
+	return LLS_safeCreateAndCompileShader(shaderSource, GL_VERTEX_SHADER);
 }
 
-int LLS_loadGLLoader()
+unsigned int LLS_safeCreateAndCompileFragmentShader(const GLchar *shaderSource)
 {
-	return gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+	return LLS_safeCreateAndCompileShader(shaderSource, GL_FRAGMENT_SHADER);
 }
 
-void LLS_swapBuffers(GLFWwindow *window)
+unsigned int LLS_safeLinkVertexAndFragmentShader(unsigned int vertexShader,
+						 unsigned int fragmentShader)
 {
-	glfwSwapBuffers(window);
-}
+	unsigned int shaderProgram = LLS_glCreateProgram();
+	LLS_glAttachShader(shaderProgram, vertexShader);
+	LLS_glAttachShader(shaderProgram, fragmentShader);
 
-void LLS_clearColor(float r, float g, float b, float alpha)
-{
-	glClearColor(r, g, b, alpha);
-}
+	LOG_OPENGL_SHADER_LINK_STATUS(shaderProgram);
 
-void LLS_clear(GLbitfield mask)
-{
-	glClear(mask);
-}
-
-void LLS_genBuffers(GLsizei n, GLuint *buffers)
-{
-	glGenBuffers(n, buffers);
+	return shaderProgram;
 }
 
 
-void LLS_bindBuffer(GLenum target, GLuint buffer)
-{
-	glBindBuffer(target, buffer);
-}
-
-void LLS_bufferData(GLenum target, GLsizeiptr size, const GLvoid *data,
-		    GLenum usage)
-{
-	glBufferData(target, size, data, usage);
-}
-
-unsigned int LLS_createShader(GLenum shaderType)
-{
-	return glCreateShader(shaderType);
-}
-
-void LLS_shaderSource(GLuint shader, GLsizei count, const GLchar **string,
-		      const GLint *length)
-{
-	glShaderSource(shader, count, string, length);
-}
-
-void LLS_compileShader(GLuint shader)
-{
-	glCompileShader(shader);
-}
-
-void LLS_safeCreateAndCompileVertexShader(const GLchar *shaderSource)
-{
-	LLS_safeCreateAndCompileShader(shaderSource, GL_VERTEX_SHADER);
-}
-
-void LLS_safeCreateAndCompileFragementShader(const GLchar *shaderSource)
-{
-
-	LLS_safeCreateAndCompileShader(shaderSource, GL_FRAGMENT_SHADER);
-}
 // -----------------------------------------
 //    Private implenetation
 // -----------------------------------------
-static inline void LLS_safeCreateAndCompileShader(const GLchar *shaderSource,
-						  GLenum shaderType)
+static inline unsigned int
+LLS_safeCreateAndCompileShader(const GLchar *shaderSource, GLenum shaderType)
 {
 
-	unsigned int shader = LLS_createShader(shaderType);
-	LLS_shaderSource(shader, 1, &shaderSource, NULL);
-	LLS_compileShader(shader);
+	unsigned int shader = LLS_glCreateShader(shaderType);
+	LLS_glShaderSource(shader, 1, &shaderSource, NULL);
+	LLS_glCompileShader(shader);
 
 	LOG_OPENGL_SHADER_COMPILE_STATUS(shader)
+
+	return shader;
 }
