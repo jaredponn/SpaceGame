@@ -92,5 +92,10 @@ testsrcs = [ 'Lib/Util.c'
            , 'Lib/Time.c'
            ]
 unittests = executable('unittests', testsrcs, c_args : ['-Wall', '-Wextra', '-O2'],link_args :'-lcheck')
-        
 test('unittests', unittests )
+
+
+# mlib
+mlibtestsrcs = [ 'mlib/tests/mruntests.c' ]
+mlibtests = executable('mlibtests', mlibtestsrcs, c_args : ['-Wall', '-Wextra', '-O2'], link_args :'-lcheck')
+test('mlibtests', mlibtests )
