@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 #include "mlib/mlib.h"
-#include "mvectortests.h"
+/* #include "mvectortests.h" */
+#include "mpackedvectortests.h"
 
 
 // -----------------------------------------
@@ -25,9 +26,18 @@ int runTest(int (*fp)(Suite *, SRunner *))
 // -----------------------------------------
 //    Test suites
 // -----------------------------------------
-int vector_tests(Suite *s, SRunner *sr)
+/* int vector_tests(Suite *s, SRunner *sr) */
+/* { */
+/* 	s = vector_test_suite(); */
+/* 	sr = srunner_create(s); */
+
+/* 	srunner_run_all(sr, CK_NORMAL); */
+/* 	return srunner_ntests_failed(sr); */
+/* } */
+
+int packed_vector_tests(Suite *s, SRunner *sr)
 {
-	s = vector_test_suite();
+	s = packed_vector_test_suite();
 	sr = srunner_create(s);
 
 	srunner_run_all(sr, CK_NORMAL);
@@ -38,7 +48,8 @@ int main(void)
 {
 	int number_failed = 0;
 
-	number_failed += runTest(vector_tests);
+	/* number_failed += runTest(vector_tests); */
+	number_failed += runTest(packed_vector_tests);
 
 	return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
