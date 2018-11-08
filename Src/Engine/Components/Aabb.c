@@ -4,7 +4,7 @@
 //    macros
 // -----------------------------------------
 
-// macro to make squaring a number a little easier
+// macros to make the computations a bit easier
 #define SQUARE(x) (((x)) * ((x)))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
@@ -56,7 +56,16 @@ bool CPT_hitTestCircRectAabb(const struct CircAabb *circ,
 
 	return (SQUARE(dx) + SQUARE(dy)) < SQUARE(radius);
 }
+struct CircAabb CPT_createCircAabb(float r)
+{
+	return (struct CircAabb){.center = (struct V2){.x = 0, .y = 0},
+				 .radius = r};
+}
 
+struct V2 CPT_getCircOffset(float w, float h)
+{
+	return (struct V2){w / 2, h / 2};
+}
 // -----------------------------------------
 //    Macro definitinos
 // -----------------------------------------
@@ -66,3 +75,7 @@ COMPONENT_MANAGER_DEFINE(struct RectAabb, RectAabb, RectAabb)
 
 VECTOR_DEFINE(struct CircAabb, CircAabb)
 COMPONENT_MANAGER_DEFINE(struct CircAabb, CircAabb, CircAabb)
+
+#undef SQUARE
+#undef MAX
+#undef MIN

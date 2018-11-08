@@ -1,5 +1,8 @@
-#include "stdio.h"
 #include "EngineExtraState.h"
+#include "../GameConfig.h"
+#include <string.h>
+
+#define INIT_FOCUSED_BUFFER_SIZE 100
 
 // -----------------------------------------
 //    private funcs
@@ -14,34 +17,54 @@ static inline void EXS_applyCameraVelocity(struct EXS_ExtraState *);
 // -----------------------------------------
 
 
-void ECS_initExtraState(struct EXS_ExtraState *engineExtraState)
+void ECS_initExtraState(struct EXS_ExtraState *extraState)
 {
-	engineExtraState->camera.camera_acceleration =
-		(struct V2){.x = 0, .y = 0};
-	engineExtraState->camera.camera_position = (struct V2){.x = 0, .y = 0};
-	engineExtraState->camera.camera_velocity = (struct V2){.x = 0, .y = 0};
+	memset(extraState, 0, sizeof(struct EXS_ExtraState));
 
-	engineExtraState->dt = UTI_zeroTime();
+	extraState->camera.camera_movement_velocity = CAMERA_VELOCITY;
+	extraState->camera.camera_movement_deceleration =
+		CAMERA_ACCELERATION_DECAY;
 }
 
 
 void EXS_applyCameraMovement(struct EXS_ExtraState *extraState)
 {
-	printf("\nx acceleration: %.f\n",
-	       extraState->camera.camera_acceleration.x);
-	printf("x vel: %.f\n", extraState->camera.camera_velocity.x);
-	printf("x pos: %.f\n", extraState->camera.camera_position.x);
-
 	EXS_applyCameraAcceleration(extraState);
 	EXS_applyCameraVelocity(extraState);
 
 	EXS_stopDeceleration(extraState);
 }
+
+// returns true if there are enough resources
+bool EXS_hasEnoughResources(struct EXS_ExtraState *extraState,
+			    unsigned int gold, unsigned int energy)
+{
+	unsigned int curGold = extraState->player_resources.gold;
+	unsigned int curEnergy = extraState->player_resources.energy;
+
+	bool enoughEnergy = energy >= curEnergy;
+	bool enoughGold = gold >= curGold;
+
+	return enoughGold && enoughEnergy;
+}
+
+// subtracts the amount from the resources
+void EXS_subtractResources(struct EXS_ExtraState *extraState, unsigned int gold,
+			   unsigned int energy)
+{
+	extraState->player_resources.gold -= gold;
+	extraState->player_resources.energy -= energy;
+}
+
+void EXS_setPlayerActionState(struct EXS_ExtraState *extraState,
+			      enum EXS_PlayerActionState playerActionState)
+{
+	extraState->player_action_state = playerActionState;
+}
 // -----------------------------------------
 //    private funcs
 // -----------------------------------------
 
-#define DECELERATE_RANGE 40
 static inline void EXS_stopDeceleration(struct EXS_ExtraState *extraState)
 {
 	struct V2 cameraVelocity = extraState->camera.camera_velocity;
